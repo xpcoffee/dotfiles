@@ -1,2 +1,5 @@
 *
 !.gitignore
+!.zshrc
+!.profile
+!.aliases
