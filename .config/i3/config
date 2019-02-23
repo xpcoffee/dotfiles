@@ -1,0 +1,188 @@
+##########################
+#    Core Keybindings    #
+##########################
+
+# modifier key
+set $mod Mod1
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+bindsym $mod+Return exec i3-sensible-terminal
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+# program launcher
+bindsym $mod+d exec i3-dmenu-desktop --dmenu='dmenu -i -l 5 -m 1 -fn "System San Francisco Display Regular-10"'
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# split in horizontal orientation
+bindsym $mod+/ split h
+
+# split in vertical orientation
+bindsym $mod+minus split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 2 +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 2 -5% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 2 toggle # mute sound
+
+##############
+# Workspaces #
+##############
+
+# first command focuses a workspace
+# second command goes back to previous workspace
+workspace_auto_back_and_forth yes
+
+set $workspace_desktop "1.  Desktop"
+set $workspace_browser "2.  Browser"
+set $workspace_dev "3.  Development"
+set $workspace_msg "4.  Messaging"
+set $workspace_game "5.  Gaming"
+set $workspace_music "10.  Music"
+
+# switch to workspace
+bindsym $mod+1 workspace $workspace_desktop
+bindsym $mod+2 workspace $workspace_browser
+bindsym $mod+3 workspace $workspace_dev
+bindsym $mod+4 workspace $workspace_msg
+bindsym $mod+5 workspace $workspace_game
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace $workspace_music
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $workspace_desktop
+bindsym $mod+Shift+2 move container to workspace $workspace_browser
+bindsym $mod+Shift+3 move container to workspace $workspace_dev
+bindsym $mod+Shift+4 move container to workspace $workspace_msg
+bindsym $mod+Shift+5 move container to workspace $workspace_game
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace $workspace_music
+
+assign [class="Atom"] $workspace_dev
+assign [class="Code"] $workspace_dev
+assign [class="Franz"] $workspace_msg
+assign [class="Steam"] $workspace_game
+assign [class="Google-chrome"] $workspace_browser
+# spotify doesn't work with assign for some reason
+for_window [class="Spotify"] move to workspace $workspace_music
+
+########################
+#   i3 Reload/quit     #
+########################
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+########################
+#       Resizing       #
+########################
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+########################
+#      Appearance      #
+########################
+
+# font - can be overridden in bar {}
+font pango:System SanFransisco Display 9
+exec_always feh --bg-scale "/home/rick/Pictures/wallpaper.jpg"
+
+# colours
+set $bg-color 	         #2f343f
+set $inactive-bg-color   #2f343f
+set $text-color          #f3f4f5
+set $inactive-text-color #676E7D
+set $urgent-bg-color     #E53935
+
+# status bar
+bar {
+    font pango:Font Awesome 5 Free-Regular-400 9
+  	status_command i3blocks -c /home/rick/.config/i3/i3blocks.conf
+  	colors {
+    		background $bg-color
+	    	separator #757575
+    		#                  border             background         text
+    		focused_workspace  $bg-color          $bg-color          $text-color
+    		inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
+    		urgent_workspace   $urgent-bg-color   $urgent-bg-color   $text-color
+  	}
+}
+
+
+
+########################
+# Default Applications #
+########################
+
+exec google-chrome
+exec konsole
+exec spotify
+exec code
+exec franz
