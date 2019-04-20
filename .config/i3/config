@@ -182,7 +182,7 @@ bar {
 ########################
 
 exec google-chrome
-exec konsole
+exec albert
 exec spotify
 exec code
 exec franz
