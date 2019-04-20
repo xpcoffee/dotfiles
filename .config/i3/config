@@ -152,7 +152,7 @@ bindsym $mod+r mode "resize"
 
 # font - can be overridden in bar {}
 font pango:System SanFransisco Display 9
-exec_always feh --bg-scale "/home/rick/Pictures/wallpaper.jpg"
+exec_always --no-startup-id feh --bg-scale "/home/rick/Pictures/wallpaper.jpg"
 
 # colours
 set $bg-color 	         #2f343f
@@ -181,8 +181,7 @@ bar {
 # Default Applications #
 ########################
 
-exec google-chrome
-exec albert
-exec spotify
-exec code
-exec franz
+exec --no-startup-id google-chrome
+exec --no-startup-id albert
+exec --no-startup-id code
+exec --no-startup-id franz
