@@ -4,7 +4,7 @@ ZSH_DISABLE_COMPFIX="true"
 
 #== OH-MY-ZSH ==
 export ZSH="/home/rick/.oh-my-zsh"
-ZSH_THEME="frisk"
+ZSH_THEME="xpcoffee"
 CASE_SENSITIVE="false" # for completion
 DISABLE_UNTRACKED_FILES_DIRTY="true" # don't show git status changes for untracked files
 
