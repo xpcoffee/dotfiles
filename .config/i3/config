@@ -189,7 +189,7 @@ bar {
 # Default Applications #
 ########################
 
-exec --no-startup-id google-chrome
+exec --no-startup-id vivaldi
 exec --no-startup-id albert
 exec --no-startup-id code
 exec --no-startup-id franz
