@@ -1,5 +1,6 @@
 [core]
 	editor = vim
+	excludesfile = /home/rick/.gitignore_global
 [user]
 	name = Emerick Bosch
 	email = xpc.dev@gmail.com
