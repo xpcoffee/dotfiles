@@ -11,5 +11,6 @@ PATH="/snap/bin:$PATH"
 PATH="$HOME/share/bin:$PATH"
 PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 PATH="$HOME/node_modules/.bin:$PATH"
+PATH="$HOME/.gem/bin:$PATH"
 
 export PATH
