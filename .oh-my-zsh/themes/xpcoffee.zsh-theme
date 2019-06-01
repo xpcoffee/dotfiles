@@ -1,6 +1,6 @@
 PROMPT=$'
-(%DT%T+02:00)$(git_prompt_info)$(bzr_prompt_info)%~
-%{$fg_bold[black]%}>%{$reset_color%} '
+%DT%T+02:00 $(git_prompt_info)$(bzr_prompt_info)%~
+%{$fg_bold[blue]%}>%{$reset_color%} '
 
 PROMPT2="%{$fg_blod[black]%}%_> %{$reset_color%}"
 
