@@ -4,7 +4,7 @@ DOTFILES_DIR=$(realpath .)
 
 # Core
 
-DOTFILES=(".zshrc" ".aliases" ".profile" ".gitconfig" ".gitignore")
+DOTFILES=(".zshrc" ".aliases" ".profile" ".gitconfig" ".gitignore" ".vimrc")
 
 for dotfile in ${DOTFILES[*]}; do
   ln -s "${DOTFILES_DIR}/${dotfile}" "${HOME}" && \
