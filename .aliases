@@ -1,1 +1,17 @@
-# Holds command aliases for the user
+function jq-repl {
+    echo '' | fzf --print-query --preview "cat ${1} | jq -C -r {q}" --preview-window up:99%
+}
+
+# --- Git ---
+
+# hash of an empty git repo - useful for generating a diff against the beginning of time
+alias git-empty="git hash-object -t tree /dev/null"
+
+# --- Host maintentance ---
+
+# Displays paths that are taking up gigabytes of disk
+# Arguments:
+#   the path to inspect
+function disk-usage {
+    du -h "$1" --max-depth 1 2> /dev/null | grep '[0-9\.]\+G'
+}

@@ -1,28 +1,30 @@
-#--- GENERAL ---
-HIST_STAMPS="yyyy-mm-dd"
-ZSH_DISABLE_COMPFIX="true"
+# ---- Terminal ----
+export LANG=en_US.UTF-8
+setopt NO_BEEP
 
-#--- OH-MY-ZSH ---
-export ZSH="/home/rick/.oh-my-zsh"
-ZSH_THEME="xpcoffee"
-CASE_SENSITIVE="false" # for completion
-DISABLE_UNTRACKED_FILES_DIRTY="true" # don't show git status changes for untracked files
-
-plugins=(
-  git # status in prompts
-  thefuck # correct erroneous commands
-  fzf # fuzzy-find menus
-)
-
-source $ZSH/oh-my-zsh.sh
-
-#--- USER CONFIGURATION ---
-source ~/.profile
-source ~/.aliases
-
-#--- Base16 Shell ---
+# ---- Base16 colourschemes ----
 BASE16_SHELL="$HOME/.config/base16-shell/"
 [ -n "$PS1" ] && \
     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
         eval "$("$BASE16_SHELL/profile_helper.sh")"
+
+# ---- Oh-my-Zsh ----
+plugins=(
+    git
+    fzf
+    zsh-autosuggestions
+)
+
+export ZSH="${HOME}/.oh-my-zsh"
+source "${ZSH}/oh-my-zsh.sh"
+
+
+# ---- Environment ----
+source ~/.profile
+source ~/.aliases
+
+# fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
 
