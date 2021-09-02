@@ -1,58 +1,70 @@
-" Author: Rick Bosch
+" Author:               Emerick Bosch
+
 
 " Plugins
-  " Vundle Begin
-    set nocompatible                    " be iMproved required for Vundle
-    filetype off                        " required for Vundle
+    if empty(glob('~/.vim/autoload/plug.vim'))
+      silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    endif
 
-    " set runtime path to include Vundle
-    set rtp+=~/.vim/bundle/Vundle.vim
-    " initialize
-    call vundle#begin()
 
+call plug#begin('~/.vim/plugged')
   "Installed Plugins
     " core
-    Plugin 'gmarik/Vundle.vim'
-    Plugin 'scrooloose/nerdtree'
+    Plug 'gmarik/Vundle.vim'
+    Plug 'scrooloose/nerdtree'
 
-    " ruby
-    " Plugin 'tpope/vim-rbenv'
-    Plugin 'vim-scripts/ruby-matchit'
+    " languages
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-    " rust
-    "Plugin 'rust-lang/rust.vim'
+    Plug 'vim-scripts/ruby-matchit'
+    Plug 'peitalin/vim-jsx-typescript'
+    Plug 'pangloss/vim-javascript'
+    Plug 'leafgarland/typescript-vim'
 
     " movement
-    Plugin 'Lokaltog/vim-easymotion'
+    Plug 'Lokaltog/vim-easymotion'
 
     " input
-    Plugin 'tpope/vim-surround'
-    " Plugin 'godlygeek/tabular'
+    Plug 'tpope/vim-surround'
 
     " syntax
-    Plugin 'vim-syntastic/syntastic'
-    Plugin 'peitalin/vim-jsx-typescript'
+    Plug 'vim-syntastic/syntastic'
 
     " colour
-    Plugin 'chriskempson/base16-vim'
-
-    " autocompletion
-    " Plugin 'ervandew/supertab'
-    Plugin 'Valloric/YouCompleteMe'
-
-    " status bar
-    " Plugin 'bling/vim-airline'
-    " Plugin 'vim-airline/vim-airline-themes'
+    Plug 'chriskempson/base16-vim'
 
     " git
-    Plugin 'tpope/vim-fugitive'
-    Plugin 'kien/ctrlp.vim'
+    Plug 'tpope/vim-fugitive'
+    Plug 'kien/ctrlp.vim'
 
-    " Vundle end
-    call vundle#end()            " required
-    filetype plugin indent on
+call plug#end()
+filetype plugin indent on
 
   "let g:ruby_path = system('rbenv prefix')
+
+" CoC
+
+  " if hidden is not set, TextEdit might fail.
+  set hidden
+
+  " Better display for messages
+  set cmdheight=2
+
+  " You will have bad experience for diagnostic messages when it's default 4000.
+  set updatetime=300
+
+  " don't give |ins-completion-menu| messages.
+  set shortmess+=c
+
+  " always show signcolumns
+  set signcolumn=yes
+
+  " Use <c-space> to trigger completion.
+  inoremap <silent><expr> <c-space> coc#refresh()
+
+  let g:coc_global_extensions = ['coc-solargraph']
 
 " Bindings
   " leader
@@ -64,10 +76,11 @@
   " source .vimrc
   nnoremap <leader>o :so %<CR>
 
+  " EasyMotion
   map <space> <Plug>(easymotion-prefix)
 
-  " run ruby
-  nnoremap <leader>r :!/usr/bin/env ruby %<CR>
+  " run the content of the file
+  nnoremap <leader>r :echo "No execution binding set up for this type of file."<CR>
 
   " edit .vimrc
   nnoremap <Left> :bp<CR>
@@ -109,9 +122,6 @@
     let base16colorspace=256
     source ~/.vimrc_background
   endif
-
-  " let g:airline_powerline_fonts = 1
-  " let g:airline_theme='base16_eighties'
 
 " Input
   " keyboard
@@ -162,3 +172,4 @@
   set tabstop=4    " size of tab
   set autoindent   " new line has indent of previous line
   set expandtab    " converts tabs to spaces
+

@@ -1,16 +1,17 @@
-# This file sets up PATH and other environment variables
+# Non-Shell specific config - used mostly to set up variables needed no matter which shell you're in
 
-#== MISC ENVIRONMENT VARIABLES ==
-wp="/home/rick/Documents/Code"
+# --- non-shell specific options ---
+export EDITOR='vim'
+export GEM_PATH="${HOME}/.gem"
 
-#== PATH ==
-if [ -d "$HOME/bin" ] ; then
-   PATH="$HOME/bin:$PATH"
-fi
-PATH="/snap/bin:$PATH"
-PATH="$HOME/share/bin:$PATH"
-PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-PATH="$HOME/node_modules/.bin:$PATH"
-PATH="$HOME/.gem/bin:$PATH"
-
+# --- path ---
+PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin" # system bins
+PATH="/snap/bin:${PATH}" # snaps
+PATH="/opt/firefox-dev/:${PATH}"
+PATH="${HOME}/bin:${PATH}" # user bin
+PATH="${HOME}/.toolbox/bin:${PATH}" # Builder tools
+PATH="${GEM_PATH}/bin:${PATH}" # Gem path
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
