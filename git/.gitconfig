@@ -1,6 +1,10 @@
 [user]
-    email = xpc.dev@gmail.com
+    email = emerick@miro.com
     name = Emerick Bosch
+
+# source personal config for personal repos
+[includeIf "gitdir:~/code/personal/"]
+    path = ~/code/personal/.gitconfig
 
 [core]
     editor = vim
