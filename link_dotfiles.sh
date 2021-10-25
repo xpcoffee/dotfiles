@@ -42,7 +42,7 @@ mkdir -p "${HOME_CONFIG_DIR}"
 CONFIG_DIRS=("fish")
 for config_dir in ${CONFIG_DIRS[*]}; do
     DIR_TO_LINK=".config"
-    FROM_DIR="${DOTFILES_DIR}/${DIR_TO_LINK}/${config_dir}"
+    FROM_DIR="${DOTFILES_DIR}/${DIR_TO_LINK}/${config_dir}/"
     TO_DIR="${HOME}/${DIR_TO_LINK}/${config_dir}"
 
     if [ -s "${TO_DIR}" ]; then
@@ -52,7 +52,7 @@ for config_dir in ${CONFIG_DIRS[*]}; do
     elif [ -d "${TO_DIR}" ]; then
         echo -e "Skipping linking \033[1m${config_dir}\033[0m: a directory already exists there."
     else
-        ln -s "${FROM_DIR}" "${HOME_CONFIG_DIR}" && echo -e "Created symlink for \033[1m${config_dir}\033[0m"
+        ln -s "${FROM_DIR}" "${TO_DIR}" && echo -e "Created symlink for \033[1m${config_dir}\033[0m"
     fi
 done
 

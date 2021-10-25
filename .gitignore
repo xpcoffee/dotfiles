@@ -1,0 +1,6 @@
+.DS_Store
+.vim/autoload/
+.vim/plugged/
+fish/conf.d/
+fish/fish_variables
+fish/functions/fish_prompt.*.copy
