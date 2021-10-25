@@ -3,7 +3,7 @@ function fish_prompt
     set_color normal
     echo -n 'emerick @ '
     set_color green
-    echo -n 'ubuntu'
+    echo -n 'mac'
     set_color normal
     echo -n ' ('
     echo -n (date +%FT%T+02:00)

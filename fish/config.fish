@@ -25,10 +25,6 @@ function current_repo --description 'Returns the current repo'
     end
 end
 
-function fish_title --description 'Change the tab title to a random emoji'
-    if set -q argv[1]
-        echo (random-emoji) $argv;
-    else
-        echo (random-emoji) (basename $PWD);
-    end
-end
+
+# Miro
+fish_add_path /usr/local/opt/maven@3.5/bin
