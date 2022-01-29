@@ -1,1 +1,0 @@
-/home/ANT.AMAZON.COM/rickbo/.fzf/shell/key-bindings.fish
