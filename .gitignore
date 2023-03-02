@@ -3,4 +3,6 @@
 .vim/plugged/
 fish/conf.d/
 fish/fish_variables
-fish/functions/fish_prompt.*.copy
+fish/functions/
+fish/fish_plugins
+fish/completions/
