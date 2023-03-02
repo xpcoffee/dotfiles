@@ -6,12 +6,18 @@
 [includeIf "gitdir:~/code/personal/"]
     path = ~/code/personal/.gitconfig
 
+# source personal config for vim repos
+[includeIf "gitdir:~/.vim/plugged/"]
+    path = ~/code/personal/.gitconfig
+
 [core]
+    pager = delta
     editor = vim
-    excludesfile = ${HOME}/.gitignore_global
+    excludesfile = ~/.gitignore_global
+    fsmonitor  = true
 
 [pull]
-        rebase = true
+    rebase = true
 
 [alias]
     lag = log --oneline -n11
@@ -21,3 +27,17 @@
     st = status
 
     blast-packagelock = checkout -- package-lock.json
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+[init]
+	defaultBranch = main
