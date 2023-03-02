@@ -2,14 +2,14 @@
 
 
 " Plugins
-    if empty(glob('~/.vim/autoload/plug.vim'))
-      silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    if empty(glob('~/dev/.vim/autoload/plug.vim'))
+      silent !curl -fLo ~/dev/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+      autocmd VimEnter * PlugInstall --sync | source '~/dev/.vimrc'
     endif
 
 
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/dev/.vim/plugged')
   "Installed Plugins
     " core
     Plug 'gmarik/Vundle.vim'
@@ -18,10 +18,14 @@ call plug#begin('~/.vim/plugged')
     " languages
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-    Plug 'vim-scripts/ruby-matchit'
     Plug 'peitalin/vim-jsx-typescript'
     Plug 'pangloss/vim-javascript'
     Plug 'leafgarland/typescript-vim'
+    Plug 'godlygeek/tabular'
+    Plug 'plasticboy/vim-markdown'
+
+    " Wiki
+    Plug 'vimwiki/vimwiki'
 
     " movement
     Plug 'Lokaltog/vim-easymotion'
@@ -30,7 +34,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-surround'
 
     " syntax
-    Plug 'vim-syntastic/syntastic'
+    " Disabled because extremely slow startup (2s)
+    " Plug 'vim-syntastic/syntastic'
 
     " colour
     Plug 'chriskempson/base16-vim'
@@ -38,11 +43,14 @@ call plug#begin('~/.vim/plugged')
     " git
     Plug 'tpope/vim-fugitive'
     Plug 'kien/ctrlp.vim'
+    Plug 'zivyangll/git-blame.vim'
 
 call plug#end()
-filetype plugin indent on
 
-  "let g:ruby_path = system('rbenv prefix')
+" Global
+  filetype plugin indent on
+  filetype plugin on
+  set nocompatible
 
 " CoC
 
@@ -61,23 +69,24 @@ filetype plugin indent on
   " always show signcolumns
   set signcolumn=yes
 
-  " Use <c-space> to trigger completion.
-  inoremap <silent><expr> <c-space> coc#refresh()
+  let g:coc_global_extensions = ['coc-tsserver', 'coc-html', 'coc-json', 'coc-sh', 'coc-markdownlint']
 
-  let g:coc_global_extensions = ['coc-solargraph']
 
 " Bindings
   " leader
   let mapleader=","
 
   " edit .vimrc
-  nnoremap <leader>v :e ~/.vimrc<CR>
+  nnoremap <leader>v :e ~/dev/.vimrc<CR>
 
   " source .vimrc
   nnoremap <leader>o :so %<CR>
 
   " EasyMotion
   map <space> <Plug>(easymotion-prefix)
+
+  " backspace should work as expected
+  set backspace=indent,eol,start  " more powerful backspacing
 
   " run the content of the file
   nnoremap <leader>r :echo "No execution binding set up for this type of file."<CR>
@@ -89,7 +98,7 @@ filetype plugin indent on
   nnoremap <Right> :bn<CR>
 
   " source rc file
-  nnoremap <leader>s :so ~/.vimrc<CR>:nohl<CR>
+  nnoremap <leader>s :so ~/dev/.vimrc<CR>:nohl<CR>
 
   " automatic bracket completion in INSERT mode
   inoremap {<Enter> {<Enter>}<Esc>O<Tab>
@@ -107,6 +116,17 @@ filetype plugin indent on
   " FKeys
   nnoremap <F10> :nohl<CR>
 
+  " Move lines up or down
+  nnoremap <C-j> :m .+1<CR>==
+  nnoremap <C-k> :m .-2<CR>==
+  inoremap <C-j> <Esc>:m .+1<CR>==gi
+  inoremap <C-k> <Esc>:m .-2<CR>==gi
+  vnoremap <C-j> :m '>+1<CR>gv=gv
+  vnoremap <C-k> :m '<-2<CR>gv=gv
+
+  " Blame
+  nnoremap <Leader>s :<C-u>call gitblame#echo()<CR>
+
 " Appearance
   set showmatch       " show matching bracket
   set number          " line numbers
@@ -118,10 +138,13 @@ filetype plugin indent on
   set list
   set listchars=tab:>-
   set cursorline
-  if filereadable(expand("~/.vimrc_background"))
+  if filereadable(expand("~/dev/.vimrc_background"))
     let base16colorspace=256
-    source ~/.vimrc_background
+    source ~/dev/.vimrc_background
   endif
+
+" Languages
+  au BufNewFile,BufRead,BufReadPost *.mdx set syntax=markdown
 
 " Input
   " keyboard
@@ -162,14 +185,18 @@ filetype plugin indent on
 
   autocmd BufWritePre * :call TrimWhitespace() " trim whitespace before saving
 
+" Wiki
+  let g:vimwiki_list = [{'path': '~/vimwiki/', 'auto_generate_links': 1}]
+  let g:vimwiki_list = [{'path': '~/vimwiki/', 'auto_generate_tags': 1}]
+
 " Performance
   set lazyredraw  " no output while running macro
   set ttyfast     " better redrawing
 
 " indentations
   set smarttab     " makes tabs at the beginning of a line an indent
-  set shiftwidth=4 " size of indent
-  set tabstop=4    " size of tab
+  set shiftwidth=2 " size of indent
+  set tabstop=2    " size of tab
   set autoindent   " new line has indent of previous line
   set expandtab    " converts tabs to spaces
 
