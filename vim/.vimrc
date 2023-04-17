@@ -1,5 +1,4 @@
-" Author:               Emerick Bosch
-
+" Author: Emerick Bosch
 
 " Plugins
     if empty(glob('~/dev/.vim/autoload/plug.vim'))
@@ -13,7 +12,6 @@ call plug#begin('~/dev/.vim/plugged')
   "Installed Plugins
     " core
     Plug 'gmarik/Vundle.vim'
-    Plug 'scrooloose/nerdtree'
 
     " languages
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -33,16 +31,21 @@ call plug#begin('~/dev/.vim/plugged')
     " input
     Plug 'tpope/vim-surround'
 
-    " syntax
-    " Disabled because extremely slow startup (2s)
-    " Plug 'vim-syntastic/syntastic'
+    " UI enhancement
+    Plug 'markonm/traces.vim'
+    Plug 'preservim/nerdtree'
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
+    Plug 'vim-airline/vim-airline'
+    Plug 'airblade/vim-gitgutter'
+
 
     " colour
+    Plug 'morhetz/gruvbox'
     Plug 'chriskempson/base16-vim'
 
     " git
     Plug 'tpope/vim-fugitive'
-    Plug 'kien/ctrlp.vim'
     Plug 'zivyangll/git-blame.vim'
 
 call plug#end()
@@ -53,7 +56,6 @@ call plug#end()
   set nocompatible
 
 " CoC
-
   " if hidden is not set, TextEdit might fail.
   set hidden
 
@@ -63,55 +65,89 @@ call plug#end()
   " You will have bad experience for diagnostic messages when it's default 4000.
   set updatetime=300
 
-  " don't give |ins-completion-menu| messages.
-  set shortmess+=c
-
   " always show signcolumns
   set signcolumn=yes
 
   let g:coc_global_extensions = ['coc-tsserver', 'coc-html', 'coc-json', 'coc-sh', 'coc-markdownlint']
 
 
+"Airline
+  let g:airline_powerline_fonts = 1
+
+  if !exists('g:airline_symbols')
+      let g:airline_symbols = {}
+  endif
+
+  " unicode symbols
+  let g:airline_left_sep = '»'
+  let g:airline_left_sep = '▶'
+  let g:airline_right_sep = '«'
+  let g:airline_right_sep = '◀'
+  let g:airline_symbols.linenr = '␊'
+  let g:airline_symbols.linenr = '␤'
+  let g:airline_symbols.linenr = '¶'
+  let g:airline_symbols.branch = '⎇'
+  let g:airline_symbols.paste = 'ρ'
+  let g:airline_symbols.paste = 'Þ'
+  let g:airline_symbols.paste = '∥'
+  let g:airline_symbols.whitespace = 'Ξ'
+
+  " airline symbols
+  let g:airline_left_sep = ''
+  let g:airline_left_alt_sep = ''
+  let g:airline_right_sep = ''
+  let g:airline_right_alt_sep = ''
+  let g:airline_symbols.branch = ''
+  let g:airline_symbols.readonly = ''
+  let g:airline_symbols.linenr = ''
+
+  let g:airline#extensions#tabline#enabled = 1
+  let g:airline_section_y = ''
+  let g:airline_section_z = 'ಠ_ಠ'
+
+
 " Bindings
   " leader
   let mapleader=","
 
-  " edit .vimrc
+  " [ reqular use ]
+  " edit vimrc
   nnoremap <leader>v :e ~/dev/.vimrc<CR>
+  " source vimrc
+  nnoremap <leader>s :so ~/dev/.vimrc<CR>:nohl<CR>
+  " milinks
+  nnoremap <leader>l :e ~/.milinks.json<CR>
 
-  " source .vimrc
+
+  " [ current file ]
+  " source
   nnoremap <leader>o :so %<CR>
+  " run
+  nnoremap <leader>r :echo "No execution binding set up for this type of file."<CR>
 
-  " EasyMotion
-  map <space> <Plug>(easymotion-prefix)
-
+  " [ vim behaviour ]
   " backspace should work as expected
   set backspace=indent,eol,start  " more powerful backspacing
 
-  " run the content of the file
-  nnoremap <leader>r :echo "No execution binding set up for this type of file."<CR>
-
-  " edit .vimrc
-  nnoremap <Left> :bp<CR>
-
-  " edit .vimrc
-  nnoremap <Right> :bn<CR>
-
-  " source rc file
-  nnoremap <leader>s :so ~/dev/.vimrc<CR>:nohl<CR>
-
-  " automatic bracket completion in INSERT mode
+  " [ autocomplete ]
+  " file names
+  inoremap <C-f> <C-x><C-f>
+  " brackets
   inoremap {<Enter> {<Enter>}<Esc>O<Tab>
 
-  " remap ctrl-F to autocomplete file-names in INSERT mode
-  inoremap <C-f> <C-x><C-f>
+  " [ File managment ]
+  nnoremap <Down> :NERDTreeToggle<CR>
+  nnoremap <Up> :GFiles<CR>
+  nnoremap <C-b> :Buffers<CR>
+  nnoremap <Left> :bp<CR>
+  nnoremap <Right> :bn<CR>
 
-  " NERDTree
-  nnoremap <Up> :NERDTreeToggle<CR>
-  nnoremap <Down> :NERDTreeFind<CR>
+  " [ Buffer navigation ]
+  map <space> <Plug>(easymotion-prefix)
+  map <C-m> :Marks<CR>
 
-  " Speed up ctrl p
-  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . --cached --exclude-standard']
+  " [ Vim commands ]
+  nnoremap <C-r> :History:<CR>
 
   " FKeys
   nnoremap <F10> :nohl<CR>
@@ -137,11 +173,8 @@ call plug#end()
   set textwidth=120
   set list
   set listchars=tab:>-
-  set cursorline
-  if filereadable(expand("~/dev/.vimrc_background"))
-    let base16colorspace=256
-    source ~/dev/.vimrc_background
-  endif
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  autocmd vimenter * ++nested colorscheme gruvbox
 
 " Languages
   au BufNewFile,BufRead,BufReadPost *.mdx set syntax=markdown
@@ -171,10 +204,6 @@ call plug#end()
   " vim grep
   set grepprg=ag\ --nogroup\ --nocolor
   set grepformat=%f:%l:%c:%m
-
-  " speed up ctrl P
-  let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
 " Whitespace
   fun! TrimWhitespace()
