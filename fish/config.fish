@@ -56,12 +56,11 @@ set NVM_DIR "$DEV_PATH/.nvm"
 set -gx MYVIMRC "$DEV_PATH/.vimrc"
 set -gx VIMINIT ":set runtimepath+=$DEV_PATH/.vim|:source $MYVIMRC"
 
+# == Theme: pure ==
+set fish_function_path "$HOME/.config/fish/functions/theme-pure/functions/" $fish_function_path
+source "$HOME/.config/fish/functions/theme-pure/conf.d/pure.fish"
 
-# === Miro ===
-
-# THEME PURE #
-set fish_function_path /Users/rick/.config/fish/functions/theme-pure/functions/ $fish_function_path
-source /Users/rick/.config/fish/functions/theme-pure/conf.d/pure.fish
+# == Work ==
 
 # AWS VAULT
 set AWS_VAULT_KEYCHAIN_NAME login
