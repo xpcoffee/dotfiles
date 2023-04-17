@@ -15,6 +15,7 @@ call plug#begin('~/dev/.vim/plugged')
 
     " languages
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'dag/vim-fish'
 
     Plug 'peitalin/vim-jsx-typescript'
     Plug 'pangloss/vim-javascript'
