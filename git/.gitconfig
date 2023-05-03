@@ -12,7 +12,7 @@
 
 [core]
     pager = delta
-    editor = vim
+    editor = nvim
     excludesfile = ~/.gitignore_global
     fsmonitor  = true
 
