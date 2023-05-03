@@ -42,8 +42,7 @@ call plug#begin('~/dev/.vim/plugged')
 
 
     " colour
-    Plug 'morhetz/gruvbox'
-    Plug 'chriskempson/base16-vim'
+    Plug 'joshdick/onedark.vim'
 
     " git
     Plug 'tpope/vim-fugitive'
@@ -55,6 +54,13 @@ call plug#end()
   filetype plugin indent on
   filetype plugin on
   set nocompatible
+
+" Languages
+  set foldmethod=syntax "syntax highlighting items specify folds
+  set foldcolumn=1 "defines 1 col at window left, to indicate folding
+  let javaScript_fold=1 "activate folding by JS syntax
+  set foldlevelstart=99 "start file with all folds opened
+
 
 " CoC
   " if hidden is not set, TextEdit might fail.
@@ -142,6 +148,7 @@ call plug#end()
   nnoremap <C-b> :Buffers<CR>
   nnoremap <Left> :bp<CR>
   nnoremap <Right> :bn<CR>
+  let NERDTreeWinSize = &columns * 0.25
 
   " [ Buffer navigation ]
   map <space> <Plug>(easymotion-prefix)
@@ -175,7 +182,9 @@ call plug#end()
   set list
   set listchars=tab:>-
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  autocmd vimenter * ++nested colorscheme gruvbox
+  let g:onedark_termcolors=16
+  autocmd vimenter * ++nested colorscheme onedark
+  set cursorline
 
 " Languages
   au BufNewFile,BufRead,BufReadPost *.mdx set syntax=markdown
@@ -186,6 +195,9 @@ call plug#end()
 
   " mouse
   set mouse=a  " allow mouse-click
+  map <ScrollWheelUp> <C-Y>
+  map <ScrollWheelDown> <C-E>
+
 
   "format json
   command FormatJSON %!python -m json.tool
@@ -196,6 +208,20 @@ call plug#end()
   " autocompletion
   set wildmenu               " tab-completion in command-mode
   set wildmode=longest,list  " filename completion, show list if many
+
+  inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+
+  function! CheckBackspace() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+  endfunction
+
+  inoremap <silent><expr> <Tab>
+        \ coc#pum#visible() ? coc#pum#next(1) :
+        \ CheckBackspace() ? "\<Tab>" :
+        \ coc#refresh()
+
+
 
 " Searching and highlighting
   " within buffer
@@ -230,3 +256,11 @@ call plug#end()
   set autoindent   " new line has indent of previous line
   set expandtab    " converts tabs to spaces
 
+" centers the current pane as the middle 2 of 4 imaginary columns
+" should be called in a window with a single pane
+
+ function CenterPane()
+   lefta vnew
+   wincmd w
+   exec 'vertical resize '. string(&columns * 0.75)
+ endfunction
