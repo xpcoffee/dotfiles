@@ -7,7 +7,6 @@ end
 # === fzf ===
 set FZF_CTRL_T_COMMAND "ag -l"
 
-
 # === Utility functions ===
 function gst --description 'git status'
     git status
@@ -16,6 +15,8 @@ end
 function jq-repl --description 'Interactive repl for jq'
     echo '' | fzf --print-query --preview "cat $argv[1] | jq -C -r {q}" --preview-window up:99%
 end
+
+alias cat="bat --style=plain"
 
 # === Workspaces ===
 set -gx DEV_PATH "$HOME/dev"

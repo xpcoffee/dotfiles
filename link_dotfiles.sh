@@ -15,7 +15,7 @@ DOTFILES_DIR=`dirname ${CURRENT_PATH}`
 #     Files    #
 ################
 
-DOTFILES=(".aliases" ".profile" ".zshrc" ".vimrc" ".vim" ".gitconfig" ".tmux.conf" ".ssh/config")
+DOTFILES=(".aliases" ".profile" ".zshrc" ".vimrc" ".vim" ".gitconfig" ".tmux.conf" ".ssh/config" ".ctags")
 
 for dotfile in ${DOTFILES[*]}; do
     FROM_PATH="${DOTFILES_DIR}/${dotfile}"
