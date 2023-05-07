@@ -28,6 +28,8 @@ call plug#begin('~/dev/.vim/plugged')
 
     " movement
     Plug 'Lokaltog/vim-easymotion'
+    Plug 'xolox/vim-easytags'
+    Plug 'xolox/vim-misc'
 
     " input
     Plug 'tpope/vim-surround'
@@ -40,6 +42,8 @@ call plug#begin('~/dev/.vim/plugged')
     Plug 'vim-airline/vim-airline'
     Plug 'airblade/vim-gitgutter'
 
+    " Terminal integration
+    Plug 'christoomey/vim-tmux-navigator'
 
     " colour
     Plug 'joshdick/onedark.vim'
@@ -144,14 +148,25 @@ call plug#end()
 
   " [ File managment ]
   nnoremap <Down> :NERDTreeToggle<CR>
+  let NERDTreeWinSize = &columns * 0.25
+  nnoremap <C-f> :NERDTreeFind<CR>
+
   nnoremap <Up> :GFiles<CR>
   nnoremap <C-b> :Buffers<CR>
   nnoremap <Left> :bp<CR>
   nnoremap <Right> :bn<CR>
-  let NERDTreeWinSize = &columns * 0.25
+
+  function! YankCurrentPath()
+    let @" = expand("%:p")
+  endfunction
+  command! YankCurrentPath call YankCurrentPath()
 
   " [ Buffer navigation ]
   map <space> <Plug>(easymotion-prefix)
+  map f <Plug>(easymotion-f)
+  map F <Plug>(easymotion-F)
+  map t <Plug>(easymotion-t)
+  map T <Plug>(easymotion-T)
   map <C-m> :Marks<CR>
 
   " [ Vim commands ]
@@ -242,8 +257,7 @@ call plug#end()
   autocmd BufWritePre * :call TrimWhitespace() " trim whitespace before saving
 
 " Wiki
-  let g:vimwiki_list = [{'path': '~/vimwiki/', 'auto_generate_links': 1}]
-  let g:vimwiki_list = [{'path': '~/vimwiki/', 'auto_generate_tags': 1}]
+  let g:vimwiki_list = [{'path': '~/vimwiki/', 'auto_generate_links': 1, 'auto_generate_tags': 1}]
 
 " Performance
   set lazyredraw  " no output while running macro
