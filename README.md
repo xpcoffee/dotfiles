@@ -6,7 +6,9 @@ It uses [`GNU stow`](https://www.gnu.org/software/stow/manual/stow.html) to syml
 
 ## Getting started
 
-Link dotfiles.
+The install script installs GNU stow (on linux) and uses it to link config.
+
+> For mac, you can use `brew install stow` to install GNU stow.
 
 In the case of conflict, this will 'adopt' files that currently exist on the host. And output them.
 
