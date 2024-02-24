@@ -4,5 +4,6 @@
 	"features": {
 		"ghcr.io/devcontainers/features/github-cli:1": {}
 	},
-	"remoteUser": "root"
+	"remoteUser": "root",
+	"postCreateCommand": "./install.sh"
 }
