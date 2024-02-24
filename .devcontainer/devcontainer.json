@@ -5,5 +5,12 @@
 		"ghcr.io/devcontainers/features/github-cli:1": {}
 	},
 	"remoteUser": "root",
-	"postCreateCommand": "./install.sh"
+	"postCreateCommand": "./install.sh",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"vscodevim.vim"
+			]
+		}
+	}
 }
