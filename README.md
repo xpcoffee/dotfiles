@@ -30,4 +30,4 @@ This contains my configuration for:
 
 See the READMEs in the subdirectories for more.
 
-For more tools see [the wiki](https://github.com/xpcoffee/dotfiles/wiki/Tooling)https://github.com/xpcoffee/dotfiles/wiki/Tooling.
+For more tools see [the wiki](https://github.com/xpcoffee/dotfiles/wiki/Tooling).
