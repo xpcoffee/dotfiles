@@ -1,0 +1,16 @@
+{
+	"name": "Debian",
+	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
+	"features": {
+		"ghcr.io/devcontainers/features/github-cli:1": {}
+	},
+	"remoteUser": "root",
+	"postCreateCommand": "./install.sh",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"vscodevim.vim"
+			]
+		}
+	}
+}
