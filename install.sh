@@ -17,16 +17,12 @@ if ! command -v stow &>/dev/null; then
     
     if [[ -f "/etc/debian_version" ]]; then
         apt-get update && apt-get install -y stow
-        return
     elif [[ -f "/etc/alpine-release" ]]; then
         apk update && apk --update add stow
-        return
     elif [[ -f "/etc/centos-release" ]]; then
         yum update && yum install -y stow
-        return
     elif [[ -f "/etc/fedora-release" ]]; then
         dnf check-update && dnf install -y stow
-        return
     fi
 fi
 
