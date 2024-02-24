@@ -23,6 +23,9 @@ if ! command -v stow &>/dev/null; then
         yum update && yum install -y stow
     elif [[ -f "/etc/fedora-release" ]]; then
         dnf check-update && dnf install -y stow
+    else
+        echo "No installation instruction found."
+        exit 1
     fi
 fi
 
