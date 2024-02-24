@@ -42,11 +42,10 @@ done
 
 CONFIG_DIRECTORY_CONFIG=("fish")
 
-HOME_CONFIG_DIR="${HOME}/.config"
-mkdir -p "${HOME_CONFIG_DIR}"
-
 for config in ${CONFIG_DIRECTORY_CONFIG[*]}; do
-    stow --adopt --target=${HOME_CONFIG_DIR} "${config}"
+    HOME_CONFIG_DIR="${HOME}/.config/${config}"
+    mkdir -p "${HOME_CONFIG_DIR}"
+    stow --adopt --target="${HOME_CONFIG_DIR}" "${config}"
 done
 
 echo "Dotfiles installed."
