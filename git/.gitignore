@@ -1,0 +1,5 @@
+javac*
+.idea*
+.env
+.vim/plugged/
+.vim/autoload/
