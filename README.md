@@ -23,9 +23,9 @@ This contains my configuration for:
 -   git
 -   vim
 -   [fish-shell](https://fishshell.com/)
--   [tmux]()
--   [emacs]() (not actively used)
--   [z-shell]() (not actively used)
--   [i3]() (not actively used)
+-   [tmux](https://github.com/tmux/tmux/wiki)
+-   [z-shell](https://www.zsh.org/) (not actively used)
+-   [i3](https://i3wm.org/) (not actively used)
+-   emacs (not actively used)
 
 See the READMEs in the subdirectories for more.
