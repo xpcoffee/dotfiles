@@ -1,28 +1,31 @@
+# dotfiles
 
-## Gettings started
+This repo maintains a collection of configuration files that I use.
 
+It uses [`GNU stow`](https://www.gnu.org/software/stow/manual/stow.html) to symlink configuration to where software expects it to be.
 
+## Getting started
 
-### Clone the repository
+Link dotfiles.
 
-### Install pre-requisites
-
-**General pre-requisites**
-
-* [fish-shell](https://fishshell.com/)
-* [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish)
-* [fzf](https://github.com/junegunn/fzf)
-
-**Mac pre-requisites**
-
-```bash
-# ensure needed bash commands are installed
-brew install coreutils
-```
-
-## Run the script to symlink files
+In the case of conflict, this will 'adopt' files that currently exist on the host. And output them.
 
 ```shell
-./link_dotfiles.sh
+./install.sh
 ```
 
+Restore changes you don't want to keep using `git`.
+
+## Contents
+
+This contains my configuration for:
+
+-   git
+-   vim
+-   [fish-shell](https://fishshell.com/)
+-   [tmux]()
+-   [emacs]() (not actively used)
+-   [z-shell]() (not actively used)
+-   [i3]() (not actively used)
+
+See the READMEs in the subdirectories for more.
