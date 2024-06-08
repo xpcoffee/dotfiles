@@ -22,7 +22,7 @@ require("lazy").setup({
 	'nvim-lua/plenary.nvim',
     	'vim-airline/vim-airline',
     	'airblade/vim-gitgutter',
-	'joshdick/onedark.vim',
+	'nordtheme/vim',
 
 	-- editing
 	'Lokaltog/vim-easymotion',
@@ -37,6 +37,12 @@ require("lazy").setup({
 	-- integrations
 	'christoomey/vim-tmux-navigator',
 })
+
+--
+-- Appearance
+--
+vim.opt.termguicolors = true
+vim.cmd [[colorscheme nord]]
 
 --
 -- Keybindings
