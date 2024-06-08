@@ -130,7 +130,7 @@ export PATH="$PATH:/opt/nvim-linux64/bin"
 
 alias oldvim="vim"
 alias vim="nvim"
-
+alias gst="git status"
 
 # Powerline shell
 function _update_ps1() {
