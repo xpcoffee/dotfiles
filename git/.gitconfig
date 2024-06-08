@@ -5,7 +5,7 @@
     pager = delta
     editor = nvim
     excludesfile = ~/.gitignore
-    fsmonitor  = true
+    fsmonitor  = false
 
 [remote "origin"]
 	tagOpt = --no-tags
