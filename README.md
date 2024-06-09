@@ -26,6 +26,4 @@ If there was already a file existing for one of these files, the script will 'ad
   * You can then decide what to keep or revert.
   * Commit any changes so that they can be re-used in future.
 
-See the READMEs in the subdirectories for more info about configs.
-
 For more tooling and steps to do after installing config see [the wiki](https://github.com/xpcoffee/dotfiles/wiki).
