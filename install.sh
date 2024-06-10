@@ -33,7 +33,7 @@ fi
 #     $HOME     #
 #################
 
-HOME_DIRECTORY_CONFIG=("vim" "tmux" "zsh" "emacs" "git" "bash")
+HOME_DIRECTORY_CONFIG=("tmux" "zsh" "git" "bash")
 
 for config in ${HOME_DIRECTORY_CONFIG[*]}; do
     stow --adopt --target="${HOME}" "${config}"
@@ -43,7 +43,7 @@ done
 #   .config    #
 ################
 
-CONFIG_DIRECTORY_CONFIG=("fish" "nvim" "powerline-shell")
+CONFIG_DIRECTORY_CONFIG=("fish" "nvim")
 
 for config in ${CONFIG_DIRECTORY_CONFIG[*]}; do
     HOME_CONFIG_DIR="${HOME}/.config/${config}"
