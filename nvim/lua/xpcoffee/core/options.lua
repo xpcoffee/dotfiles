@@ -15,7 +15,6 @@ opt.smartcase = true -- don't ignore case if you have mixed case in search
 
 -- basic appearance
 opt.termguicolors = true
-opt.background = "dark" -- use dark mode if the theme supports both light and dark
 
 -- backspace
 opt.backspace = "indent,eol,start"

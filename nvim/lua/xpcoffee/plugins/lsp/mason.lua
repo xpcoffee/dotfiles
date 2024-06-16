@@ -17,8 +17,6 @@ return {
                 "html",
                 "jdtls", -- java lsp
                 "lua_ls",
-                "mdx_analyzer",
-                "remark_ls",
                 "rust_analyzer",
                 "tailwindcss",
                 "tsserver",
