@@ -1,17 +1,18 @@
 return {
-    "nvim-treesitter/nvim-treesitter",  
+    "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPre", "BufNewFile" },
-    build = ":TSUpdate", -- update parsers,
+    build = ":TSUpdate",          -- update parsers,
     dependencies = {
         "windwp/nvim-ts-autotag", -- autoclose tags
     },
     config = function()
         local treesitter = require("nvim-treesitter.configs")
+        local parsers = require("nvim-treesitter.parsers")
 
         treesitter.setup({
             highlight = { enable = true }, -- syntax
             indent = { enable = true },
-            autotag = { enable = true }, -- requires plugin
+            autotag = { enable = true },   -- requires plugin
             -- languages we want to autoinstall
             ensure_installed = {
                 "bash",
@@ -43,5 +44,8 @@ return {
                 }
             }
         })
+
+        -- user markdowm highlighting for mdx
+        parsers.mdx = "markdown"
     end
 }
