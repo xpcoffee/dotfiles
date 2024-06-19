@@ -15,4 +15,8 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     { import = "xpcoffee.plugins" },
     { import = "xpcoffee.plugins.lsp" },
+}, {
+    dev = {
+        path = "~/code/"
+    }
 })
