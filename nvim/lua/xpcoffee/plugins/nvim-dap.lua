@@ -1,4 +1,4 @@
-local js_adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost' }
+local js_adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'pwa-extensionHost' }
 local js_languages = { "typescript", "typescriptreact", "javascript", "javascriptreact" }
 
 return {
@@ -21,7 +21,10 @@ return {
 
         },
         "rcarriga/nvim-dap-ui",
-        "theHamsta/nvim-dap-virtual-text",
+        {
+            "theHamsta/nvim-dap-virtual-text",
+            opts = {}
+        },
         "folke/which-key.nvim",
     },
     keys = {
