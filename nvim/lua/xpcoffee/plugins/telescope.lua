@@ -5,6 +5,7 @@ return {
         "nvim-lua/plenary.nvim",
         { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
         "nvim-tree/nvim-web-devicons",
+        "folke/which-key.nvim",
     },
     config = function()
         local telescope = require("telescope")
@@ -18,9 +19,10 @@ return {
         telescope.load_extension("fzf")
 
         -- keymaps
-        local telescope = require('telescope.builtin')
-        vim.keymap.set("n", "<leader>ff", telescope.find_files, {})
-        vim.keymap.set("n", "<leader>fg", telescope.live_grep, {})
-        vim.keymap.set('n', '<leader>fb', telescope.buffers, {})
+        local builtins = require('telescope.builtin')
+        require("which-key").register({ ["<leader>f"] = { name = "+files" } })
+        vim.keymap.set('n', '<leader>ff', builtins.find_files, { desc = 'Find file' })
+        vim.keymap.set('n', '<leader>fg', builtins.live_grep, { desc = 'Grep through files' })
+        vim.keymap.set('n', '<leader>fb', builtins.buffers, { desc = 'Find buffer' })
     end
 }

@@ -21,3 +21,6 @@ opt.backspace = "indent,eol,start"
 
 -- clipboard
 opt.clipboard:append("unnamedplus") -- system clipboard as default register
+
+-- don't attempt to load perl things
+vim.cmd("let g:loaded_perl_provider = 0")
