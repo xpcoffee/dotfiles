@@ -32,6 +32,8 @@ return {
         -- set menu
         dashboard.section.buttons.val = {
             dashboard.button(", ee", "Explorer > Toggle explorer", "<cmd>NvimTreeToggle<CR>"),
+            dashboard.button(", ff", "Files    > Find file", "<cmd>lua require('telescope.builtin').find_files()<cr>"),
+            dashboard.button("q", "Quit", "<cmd>q<CR>"),
         }
 
         -- send config to alpha
