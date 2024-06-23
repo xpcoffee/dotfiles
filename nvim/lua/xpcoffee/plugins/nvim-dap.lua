@@ -97,7 +97,14 @@ return {
                     sourceMaps = true,
                     cwd = "${workspaceFolder}",
                     type = 'pwa-node',
-                    skipFiles = { "<node-internals>/**/*.js" }
+                    -- skipping files doesn't actually seem to be working; still seeing issues reading sources
+                    skipFiles = {
+                        "${workspaceFolder}/node_modules/**/*.js",
+                        "${workspaceFolder}/dist/**/*.js",
+                        "node_modules/**",
+                        "dist/**",
+                        "<node_internals>/**"
+                    }
                 },
                 {
                     -- placeholder to show which configs are from launch.json file
