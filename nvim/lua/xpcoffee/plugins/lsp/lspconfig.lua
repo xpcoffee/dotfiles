@@ -1,14 +1,14 @@
 return {
     "neovim/nvim-lspconfig",
     -- needs to run after Mason, which is not lazy loaded
-    event = { "BufReadPre", "BufNewFile" } ,
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-        "hrsh7th/cmp-nvim-lsp", -- completion integration
+        "hrsh7th/cmp-nvim-lsp",                                   -- completion integration
         { "antosha417/nvim-lsp-file-operations", config = true }, -- rname imports on file name changes
-        { "folke/neodev.nvim", opts = {} } -- better lua lsp for vim config
+        { "folke/neodev.nvim",                   opts = {} }      -- better lua lsp for vim config
     },
     config = function()
-        local lspconfig = require ("lspconfig")
+        local lspconfig = require("lspconfig")
         local mason_lspconfig = require("mason-lspconfig")
         local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
@@ -33,7 +33,6 @@ return {
 
                 opts.desc = "Rename"
                 keymap.set({ "n" }, "<leader>rn", vim.lsp.buf.rename, opts)
-
             end
 
         })
@@ -45,6 +44,12 @@ return {
                 lspconfig[server_name].setup({
                     capabilities = capabilities,
                 })
+            end,
+            ["tsserver"] = function()
+                lspconfig.tsserver.setup {
+                    filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+                    cmd = { "typescript-language-server", "--stdio" }
+                }
             end,
             ["lua_ls"] = function()
                 lspconfig["lua_ls"].setup({
