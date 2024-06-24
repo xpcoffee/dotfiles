@@ -16,6 +16,7 @@ return {
                 "graphql",
                 "html",
                 "jdtls", -- java lsp
+                "kotlin_language_server",
                 "lua_ls",
                 "rust_analyzer",
                 "tailwindcss",
