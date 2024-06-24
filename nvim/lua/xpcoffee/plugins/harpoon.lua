@@ -17,7 +17,8 @@ return {
         vim.keymap.set('n', '<leader>hv', function() ui.nav_file(3) end, { desc = 'Harpoon 3' })
         vim.keymap.set('n', '<leader>hc', function() ui.nav_file(4) end, { desc = 'Harpoon 4' })
 
-        vim.keymap.set('n', '<leader>ht', function() term.gotoTerminal(1) end, { desc = 'Terminal' })
+        vim.keymap.set('n', '<leader>ht', function() term.gotoTerminal(1) end, { desc = 'Terminal 1' })
+        vim.keymap.set('n', '<leader>hT', function() term.gotoTerminal(2) end, { desc = 'Terminal 2' })
 
         vim.keymap.set('n', '<leader>hn', ui.nav_next, { desc = 'Harpoon next' })
         vim.keymap.set('n', '<leader>hp', ui.nav_prev, { desc = 'Harpoon previous' })

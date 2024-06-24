@@ -24,3 +24,6 @@ opt.clipboard:append("unnamedplus") -- system clipboard as default register
 
 -- don't attempt to load perl things
 vim.cmd("let g:loaded_perl_provider = 0")
+
+-- remap escape in terminals
+vim.cmd("tnoremap <Esc> <C-\\><C-n>")
