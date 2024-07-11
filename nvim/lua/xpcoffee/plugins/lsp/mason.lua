@@ -18,6 +18,7 @@ return {
                 "jdtls", -- java lsp
                 "kotlin_language_server",
                 "lua_ls",
+                "gopls",
                 "rust_analyzer",
                 "tailwindcss",
                 "tsserver",
