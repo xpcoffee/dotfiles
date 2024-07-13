@@ -22,6 +22,7 @@ return {
                 "rust_analyzer",
                 "tailwindcss",
                 "tsserver",
+                "gopls"
             }
         })
 

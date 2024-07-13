@@ -1,6 +1,7 @@
 local opt = vim.opt
 
 opt.number = true
+vim.wo.relativenumber = true
 opt.cursorline = true
 
 -- indendations
