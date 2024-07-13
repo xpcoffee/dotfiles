@@ -82,6 +82,8 @@ export NVM_DIR="$HOME/.nvm"
 # Rust
 . "$HOME/.cargo/env"
 
+# Go
+export PATH=$PATH:/usr/local/go/bin
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert

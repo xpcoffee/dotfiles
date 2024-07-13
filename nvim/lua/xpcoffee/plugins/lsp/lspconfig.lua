@@ -22,17 +22,21 @@ return {
                 local opts = { buffer = ev.buf, silent = true }
 
                 opts.desc = "Show LSP references"
-                keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
+                keymap.set("n", "fr", "<cmd>Telescope lsp_references<CR>", opts)
 
                 opts.desc = "See available code actions"
-                keymap.set({ "n" }, "<leader>d", vim.lsp.buf.definition, opts)
+                keymap.set({ "n" }, "<leader>gd", vim.lsp.buf.definition, opts)
 
+                require("which-key").register({ ["<leader>a"] = { name = "+actions" } })
 
                 opts.desc = "See available code actions"
-                keymap.set({ "n", "v" }, "<leader><CR>", vim.lsp.buf.code_action, opts)
+                keymap.set({ "n", "v" }, "<leader>aa", vim.lsp.buf.code_action, opts)
+
+                opts.desc = "Show diagnostic message"
+                keymap.set({ "n", "v" }, "<leader>ad", vim.diagnostic.open_float, opts)
 
                 opts.desc = "Rename"
-                keymap.set({ "n" }, "<leader>rn", vim.lsp.buf.rename, opts)
+                keymap.set({ "n" }, "<leader>ar", vim.lsp.buf.rename, opts)
             end
 
         })
