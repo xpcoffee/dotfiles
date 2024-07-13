@@ -17,7 +17,7 @@ return {
             }
         })
 
-        require("which-key").register({ ["<leader>e"] = { name = "+explorer" } })
+        require("which-key").add({ "<leader>e", group = "explorer" })
         vim.keymap.set("n", "<leader>ee", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
         vim.keymap.set("n", "<leader>ef", "<cmd>NvimTreeFindFileToggle<CR>",
             { desc = "Toggle file explorer to current file" })

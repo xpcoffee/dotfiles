@@ -4,6 +4,7 @@ local js_languages = { "typescript", "typescriptreact", "javascript", "javascrip
 return {
     "mfussenegger/nvim-dap",
     dependencies = {
+        "folke/which-key.nvim",
         {
             "microsoft/vscode-js-debug",
             -- see npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out
@@ -25,7 +26,6 @@ return {
             "theHamsta/nvim-dap-virtual-text",
             opts = {}
         },
-        "folke/which-key.nvim",
     },
     keys = {
         {
@@ -67,7 +67,7 @@ return {
         local dap = require("dap")
 
         -- which-key group
-        require("which-key").register({ ["<leader>d"] = { name = "+debugger" } })
+        require("which-key").add({ "<leader>d", group = "debugger" })
 
         -- default debugger options
         for _, language in ipairs(js_languages) do

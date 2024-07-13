@@ -27,7 +27,7 @@ return {
                 opts.desc = "See available code actions"
                 keymap.set({ "n" }, "<leader>gd", vim.lsp.buf.definition, opts)
 
-                require("which-key").register({ ["<leader>a"] = { name = "+actions" } })
+                require("which-key").add({ "<leader>a", group = "actions" })
 
                 opts.desc = "See available code actions"
                 keymap.set({ "n", "v" }, "<leader>aa", vim.lsp.buf.code_action, opts)
