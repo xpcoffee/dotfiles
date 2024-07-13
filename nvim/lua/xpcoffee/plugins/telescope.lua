@@ -20,7 +20,7 @@ return {
 
         -- keymaps
         local builtins = require('telescope.builtin')
-        require("which-key").register({ ["<leader>f"] = { name = "+files" } })
+        require("which-key").add({ "<leader>f", group = "files" })
         vim.keymap.set('n', '<leader>ff', builtins.find_files, { desc = 'Find file' })
         vim.keymap.set('n', '<leader>fg', builtins.live_grep, { desc = 'Grep through files' })
         vim.keymap.set('n', '<leader>fb', builtins.buffers, { desc = 'Find buffer' })
