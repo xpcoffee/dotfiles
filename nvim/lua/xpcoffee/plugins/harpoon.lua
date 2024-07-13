@@ -7,7 +7,7 @@ return {
         local mark = require("harpoon.mark")
         local ui = require("harpoon.ui")
         local term = require("harpoon.term")
-        require("which-key").register({ ["<leader>h"] = { name = "+harpoon" } })
+        require("which-key").add({ "<leader>h", group = "harpoon" })
 
         vim.keymap.set('n', '<leader>hm', mark.add_file, { desc = 'Harpoon Mark' })
         vim.keymap.set('n', '<leader>hh', ui.toggle_quick_menu, { desc = 'Harpoon Quick menu' })
