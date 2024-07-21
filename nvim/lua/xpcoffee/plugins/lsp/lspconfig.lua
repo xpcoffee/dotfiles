@@ -5,7 +5,14 @@ return {
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",                                   -- completion integration
         { "antosha417/nvim-lsp-file-operations", config = true }, -- rname imports on file name changes
-        { "folke/neodev.nvim",                   opts = {} }      -- better lua lsp for vim config
+        { "folke/neodev.nvim",                   opts = {} },     -- better lua lsp for vim config
+        {
+            "folke/which-key.nvim",
+            config = function()
+                require("which-key").add({ "<leader>c", group = "code" })
+                require("which-key").add({ "<leader>cf", group = "functions" })
+            end
+        },
     },
     config = function()
         local lspconfig = require("lspconfig")
@@ -24,19 +31,31 @@ return {
                 opts.desc = "Show LSP references"
                 keymap.set("n", "fr", "<cmd>Telescope lsp_references<CR>", opts)
 
-                opts.desc = "See available code actions"
-                keymap.set({ "n" }, "<leader>gd", vim.lsp.buf.definition, opts)
-
-                require("which-key").add({ "<leader>a", group = "actions" })
-
-                opts.desc = "See available code actions"
-                keymap.set({ "n", "v" }, "<leader>aa", vim.lsp.buf.code_action, opts)
+                opts.desc = "Show code actions"
+                keymap.set({ "n", "v" }, "<leader>a", vim.lsp.buf.code_action, opts)
+                keymap.set({ "n", "v" }, "<C-a>", vim.lsp.buf.code_action, opts)
 
                 opts.desc = "Show diagnostic message"
-                keymap.set({ "n", "v" }, "<leader>ad", vim.diagnostic.open_float, opts)
+                keymap.set({ "n", "v" }, "<leader>m", vim.diagnostic.open_float, opts)
+
+                -- Note: show information is <S-k> by default
+                -- opts.desc = "Show information"
+                -- keymap.set({ "n", "v" }, "<S-k>", vim.lsp.buf.hover, opts)
+
+                opts.desc = "Jump to definition"
+                keymap.set({ "n", "v" }, "<leader>d", vim.lsp.buf.definition, opts)
+
+                opts.desc = "Jump to implementation"
+                keymap.set({ "n", "v" }, "<leader>i", vim.lsp.buf.implementation, opts)
 
                 opts.desc = "Rename"
-                keymap.set({ "n" }, "<leader>ar", vim.lsp.buf.rename, opts)
+                keymap.set({ "n" }, "<leader>cr", vim.lsp.buf.rename, opts)
+
+                opts.desc = "Show incoming calls"
+                keymap.set({ "n", "v" }, "<leader>cfi", vim.lsp.buf.incoming_calls, opts)
+
+                opts.desc = "Show outgong calls"
+                keymap.set({ "n", "v" }, "<leader>cfo", vim.lsp.buf.outgoing_calls, opts)
             end
 
         })

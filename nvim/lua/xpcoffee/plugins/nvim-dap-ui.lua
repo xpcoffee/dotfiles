@@ -1,10 +1,18 @@
 return {
     "rcarriga/nvim-dap-ui",
-    dependencies = { "nvim-neotest/nvim-nio" },
+    dependencies = {
+        "nvim-neotest/nvim-nio",
+        {
+            "folke/which-key.nvim",
+            config = function()
+                require("which-key").add({ "<leader><leader>d", group = "debugger" })
+            end
+        },
+    },
     -- stylua: ignore
     keys = {
-        { "<leader>du", function() require("dapui").toggle({}) end,  desc = "Dap UI" },
-        { "<leader>de", function() require("dapui").eval() end,      desc = "Eval",  mode = { "n", "v" } },
+        { "<leader><leader>du", function() require("dapui").toggle({}) end, desc = "Dap UI" },
+        { "<leader><leader>de", function() require("dapui").eval() end,     desc = "Eval",  mode = { "n", "v" } },
     },
     opts = {},
     config = function(_, opts)

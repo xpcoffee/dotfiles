@@ -36,5 +36,6 @@ return {
         vim.keymap.set('n', '<leader>fg', builtins.live_grep, { desc = 'Grep through files' })
         vim.keymap.set('v', '<leader>fg', live_grep_selection, { desc = 'Grep through files' })
         vim.keymap.set('n', '<leader>fb', builtins.buffers, { desc = 'Find buffer' })
+        vim.keymap.set('n', '<leader>fu', builtins.lsp_references, { desc = 'Find code usages' })
     end
 }
