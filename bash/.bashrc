@@ -124,3 +124,11 @@ if command -v z &> /dev/null
 then
     alias cd=z
 fi
+
+# Generic watch function
+function watch() {
+    while true
+    do
+        inotifywait -q -r -e create,close_write,modify,move,delete ./ && "$@"
+    done
+}
