@@ -4,7 +4,12 @@ local js_languages = { "typescript", "typescriptreact", "javascript", "javascrip
 return {
     "mfussenegger/nvim-dap",
     dependencies = {
-        "folke/which-key.nvim",
+        {
+            "folke/which-key.nvim",
+            config = function()
+                require("which-key").add({ "<leader><leader>d", group = "debugger" })
+            end
+        },
         {
             "microsoft/vscode-js-debug",
             -- see npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out
@@ -29,7 +34,7 @@ return {
     },
     keys = {
         {
-            "<leader>da",
+            "<leader><leader>da",
             function()
                 -- load configs from launch.json
                 if (vim.fn.filereadable("./vscode/launch.json")) then
@@ -46,28 +51,25 @@ return {
             end,
             desc = "Run with Args"
         },
-        { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
-        { "<leader>db", function() require("dap").toggle_breakpoint() end,                                    desc = "Toggle Breakpoint" },
-        { "<leader>dc", function() require("dap").continue() end,                                             desc = "Continue" },
-        { "<leader>dC", function() require("dap").run_to_cursor() end,                                        desc = "Run to Cursor" },
-        { "<leader>dg", function() require("dap").goto_() end,                                                desc = "Go to Line (No Execute)" },
-        { "<leader>di", function() require("dap").step_into() end,                                            desc = "Step Into" },
-        { "<leader>dj", function() require("dap").down() end,                                                 desc = "Down" },
-        { "<leader>dk", function() require("dap").up() end,                                                   desc = "Up" },
-        { "<leader>dl", function() require("dap").run_last() end,                                             desc = "Run Last" },
-        { "<leader>do", function() require("dap").step_out() end,                                             desc = "Step Out" },
-        { "<leader>dO", function() require("dap").step_over() end,                                            desc = "Step Over" },
-        { "<leader>dp", function() require("dap").pause() end,                                                desc = "Pause" },
-        { "<leader>dr", function() require("dap").repl.toggle() end,                                          desc = "Toggle REPL" },
-        { "<leader>ds", function() require("dap").session() end,                                              desc = "Session" },
-        { "<leader>dt", function() require("dap").terminate() end,                                            desc = "Terminate" },
-        { "<leader>dw", function() require("dap.ui.widgets").hover() end,                                     desc = "Widgets" },
+        { "<leader><leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
+        { "<leader><leader>db", function() require("dap").toggle_breakpoint() end,                                    desc = "Toggle Breakpoint" },
+        { "<leader><leader>dc", function() require("dap").continue() end,                                             desc = "Continue" },
+        { "<leader><leader>dC", function() require("dap").run_to_cursor() end,                                        desc = "Run to Cursor" },
+        { "<leader><leader>dg", function() require("dap").goto_() end,                                                desc = "Go to Line (No Execute)" },
+        { "<leader><leader>di", function() require("dap").step_into() end,                                            desc = "Step Into" },
+        { "<leader><leader>dj", function() require("dap").down() end,                                                 desc = "Down" },
+        { "<leader><leader>dk", function() require("dap").up() end,                                                   desc = "Up" },
+        { "<leader><leader>dl", function() require("dap").run_last() end,                                             desc = "Run Last" },
+        { "<leader><leader>do", function() require("dap").step_out() end,                                             desc = "Step Out" },
+        { "<leader><leader>dO", function() require("dap").step_over() end,                                            desc = "Step Over" },
+        { "<leader><leader>dp", function() require("dap").pause() end,                                                desc = "Pause" },
+        { "<leader><leader>dr", function() require("dap").repl.toggle() end,                                          desc = "Toggle REPL" },
+        { "<leader><leader>ds", function() require("dap").session() end,                                              desc = "Session" },
+        { "<leader><leader>dt", function() require("dap").terminate() end,                                            desc = "Terminate" },
+        { "<leader><leader>dw", function() require("dap.ui.widgets").hover() end,                                     desc = "Widgets" },
     },
     config = function()
         local dap = require("dap")
-
-        -- which-key group
-        require("which-key").add({ "<leader>d", group = "debugger" })
 
         -- default debugger options
         for _, language in ipairs(js_languages) do
