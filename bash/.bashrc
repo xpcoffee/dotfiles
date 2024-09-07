@@ -157,3 +157,5 @@ function drive() {
     fi
   done
 }
+
+alias lg=lazygit
