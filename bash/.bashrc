@@ -61,7 +61,7 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias oldvim="vim"
-alias vim="nvim"
+alias vim='vim_with_dir'
 alias gst="git status"
 
 # set PATH so it includes user's private bin if it exists
@@ -122,7 +122,13 @@ eval "$(zoxide init bash)"
 
 if command -v z &> /dev/null
 then
+    alias oldcd=cd
     alias cd=z
+fi
+
+if command -v ranger &> /dev/null
+then
+    alias r=ranger
 fi
 
 # Generic watch function
@@ -131,4 +137,23 @@ function watch() {
     do
         inotifywait -q -r -e create,close_write,modify,move,delete ./ && "$@"
     done
+}
+
+export JAVA_HOME="/usr/lib/jvm/jdk-21.0.4+7/"
+
+function vim_with_dir() {
+  if [ $# -eq 0 ]; then 
+     nvim . 
+   else 
+     nvim "$@"; 
+  fi
+}
+
+function drive() {
+  for item in $(ls /mnt/); do
+    DRIVE_DIR="/mnt/${item}/My Drive"
+    if [ -d "${DRIVE_DIR}" ]; then
+      cd "${DRIVE_DIR}"
+    fi
+  done
 }
