@@ -13,10 +13,6 @@ return {
       adaptor.sync_to_google_doc({ document_id = document_id })
     end
 
-    vim.keymap.set("n", "<leader><leader>p", test_fn, { desc = "Test nvim-markdown-adaptor" })
-    vim.keymap.set("n", "<leader><leader>r", ':Lazy reload nvim-markdown-adaptor<cr>',
-      { desc = "Reload nvim-markdown-adaptor" })
-
     adaptor.setup({
       data_file_path = "/home/rick/.nvim-markdown-adaptor.json",
       google_client_file_path = "/home/rick/.nvim-extension-client-secret.json",
