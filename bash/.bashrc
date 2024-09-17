@@ -115,9 +115,6 @@ if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
     PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
 fi
 
-# Set up fzf key bindings and fuzzy completion
-eval "$(fzf --bash)"
-
 eval "$(zoxide init bash)"
 
 if command -v z &> /dev/null
@@ -159,3 +156,11 @@ function drive() {
 }
 
 alias lg=lazygit
+
+if command -v fzf &> /dev/null
+then
+  # Set up fzf key bindings and fuzzy completion
+  eval "$(fzf --bash)"
+fi
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
