@@ -19,7 +19,7 @@ return {
     local mason_lspconfig = require("mason-lspconfig")
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
-    keymap = vim.keymap -- for conciseness
+    local keymap = vim.keymap -- for conciseness
 
     -- run on event
     vim.api.nvim_create_autocmd("LspAttach", {
@@ -68,8 +68,8 @@ return {
           capabilities = capabilities,
         })
       end,
-      ["tsserver"] = function()
-        lspconfig.tsserver.setup {
+      ["ts_ls"] = function()
+        lspconfig.ts_ls.setup {
           filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
           cmd = { "typescript-language-server", "--stdio" }
         }
