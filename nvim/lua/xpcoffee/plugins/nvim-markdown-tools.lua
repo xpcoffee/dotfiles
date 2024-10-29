@@ -1,6 +1,6 @@
 return {
   "xpcoffee/nvim-markdown-tools",
-  dev = true,
+  dev = false,
   dependencies = {
     "nvim-telescope/telescope.nvim"
   },

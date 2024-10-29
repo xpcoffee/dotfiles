@@ -16,8 +16,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+export HISTSIZE=10000
+export HISTFILESIZE=10000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -63,10 +63,17 @@ alias l='ls -CF'
 alias oldvim="vim"
 alias vim='vim_with_dir'
 alias gst="git status"
+alias ssh-id-xpc='eval "$(ssh-agent)" && ssh-add ~/.ssh/xpc_id_ed25519'
+alias cat='batcat'
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
+fi
+
+# set PATH /snap/bin
+if [ -d "/snap/bin" ] ; then
+    PATH="/snap/bin:$PATH"
 fi
 
 # set PATH so it includes user's private bin if it exists
@@ -77,10 +84,6 @@ fi
 # NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-
-
-# Rust
-. "$HOME/.cargo/env"
 
 # Go
 export PATH=$PATH:/usr/local/go/bin
@@ -155,7 +158,13 @@ function drive() {
   done
 }
 
+# git feature branch
+function gfb() {
+  git checkout -b "emerick/${1}" "origin/master"
+}
+
 alias lg=lazygit
+alias gl="git lag"
 
 if command -v fzf &> /dev/null
 then
@@ -164,3 +173,12 @@ then
 fi
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
+export NUGET_CREDENTIALPROVIDER_MSAL_ENABLED=true
+export NUGET_CREDENTIALPROVIDER_FORCE_CANSHOWDIALOG_TO=true
+
+# k9s from snap
+#
+
+if [ -f "/snap/k9s/current/bin/k9s" ] ; then
+  alias k9s=/snap/k9s/current/bin/k9s
+fi
