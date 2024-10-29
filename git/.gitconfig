@@ -1,10 +1,12 @@
-[user]
-    email = xpc.dev@gmail.com
-    name = Emerick Bosch
+[includeIf "gitdir:~/code/neko/"]
+  path = ~/code/neko/.gitconfig-neko
+[includeIf "gitdir:~/code/personal/"]
+  path = ~/code/personal/.gitconfig-personal
+
 [core]
     pager = delta
     editor = nvim
-    excludesfile = ~/.gitignore
+	excludesFile = ~/.gitignore
     fsmonitor  = false
 
 [remote "origin"]

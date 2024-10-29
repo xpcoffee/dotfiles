@@ -13,16 +13,12 @@ return {
     mason_lspconfig.setup({
       ensure_installed = {
         "bashls",
-        "graphql",
         "html",
-        "jdtls", -- java lsp
-        "kotlin_language_server",
+        "omnisharp",
         "lua_ls",
-        "gopls",
         "rust_analyzer",
         "tailwindcss",
         "ts_ls",
-        "gopls"
       }
     })
 
