@@ -74,6 +74,12 @@ return {
           cmd = { "typescript-language-server", "--stdio" }
         }
       end,
+      ["omnisharp"] = function()
+        lspconfig.omnisharp.setup {
+          filetypes = { "cs" },
+          cmd = { "dotnet", vim.fn.stdpath "data" .. "/mason/packages/omnisharp/libexec/OmniSharp.dll" },
+        }
+      end,
       ["lua_ls"] = function()
         lspconfig["lua_ls"].setup({
           capabilities = capabilities,

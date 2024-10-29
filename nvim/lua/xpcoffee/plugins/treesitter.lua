@@ -1,22 +1,30 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   event = { "BufReadPre", "BufNewFile" },
-  build = ":TSUpdate",            -- update parsers,
+  build = ":TSUpdate",        -- update parsers,
   dependencies = {
-    "windwp/nvim-ts-autotag",     -- autoclose tags
+    "windwp/nvim-ts-autotag", -- autoclose tags
   },
   config = function()
     local treesitter = require("nvim-treesitter.configs")
     local parsers = require("nvim-treesitter.parsers")
 
     treesitter.setup({
-      highlight = { enable = true },       -- syntax
+      highlight = {
+        enable = true, -- syntax
+        disable = function(lang, buf)
+          local bufname = vim.api.nvim_buf_get_name(buf)
+          local buftype = vim.api.nvim_buf_get_option(buf, 'buftype')
+          return buftype == 'nofile' or bufname:match("noice")
+        end,
+      },
       indent = { enable = true },
-      autotag = { enable = true },         -- requires plugin
+      autotag = { enable = true }, -- requires plugin
       -- languages we want to autoinstall
       ensure_installed = {
         "bash",
         "css",
+        "c_sharp",
         "dockerfile",
         "gitignore",
         "graphql",
@@ -43,10 +51,12 @@ return {
           scope_incremental = false,
           node_decremental = "<bs>",
         }
+      },
+      parser = {
+        mdx = "markdown",
       }
     })
 
-    -- user markdowm highlighting for mdx
-    parsers.mdx = "markdown"
+    vim.treesitter.language.register('c_sharp', 'csharp')
   end
 }
