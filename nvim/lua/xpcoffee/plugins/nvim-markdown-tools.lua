@@ -7,7 +7,7 @@ return {
   config = function()
     local nvim_markdown_tools = require "nvim-markdown-tools"
     nvim_markdown_tools.setup({
-      notes_root_path = "~/code/notes/",
+      notes_root_path = "~/code/personal/notes/",
       journal_dir_name = "journal"
     })
 
