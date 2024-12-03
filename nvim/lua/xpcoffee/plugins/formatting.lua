@@ -18,12 +18,22 @@ return {
         cs = { "csharpier", lsp_format = "fallback" },
         lua = { "stylua" },
       },
-      format_on_save = {
-        lsp_fallback = true,
-        async = false,
-        timeout_ms = 3000,
-      }
+      format_on_save = function(bufnr)
+        -- Disable with a global or buffer-local variable
+        if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+          return
+        end
+        return { timeout_ms = 3000, lsp_format = "fallback" }
+      end,
     })
+
+    conform.formatters.prettier = {
+      options = {
+        ft_parsers = {
+          ["html.cshtml.razor"] = "html"
+        }
+      }
+    }
 
     vim.api.nvim_create_user_command("FormatDisable", function(args)
       if args.bang then

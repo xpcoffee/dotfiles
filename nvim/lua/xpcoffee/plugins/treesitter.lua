@@ -58,5 +58,6 @@ return {
     })
 
     vim.treesitter.language.register('c_sharp', 'csharp')
+    vim.treesitter.language.register('c_sharp', 'cs')
   end
 }
