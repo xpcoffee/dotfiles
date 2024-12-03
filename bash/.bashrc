@@ -86,7 +86,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
 # Go
-export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:$(go env GOPATH)/bin
+
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -182,3 +183,4 @@ export NUGET_CREDENTIALPROVIDER_FORCE_CANSHOWDIALOG_TO=true
 if [ -f "/snap/k9s/current/bin/k9s" ] ; then
   alias k9s=/snap/k9s/current/bin/k9s
 fi
+
