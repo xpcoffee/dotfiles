@@ -184,3 +184,5 @@ if [ -f "/snap/k9s/current/bin/k9s" ] ; then
   alias k9s=/snap/k9s/current/bin/k9s
 fi
 
+# work-only functions
+[ -f ~/.config/bash/work-functions.sh ] && source ~/.config/bash/work-functions.sh
