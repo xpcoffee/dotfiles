@@ -1,5 +1,3 @@
-M = {}
-
 vim.g.mapleader = ","
 
 local keymap = vim.keymap -- for conciseness
@@ -53,13 +51,3 @@ end
 
 vim.cmd("command! RemoveQFItem lua Remove_qf_item()")
 vim.api.nvim_command("autocmd FileType qf nnoremap <buffer> dd :RemoveQFItem<cr>")
-
---- Sets up generic key groups that don't fit elsewhere
---- meant to be called using
-M.setup_key_groups = function(which_key)
-  print("which_key")
-  which_key.add({ "<leader>l", group = "Logs..." })
-  which_key.add({ "<leader>b", group = "Buffers..." })
-end
-
-return M

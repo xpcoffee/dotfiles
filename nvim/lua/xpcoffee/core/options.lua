@@ -14,9 +14,6 @@ vim.cmd("set expandtab")
 opt.ignorecase = true
 opt.smartcase = true -- don't ignore case if you have mixed case in search
 
--- basic appearance
-opt.termguicolors = true
-
 -- backspace
 opt.backspace = "indent,eol,start"
 
