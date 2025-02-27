@@ -65,6 +65,7 @@ alias vim='vim_with_dir'
 alias gst="git status"
 alias ssh-id-xpc='eval "$(ssh-agent)" && ssh-add ~/.ssh/xpc_id_ed25519'
 alias cat='batcat'
+alias rider='/opt/JetBrains\ Rider-2024.3.3/bin/rider'
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
