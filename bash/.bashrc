@@ -193,3 +193,5 @@ fi
 
 # work-only functions
 [ -f ~/.config/bash/work-functions.sh ] && source ~/.config/bash/work-functions.sh
+export NUGET_CREDENTIALPROVIDER_MSAL_ENABLED=true
+export NUGET_CREDENTIALPROVIDER_FORCE_CANSHOWDIALOG_TO=true
