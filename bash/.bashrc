@@ -181,9 +181,6 @@ then
 fi
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-export NUGET_CREDENTIALPROVIDER_MSAL_ENABLED=true
-export NUGET_CREDENTIALPROVIDER_FORCE_CANSHOWDIALOG_TO=true
-
 # k9s from snap
 #
 
