@@ -2,6 +2,8 @@
   path = ~/code/neko/.gitconfig-neko
 [includeIf "gitdir:~/code/personal/"]
   path = ~/code/personal/.gitconfig-personal
+[includeIf "gitdir:~/code/dotfiles/"]
+  path = ~/code/personal/.gitconfig-personal
 
 [core]
     pager = delta

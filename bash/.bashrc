@@ -87,7 +87,13 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
 # Go
-export PATH=$PATH:$(go env GOPATH)/bin
+if [ -d "/opt/go/bin" ] ; then
+    PATH="/opt/go/bin:$PATH"
+fi
+
+if [ -x "$(command -v go)" ]; then
+    PATH="$PATH:$(go env GOPATH)/bin"
+fi
 
 
 # Add an "alert" alias for long running commands.  Use like so:
