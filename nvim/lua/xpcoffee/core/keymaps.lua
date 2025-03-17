@@ -51,3 +51,14 @@ end
 
 vim.cmd("command! RemoveQFItem lua Remove_qf_item()")
 vim.api.nvim_command("autocmd FileType qf nnoremap <buffer> dd :RemoveQFItem<cr>")
+
+--- Currently doesn't get used - use this after which-key is imported
+--- Sets up generic key groups that don't fit elsewhere
+--- meant to be called using
+M = {}
+M.setup_key_groups = function(which_key)
+  which_key.add({ "<leader>l", group = "logs" })
+  which_key.add({ "<leader>b", group = "buffers" })
+end
+
+return M
