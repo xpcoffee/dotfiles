@@ -19,7 +19,7 @@ return {
       api.toggle.linewise.current()
     end
 
-    vim.keymap.set({ "n" }, "<leader>t", log_and_do, {
+    vim.keymap.set({ "n" }, "<C-_>", log_and_do, {
       noremap = true, silent = true
     })
 
@@ -32,6 +32,6 @@ return {
       vim.api.nvim_feedkeys(esc, 'nx', false)
       api.toggle.linewise(vim.fn.visualmode())
     end
-    vim.keymap.set({ "v" }, "<leader>t", toggleSelection, {})
+    vim.keymap.set({ "v" }, "<C-_>", toggleSelection, {})
   end,
 }
