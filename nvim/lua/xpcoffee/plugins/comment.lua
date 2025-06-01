@@ -14,12 +14,7 @@ return {
 
 
     local api = require("Comment.api");
-    local function log_and_do()
-      print("hahaha")
-      api.toggle.linewise.current()
-    end
-
-    vim.keymap.set({ "n" }, "<C-_>", log_and_do, {
+    vim.keymap.set({ "n" }, "<C-_>", api.toggle.linewise.current, {
       noremap = true, silent = true
     })
 
