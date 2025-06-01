@@ -16,7 +16,9 @@ return {
 
     telescope.setup({
       defaults = {
-        path_display = { "smart" },
+        path_display = {
+          shorten = { len = 1, exclude = { 1, 2, -2, -1 } },
+        },
         vimgrep_arguments = {
           'rg',
           '--color=never',
@@ -48,6 +50,10 @@ return {
       }
     end
 
+    local function list_oldfiles_for_cwd()
+      builtins.oldfiles({ only_cwd = true })
+    end
+
     -- keymaps
     require("which-key").add({ "<leader>f", group = "files" })
     vim.keymap.set('n', '<leader>ff', builtins.find_files, { desc = 'Find file' })
@@ -57,6 +63,7 @@ return {
     vim.keymap.set('n', '<leader><leader>f', builtins.lsp_document_symbols, { desc = 'File symbols' })
     vim.keymap.set('n', '<leader><leader>p', builtins.lsp_dynamic_workspace_symbols, { desc = 'Project symbols' })
     vim.keymap.set('n', '<leader><leader>m', builtins.marks, { desc = 'Marks' })
+    vim.keymap.set('n', '<C-e>', list_oldfiles_for_cwd, { desc = 'Recent files' })
 
 
     -- delete buffers
