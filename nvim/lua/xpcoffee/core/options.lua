@@ -25,3 +25,18 @@ vim.cmd("let g:loaded_perl_provider = 0")
 
 -- remap escape in terminals
 vim.cmd("tnoremap <Esc> <C-\\><C-n>")
+
+
+-- remove windows line endings
+if vim.g.remove_windows_line_endings == nil then
+  vim.g.remove_windows_line_endings = true
+end
+
+vim.api.nvim_create_autocmd({"BufRead"}, {
+  pattern = "*",
+  callback = function()
+    if vim.g.remove_windows_line_endings then
+      vim.cmd("set fileformat=unix")
+    end
+  end,
+})
