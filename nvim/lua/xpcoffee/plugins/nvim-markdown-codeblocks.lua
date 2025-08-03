@@ -1,6 +1,6 @@
 return {
   "xpcoffee/nvim-markdown-codeblocks",
-  dev = true,
+  dev = false,
   dependencies = {},
   config = function()
     local codeblocks = require "nvim-markdown-codeblocks"

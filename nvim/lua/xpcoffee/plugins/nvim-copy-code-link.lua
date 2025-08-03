@@ -1,6 +1,6 @@
 return {
   "xpcoffee/nvim-copy-code-link",
-  dev = true,
+  dev = false,
   config = function()
     local plugin = require "nvim-copy-code-link"
     plugin.setup({})
