@@ -1,6 +1,6 @@
 return {
   "xpcoffee/nvim-markdown-notes",
-  dev = false,
+  dev = true,
   dependencies = {},
   config = function()
     local notes = require "nvim-markdown-notes"
@@ -8,6 +8,10 @@ return {
       notes_root_path = "~/code/personal/notes/",
       journal_dir_name = "journal"
     })
+
+    -- notes
+    vim.keymap.set("n", "<leader>nn", notes.create_note,
+      { desc = "Create a new note", remap = false })
 
     -- journal
     vim.keymap.set("n", "<leader>njj", notes.open_daily_journal,
