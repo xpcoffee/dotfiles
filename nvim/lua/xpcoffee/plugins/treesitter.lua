@@ -9,6 +9,12 @@ return {
     local treesitter = require("nvim-treesitter.configs")
     local parsers = require("nvim-treesitter.parsers")
 
+    -- super important for compiling on languages on windows
+    -- ensure you have cl installed (visualstudio build tools -> microsoft desktop dev with C++)
+    -- add to env using C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat
+    local install = require('nvim-treesitter.install')
+    install.compilers = { "cl" }
+
     treesitter.setup({
       highlight = {
         enable = true, -- syntax
