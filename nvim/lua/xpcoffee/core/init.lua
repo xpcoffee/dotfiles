@@ -3,14 +3,16 @@ require("xpcoffee.core.keymaps")
 require("xpcoffee.core.filetypes")
 
 -- If you have xclip installed
-vim.g.clipboard = {
-  name = 'xclip',
-  copy = {
-    ['+'] = 'xclip -selection clipboard',
-    ['*'] = 'xclip -selection primary',
-  },
-  paste = {
-    ['+'] = 'xclip -selection clipboard -o',
-    ['*'] = 'xclip -selection primary -o',
-  },
-}
+if vim.fn.has('wsl') == 1 or vim.fn.has('win32') == 1 then
+  vim.g.clipboard = {
+    name = 'clip.exe',
+    copy = {
+      ['+'] = 'clip.exe',
+      ['*'] = 'clip.exe',
+    },
+    paste = {
+      ['+'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+      ['*'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+    },
+  }
+end

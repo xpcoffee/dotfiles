@@ -1,6 +1,6 @@
 return {
   "xpcoffee/nvim-markdown-notes",
-  dev = true,
+  dev = false,
   dependencies = {},
   config = function()
     local notes = require "nvim-markdown-notes"
