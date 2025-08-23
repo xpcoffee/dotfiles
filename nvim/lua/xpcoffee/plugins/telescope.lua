@@ -63,7 +63,7 @@ return {
     vim.keymap.set('n', '<leader><leader>f', builtins.lsp_document_symbols, { desc = 'File symbols' })
     vim.keymap.set('n', '<leader><leader>p', builtins.lsp_dynamic_workspace_symbols, { desc = 'Project symbols' })
     vim.keymap.set('n', '<leader><leader>m', builtins.marks, { desc = 'Marks' })
-    vim.keymap.set('n', '<C-e>', list_oldfiles_for_cwd, { desc = 'Recent files' })
+    vim.keymap.set({'n', 'i', 'v'}, '<C-e>', list_oldfiles_for_cwd, { desc = 'Recent files', noremap = true, silent = true })
 
 
     -- delete buffers
