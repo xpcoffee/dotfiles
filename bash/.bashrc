@@ -194,5 +194,10 @@ export NUGET_CREDENTIALPROVIDER_MSAL_ENABLED=true
 export NUGET_CREDENTIALPROVIDER_FORCE_CANSHOWDIALOG_TO=true
 
 # dotnet
-PATH="$PATH:/urs/bin/dotnet"
+if [ -d "/users/bin/dotnet" ] ; then
+    PATH="$PATH:/users/bin/dotnet"
+fi
+
+# nvm
+[ -f ~/.nvm/nvm.sh ] && source ~/.nvm/nvm.sh
 
