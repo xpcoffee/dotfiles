@@ -52,12 +52,10 @@ return {
           node_decremental = "<bs>",
         }
       },
-      parser = {
-        mdx = "markdown",
-      }
     })
 
     vim.treesitter.language.register('c_sharp', 'csharp')
     vim.treesitter.language.register('c_sharp', 'cs')
+    vim.treesitter.language.register('markdown', 'mdx')
   end
 }
