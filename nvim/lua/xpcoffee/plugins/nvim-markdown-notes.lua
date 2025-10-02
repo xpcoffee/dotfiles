@@ -5,7 +5,7 @@ return {
   config = function()
     local notes = require "nvim-markdown-notes"
     notes.setup({
-      notes_root_path = "~/code/personal/notes/",
+      notes_root_path = "~/code/notes/",
       journal_dir_name = "journal"
     })
 
