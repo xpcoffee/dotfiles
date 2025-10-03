@@ -7,8 +7,8 @@ return {
     opts = {
       keymaps = {
         ["<CR>"] = "actions.select",
-        ["<C-p>"] = "actions.preview",
-        ["<C-s>"] = { "actions.select", opts = { vertical = true }, desc = "Open the entry in a vertical split" },
+        ["<C-s>"] = "actions.preview",
+        ["<C-o>"] = { "actions.select", opts = { vertical = true }, desc = "Open the entry in a vertical split" },
         ["<C-c>"] = "actions.close",
         ["<C-r>"] = "actions.refresh",
         ["-"] = "actions.parent",
