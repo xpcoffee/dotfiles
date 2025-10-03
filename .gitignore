@@ -6,3 +6,4 @@ fish/fish_variables
 fish/functions/
 fish/fish_plugins
 fish/completions/
+settings.local.json
