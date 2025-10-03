@@ -23,7 +23,6 @@ opt.backspace = "indent,eol,start"
 opt.clipboard:append("unnamedplus") -- system clipboard as default register
 
 vim.keymap.set('n', '<C-e>', function()
-  print("hello world")
   require('vscode').action('workbench.action.openRecent')
 end)
 

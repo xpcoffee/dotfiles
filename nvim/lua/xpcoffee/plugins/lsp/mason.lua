@@ -4,7 +4,6 @@ return {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
   },
   config = function()
-    print("mason config")
     local mason = require("mason")
     local mason_tool_installer = require("mason-tool-installer")
 
