@@ -17,6 +17,6 @@ require("lazy").setup({
   { import = "xpcoffee.plugins.lsp" },
 }, {
   dev = {
-    path = "~/code/personal/"
+    path = "~/code/"
   }
 })
