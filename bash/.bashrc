@@ -150,10 +150,10 @@ function watch() {
 export JAVA_HOME="/usr/lib/jvm/jdk-21.0.4+7/"
 
 function vim_with_dir() {
-  if [ $# -eq 0 ]; then 
-     nvim . 
-   else 
-     nvim "$@"; 
+  if [ $# -eq 0 ]; then
+     nvim -c "Oil"
+   else
+     nvim "$@";
   fi
 }
 
