@@ -2,6 +2,19 @@
 
 This repo maintains a collection of configuration files that I use, as well as utilities to set things up.
 
+## Structure
+
+- `bash/` - Bash shell configuration (.bashrc)
+- `fish/` - Fish shell configuration
+- `git/` - Git configuration (.gitconfig, .gitignore)
+- `nvim/` - Neovim configuration (Lua-based, using lazy.nvim)
+  - `lua/xpcoffee/core/` - Core settings (options, keymaps, filetypes)
+  - `lua/xpcoffee/plugins/` - Plugin configurations
+  - `lua/xpcoffee/plugins/lsp/` - LSP-specific configurations
+- `tmux/` - Tmux configuration (.tmux.conf)
+- `zsh/` - Zsh shell configuration (.zshrc, .aliases, .profile)
+- `install.sh` - Installation script using GNU stow
+
 ## Pre-requisies
 
 The install script uses [`GNU stow`](https://www.gnu.org/software/stow/manual/stow.html) uses it to link config.
