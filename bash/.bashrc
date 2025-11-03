@@ -62,6 +62,7 @@ alias la='ls -A'
 alias l='ls -CF'
 alias oldvim="vim"
 alias vim='vim_with_dir'
+[ -s "$HOME/bin/nvim.appimage" ] && alias nvim="$HOME/bin/nvim.appimage" 
 alias gst="git status"
 alias ssh-id-xpc='eval "$(ssh-agent)" && ssh-add ~/.ssh/xpc_id_ed25519'
 alias cat='batcat'
