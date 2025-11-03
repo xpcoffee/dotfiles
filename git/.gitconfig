@@ -1,9 +1,8 @@
-[includeIf "gitdir:~/code/neko/"]
-  path = ~/code/neko/.gitconfig-neko
+[includeIf "gitdir:~/code/work/"]
+  path = ~/.gitconfig-work
+
 [includeIf "gitdir:~/code/personal/"]
-  path = ~/code/personal/.gitconfig-personal
-[includeIf "gitdir:~/code/dotfiles/"]
-  path = ~/code/personal/.gitconfig-personal
+  path = ~/.gitconfig-personal
 
 [core]
     pager = delta
