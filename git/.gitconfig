@@ -4,6 +4,9 @@
 [includeIf "gitdir:~/code/personal/"]
   path = ~/.gitconfig-personal
 
+[includeIf "gitdir:~/code/dotfiles/"]
+  path = ~/.gitconfig-personal
+
 [core]
     pager = delta
     editor = nvim
