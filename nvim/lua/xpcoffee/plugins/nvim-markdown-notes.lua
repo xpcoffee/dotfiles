@@ -21,11 +21,14 @@ return {
 			{ desc = "Open a journal note from the last 5 days", remap = false }
 		)
 
-		-- tags
-		vim.keymap.set("n", "<leader>nta", notes.list_all_tags, { desc = "List all tags", remap = false })
-		vim.keymap.set("n", "<leader>ntf", function()
-			local tag = vim.fn.expand("<cword>")
-			notes.view_files_with_tag(tag)
-		end, { desc = "Show files with tag under cursor", remap = false })
-	end,
+    -- tags
+    vim.keymap.set("n", "<leader>nta", notes.list_all_tags, { desc = "List all tags", remap = false })
+    vim.keymap.set("n", "<leader>ntf",
+      function()
+        local tag = vim.fn.expand("<cword>")
+        notes.view_files_with_tag(tag)
+      end,
+      { desc = "Show files with tag under cursor", remap = false }
+    )
+  end
 }
