@@ -3,6 +3,7 @@ local opt = vim.opt
 opt.number = true
 vim.wo.relativenumber = true
 opt.cursorline = true
+vim.opt.signcolumn = "yes"
 
 -- indendations
 opt.tabstop = 2
@@ -32,7 +33,7 @@ if vim.g.remove_windows_line_endings == nil then
   vim.g.remove_windows_line_endings = true
 end
 
-vim.api.nvim_create_autocmd({"BufRead"}, {
+vim.api.nvim_create_autocmd({ "BufRead" }, {
   pattern = "*",
   callback = function()
     if vim.g.remove_windows_line_endings then
