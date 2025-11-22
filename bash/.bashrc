@@ -203,4 +203,4 @@ fi
 # nvm
 [ -f ~/.nvm/nvm.sh ] && source ~/.nvm/nvm.sh
 
-source ~/.bashrc_work
+[ -f ~/.bashrc_work ] && source ~/.bashrc_work
