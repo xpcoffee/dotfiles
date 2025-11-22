@@ -195,10 +195,12 @@ export NUGET_CREDENTIALPROVIDER_MSAL_ENABLED=true
 export NUGET_CREDENTIALPROVIDER_FORCE_CANSHOWDIALOG_TO=true
 
 # dotnet
-if [ -d "/users/bin/dotnet" ] ; then
-    PATH="$PATH:/users/bin/dotnet"
+if [ -d "$HOME/.dotnet" ] ; then
+  export DOTNET_ROOT=$HOME/.dotnet
+  export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
 fi
 
 # nvm
 [ -f ~/.nvm/nvm.sh ] && source ~/.nvm/nvm.sh
 
+source ~/.bashrc_work
