@@ -6,8 +6,11 @@ return {
     local notes = require("nvim-markdown-notes")
     notes.setup({
       notes_root_path = "~/code/personal/notes/",
-      journal_dir_name = "journal",
-      debug_logging = true
+      highlights = {
+        ["@markup.wikilink"] = { link = "Type" },
+        ["@markup.mention"] = { link = "@function.builtin" },
+        ["@markup.tag"] = { link = "Number" },
+      },
     })
 
     -- notes
