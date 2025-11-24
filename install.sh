@@ -43,7 +43,7 @@ done
 #   .config    #
 ################
 
-CONFIG_DIRECTORY_CONFIG=("fish" "nvim")
+CONFIG_DIRECTORY_CONFIG=("fish" "nvim" "powerline-shell")
 
 for config in ${CONFIG_DIRECTORY_CONFIG[*]}; do
     HOME_CONFIG_DIR="${HOME}/.config/${config}"
