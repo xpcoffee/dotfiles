@@ -9,7 +9,7 @@
 
 [core]
     pager = delta
-    editor = nvim
+    editor = /home/emerick/bin/nvim.appimage
 	excludesFile = ~/.gitignore
     fsmonitor  = false
 
