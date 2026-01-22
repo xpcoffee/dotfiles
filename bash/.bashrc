@@ -8,6 +8,10 @@ case $- in
       *) return;;
 esac
 
+# ----------------
+# Shell
+# ----------------
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -83,23 +87,10 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-# NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
-# Go
-if [ -d "/opt/go/bin" ] ; then
-    PATH="/opt/go/bin:$PATH"
-fi
-
-if [ -x "$(command -v go)" ]; then
-    PATH="$PATH:$(go env GOPATH)/bin"
-fi
-
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+# binaries & env
+[ -f $HOME/.local/bin ] && export PATH=$PATH:$HOME/.local/bin
+[ -f $HOME/.local/bin/env ] && . "$HOME/.local/bin/env"
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -111,12 +102,6 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
-# NVM
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Vim
-export PATH="$PATH:/opt/nvim-linux-x86_64/bin/"
 
 # Powerline shell
 function _update_ps1() {
@@ -135,6 +120,53 @@ then
     alias cd=z
 fi
 
+
+# ----------------
+# Go
+# ----------------
+if [ -d "/opt/go/bin" ] ; then
+    PATH="/opt/go/bin:$PATH"
+fi
+
+if [ -x "$(command -v go)" ]; then
+    PATH="$PATH:$(go env GOPATH)/bin"
+fi
+
+# ----------------
+# Node & Javascript
+# ----------------
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# ----------------
+# C#
+# ----------------
+
+# dotnet
+if [ -d "$HOME/.dotnet" ] ; then
+  export DOTNET_ROOT=$HOME/.dotnet
+  export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
+
+  export NUGET_CREDENTIALPROVIDER_MSAL_ENABLED=true
+  export NUGET_CREDENTIALPROVIDER_FORCE_CANSHOWDIALOG_TO=true
+fi
+
+# ----------------
+# Vim
+# ----------------
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin/"
+function vim_with_dir() {
+  if [ $# -eq 0 ]; then
+     nvim -c "Oil"
+   else
+     nvim "$@";
+  fi
+}
+
+# ----------------
+# Ranger
+# ----------------
 if command -v ranger &> /dev/null
 then
     alias r=ranger
@@ -148,25 +180,16 @@ function watch() {
     done
 }
 
-export JAVA_HOME="/usr/lib/jvm/jdk-21.0.4+7/"
+# ----------------
+# Java
+# ----------------
+if [ -d "/usr/lib/jvm/jdk-21.0.4+7/" ] ; then
+  export JAVA_HOME="/usr/lib/jvm/jdk-21.0.4+7/"
+fi
 
-function vim_with_dir() {
-  if [ $# -eq 0 ]; then
-     nvim -c "Oil"
-   else
-     nvim "$@";
-  fi
-}
-
-function drive() {
-  for item in $(ls /mnt/); do
-    DRIVE_DIR="/mnt/${item}/My Drive"
-    if [ -d "${DRIVE_DIR}" ]; then
-      cd "${DRIVE_DIR}"
-    fi
-  done
-}
-
+# ----------------
+# Git
+# ----------------
 # git feature branch
 function gfb() {
   git checkout -b "emerick/${1}" "origin/master"
@@ -175,32 +198,30 @@ function gfb() {
 alias lg=lazygit
 alias gl="git lag"
 
+# ----------------
+# Fzf
+# ----------------
 if command -v fzf &> /dev/null
 then
   # Set up fzf key bindings and fuzzy completion
   eval "$(fzf --bash)"
 fi
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+I[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-# k9s from snap
-#
-
+# ----------------
+# K9s
+# ----------------
 if [ -f "/snap/k9s/current/bin/k9s" ] ; then
   alias k9s=/snap/k9s/current/bin/k9s
 fi
 
-# work-only functions
-[ -f ~/.config/bash/work-functions.sh ] && source ~/.config/bash/work-functions.sh
-export NUGET_CREDENTIALPROVIDER_MSAL_ENABLED=true
-export NUGET_CREDENTIALPROVIDER_FORCE_CANSHOWDIALOG_TO=true
+# ----------------
+# agent-browser
+# ----------------
+AGENT_BROWSER_EXECUTABLE_PATH=/mnt/c/Users/emerick/AppData/Local/Temp/admin-chrome-profile/
 
-# dotnet
-if [ -d "$HOME/.dotnet" ] ; then
-  export DOTNET_ROOT=$HOME/.dotnet
-  export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
-fi
-
-# nvm
-[ -f ~/.nvm/nvm.sh ] && source ~/.nvm/nvm.sh
-
+# ----------------
+# Work
+# ----------------
 [ -f ~/.bashrc_work ] && source ~/.bashrc_work
+[ -f ~/.config/bash/work-functions.sh ] && source ~/.config/bash/work-functions.sh
