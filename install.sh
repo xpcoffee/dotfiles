@@ -39,6 +39,12 @@ for config in ${HOME_DIRECTORY_CONFIG[*]}; do
     stow --adopt --target="${HOME}" "${config}"
 done
 
+#################
+#   $HOME/bin   #
+#################
+
+stow --adopt --target="${HOME}/bin" "bin"
+
 ################
 #   .config    #
 ################
