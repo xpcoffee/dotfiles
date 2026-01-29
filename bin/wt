@@ -1,0 +1,289 @@
+#!/bin/bash
+set -e
+
+# Configuration
+USER_PREFIX="emerick"
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Find the main repo and work directory
+# Sets: WORK_DIR, MAIN_REPO, REPO_NAME, WORKTREES_DIR
+find_repo_context() {
+    local current_dir="$PWD"
+
+    # First, check if we're in a git worktree or repo
+    local git_root
+    if git_root=$(git rev-parse --show-toplevel 2>/dev/null); then
+        local git_dir
+        git_dir=$(git rev-parse --git-dir 2>/dev/null)
+
+        # Check if this is a worktree (git-dir contains "worktrees")
+        if [[ "$git_dir" == *"/worktrees/"* ]]; then
+            # We're in a worktree - extract main repo path from git-dir
+            # git-dir looks like: /path/to/MainRepo/.git/worktrees/branch-name
+            MAIN_REPO="${git_dir%%/.git/worktrees/*}"
+            REPO_NAME=$(basename "$MAIN_REPO")
+            WORK_DIR=$(dirname "$MAIN_REPO")
+            WORKTREES_DIR="$WORK_DIR/${REPO_NAME}-worktrees/$USER_PREFIX"
+            return 0
+        else
+            # We're in the main repo
+            MAIN_REPO="$git_root"
+            REPO_NAME=$(basename "$MAIN_REPO")
+            WORK_DIR=$(dirname "$MAIN_REPO")
+            WORKTREES_DIR="$WORK_DIR/${REPO_NAME}-worktrees/$USER_PREFIX"
+            return 0
+        fi
+    fi
+
+    # Not in a git repo - check if we're in a *-worktrees directory
+    if [[ "$current_dir" == *"-worktrees"* ]]; then
+        # Extract the base: /path/to/Repo-worktrees/... -> /path/to/Repo-worktrees
+        local worktrees_base="${current_dir%%-worktrees*}-worktrees"
+        REPO_NAME=$(basename "${worktrees_base%-worktrees}")
+        WORK_DIR=$(dirname "$worktrees_base")
+        MAIN_REPO="$WORK_DIR/$REPO_NAME"
+        WORKTREES_DIR="$worktrees_base/$USER_PREFIX"
+
+        if [[ -d "$MAIN_REPO/.git" ]]; then
+            return 0
+        fi
+    fi
+
+    return 1
+}
+
+# Get list of worktree names (just the branch name part, not full path)
+get_worktree_names() {
+    if [[ ! -d "$WORKTREES_DIR" ]]; then
+        return
+    fi
+
+    for dir in "$WORKTREES_DIR"/*/; do
+        [[ -d "$dir" ]] && basename "$dir"
+    done
+}
+
+# Select a worktree using fzf
+select_worktree() {
+    local prompt="$1"
+    local names
+    names=$(get_worktree_names)
+
+    if [[ -z "$names" ]]; then
+        echo -e "${YELLOW}No worktrees found${NC}" >&2
+        return 1
+    fi
+
+    if ! command -v fzf &>/dev/null; then
+        echo -e "${RED}Error: fzf is required for interactive selection${NC}" >&2
+        echo "Install fzf or provide a branch name as argument" >&2
+        return 1
+    fi
+
+    echo "$names" | fzf --prompt="$prompt " --height=~50% --reverse
+}
+
+usage() {
+    echo -e "${BLUE}Usage:${NC}"
+    echo "  wt add <branch-name>      Create worktree for $USER_PREFIX/<branch-name>"
+    echo "  wt remove [branch-name]   Remove worktree (fzf select if no name given)"
+    echo "  wt list                   List all worktrees"
+    echo "  wt cd [branch-name]       Print path to worktree (fzf select if no name)"
+    echo ""
+    echo -e "${BLUE}Examples:${NC}"
+    echo "  wt add my-feature         # Creates $USER_PREFIX/my-feature branch and worktree"
+    echo "  wt remove                 # Interactive selection with fzf"
+    echo "  wt cd                     # Interactive selection with fzf"
+    echo "  cd \$(wt cd)               # Jump to selected worktree"
+    echo ""
+    echo -e "${BLUE}Shell function (add to ~/.bashrc or ~/.zshrc):${NC}"
+    echo "  wtcd() { local dir; dir=\"\$(wt cd \"\$@\")\" && cd \"\$dir\"; }"
+    echo ""
+    echo -e "${BLUE}Structure:${NC}"
+    echo "  Main repo:   <work-dir>/<RepoName>/"
+    echo "  Worktrees:   <work-dir>/<RepoName>-worktrees/$USER_PREFIX/<branch-name>/"
+}
+
+cmd_add() {
+    local branch_name="$1"
+
+    if [[ -z "$branch_name" ]]; then
+        echo -e "${RED}Error: Branch name required${NC}"
+        echo "Usage: wt add <branch-name>"
+        exit 1
+    fi
+
+    if ! find_repo_context; then
+        echo -e "${RED}Error: Could not find git repository context${NC}"
+        exit 1
+    fi
+
+    local worktree_path="$WORKTREES_DIR/$branch_name"
+    local full_branch="$USER_PREFIX/$branch_name"
+
+    echo -e "${BLUE}Repo:${NC} $REPO_NAME"
+
+    # Ensure worktrees directory exists
+    mkdir -p "$WORKTREES_DIR"
+
+    # Check if worktree already exists
+    if [[ -d "$worktree_path" ]]; then
+        echo -e "${YELLOW}Worktree already exists at:${NC} $worktree_path"
+        exit 1
+    fi
+
+    # Fetch latest from origin
+    echo -e "${BLUE}Fetching latest from origin...${NC}"
+    git -C "$MAIN_REPO" fetch origin
+
+    # Determine the default branch (master or main)
+    local default_branch="master"
+    if git -C "$MAIN_REPO" show-ref --verify --quiet "refs/remotes/origin/main" 2>/dev/null; then
+        if ! git -C "$MAIN_REPO" show-ref --verify --quiet "refs/remotes/origin/master" 2>/dev/null; then
+            default_branch="main"
+        fi
+    fi
+
+    # Check if branch exists locally or remotely
+    local branch_exists=false
+    if git -C "$MAIN_REPO" show-ref --verify --quiet "refs/heads/$full_branch" 2>/dev/null; then
+        branch_exists=true
+        echo -e "${YELLOW}Branch $full_branch exists locally${NC}"
+    elif git -C "$MAIN_REPO" show-ref --verify --quiet "refs/remotes/origin/$full_branch" 2>/dev/null; then
+        branch_exists=true
+        echo -e "${YELLOW}Branch $full_branch exists on remote${NC}"
+    fi
+
+    if $branch_exists; then
+        # Create worktree from existing branch
+        echo -e "${BLUE}Creating worktree from existing branch...${NC}"
+        git -C "$MAIN_REPO" worktree add "$worktree_path" "$full_branch"
+    else
+        # Create new branch from default branch
+        echo -e "${BLUE}Creating new branch $full_branch from $default_branch...${NC}"
+        git -C "$MAIN_REPO" worktree add -b "$full_branch" "$worktree_path" "origin/$default_branch"
+    fi
+
+    echo -e "${GREEN}✓ Worktree created at:${NC} $worktree_path"
+    echo -e "${GREEN}✓ Branch:${NC} $full_branch"
+}
+
+cmd_remove() {
+    local branch_name="$1"
+
+    if ! find_repo_context; then
+        echo -e "${RED}Error: Could not find git repository context${NC}"
+        exit 1
+    fi
+
+    # If no branch name, use fzf to select
+    if [[ -z "$branch_name" ]]; then
+        branch_name=$(select_worktree "Remove worktree:") || exit 1
+    fi
+
+    local worktree_path="$WORKTREES_DIR/$branch_name"
+    local full_branch="$USER_PREFIX/$branch_name"
+
+    echo -e "${BLUE}Repo:${NC} $REPO_NAME"
+
+    # Check if worktree exists
+    if [[ ! -d "$worktree_path" ]]; then
+        echo -e "${RED}Error: Worktree not found at:${NC} $worktree_path"
+        exit 1
+    fi
+
+    # Check if we're currently in the worktree
+    if [[ "$PWD" == "$worktree_path"* ]]; then
+        echo -e "${RED}Error: Cannot remove worktree while inside it${NC}"
+        echo "Please cd to a different directory first"
+        exit 1
+    fi
+
+    # Remove worktree
+    echo -e "${BLUE}Removing worktree...${NC}"
+    git -C "$MAIN_REPO" worktree remove "$worktree_path"
+    echo -e "${GREEN}✓ Worktree removed${NC}"
+
+    # Ask about branch deletion
+    echo ""
+    read -p "Delete local branch $full_branch? [y/N] " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        if git -C "$MAIN_REPO" branch -d "$full_branch" 2>/dev/null; then
+            echo -e "${GREEN}✓ Branch deleted${NC}"
+        else
+            echo -e "${YELLOW}Branch not fully merged. Force delete? [y/N]${NC}"
+            read -p "" -n 1 -r
+            echo
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                git -C "$MAIN_REPO" branch -D "$full_branch"
+                echo -e "${GREEN}✓ Branch force deleted${NC}"
+            fi
+        fi
+    fi
+}
+
+cmd_list() {
+    if ! find_repo_context; then
+        echo -e "${RED}Error: Could not find git repository context${NC}"
+        exit 1
+    fi
+
+    echo -e "${BLUE}Worktrees for $REPO_NAME:${NC}"
+    echo ""
+    git -C "$MAIN_REPO" worktree list
+}
+
+cmd_cd() {
+    local branch_name="$1"
+
+    if ! find_repo_context; then
+        echo -e "${RED}Error: Could not find git repository context${NC}" >&2
+        exit 1
+    fi
+
+    # If no branch name, use fzf to select
+    if [[ -z "$branch_name" ]]; then
+        branch_name=$(select_worktree "Jump to worktree:") || exit 1
+    fi
+
+    local worktree_path="$WORKTREES_DIR/$branch_name"
+
+    if [[ ! -d "$worktree_path" ]]; then
+        echo -e "${RED}Error: Worktree not found at:${NC} $worktree_path" >&2
+        exit 1
+    fi
+
+    # Just print the path (for use with cd)
+    echo "$worktree_path"
+}
+
+# Main
+case "${1:-}" in
+    add)
+        cmd_add "$2"
+        ;;
+    remove|rm)
+        cmd_remove "$2"
+        ;;
+    list|ls)
+        cmd_list
+        ;;
+    cd)
+        cmd_cd "$2"
+        ;;
+    -h|--help|help|"")
+        usage
+        ;;
+    *)
+        echo -e "${RED}Unknown command: $1${NC}"
+        usage
+        exit 1
+        ;;
+esac
