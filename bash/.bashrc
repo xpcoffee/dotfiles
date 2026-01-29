@@ -206,7 +206,7 @@ then
   # Set up fzf key bindings and fuzzy completion
   eval "$(fzf --bash)"
 fi
-I[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # ----------------
 # K9s
@@ -219,6 +219,7 @@ fi
 # agent-browser
 # ----------------
 AGENT_BROWSER_EXECUTABLE_PATH=/mnt/c/Users/emerick/AppData/Local/Temp/admin-chrome-profile/
+AGENT_BROWSER_STREAM_PORT=9223
 
 # ----------------
 # Work
