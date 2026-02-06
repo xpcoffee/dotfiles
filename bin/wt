@@ -167,7 +167,7 @@ cmd_add() {
     else
         # Create new branch from default branch
         echo -e "${BLUE}Creating new branch $full_branch from $default_branch...${NC}"
-        git -C "$MAIN_REPO" worktree add -b "$full_branch" "$worktree_path" "origin/$default_branch"
+        git -C "$MAIN_REPO" worktree add --no-track -b "$full_branch" "$worktree_path" "origin/$default_branch"
     fi
 
     echo -e "${GREEN}✓ Worktree created at:${NC} $worktree_path"
