@@ -195,6 +195,19 @@ function gfb() {
   git checkout -b "emerick/${1}" "origin/master"
 }
 
+# worktree helper - wraps bin/wt so add/cd can change directory
+function wt() {
+  case "$1" in
+    add|cd)
+      local dir
+      dir=$(command wt "$@") && [[ -n "$dir" ]] && builtin cd "$dir"
+      ;;
+    *)
+      command wt "$@"
+      ;;
+  esac
+}
+
 alias lg=lazygit
 alias gl="git lag"
 

@@ -2,6 +2,21 @@ function jq-repl {
     echo '' | fzf --print-query --preview "cat ${1} | jq -C -r {q}" --preview-window up:99%
 }
 
+# --- Worktrees ---
+
+# wraps bin/wt so add/cd can change directory in the current shell
+function wt() {
+  case "$1" in
+    add|cd)
+      local dir
+      dir=$(command wt "$@") && [[ -n "$dir" ]] && builtin cd "$dir"
+      ;;
+    *)
+      command wt "$@"
+      ;;
+  esac
+}
+
 # --- Git ---
 
 # hash of an empty git repo - useful for generating a diff against the beginning of time
