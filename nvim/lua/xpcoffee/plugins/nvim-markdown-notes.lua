@@ -11,6 +11,9 @@ return {
         ["@markup.mention"] = { link = "@function.builtin" },
         ["@markup.tag"] = { link = "Number" },
       },
+      memgraph = {
+        enabled = true,
+      },
     })
 
     -- notes
