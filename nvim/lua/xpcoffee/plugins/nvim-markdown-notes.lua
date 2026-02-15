@@ -16,26 +16,25 @@ return {
       },
     })
 
+    local graph = notes.graph
+    local keymap = vim.keymap
+
     -- notes
-    vim.keymap.set("n", "<leader>nn", notes.create_note, { desc = "Create a new note", remap = false })
+    keymap.set("n", "<leader>nn", notes.create_note, { desc = "Create a new note", remap = false })
 
     -- journal
-    vim.keymap.set("n", "<leader>njj", notes.open_daily_journal, { desc = "Open today's journal", remap = false })
-    vim.keymap.set(
-      "n",
-      "<leader>njd",
-      notes.open_journal,
-      { desc = "Open a journal note from the last 5 days", remap = false }
-    )
+    keymap.set("n", "<leader>nj", notes.open_daily_journal, { desc = "Open today's journal", remap = false })
+    keymap.set("n", "<leader>nd", notes.open_journal, { desc = "Open journal for a day (last 5 days)", remap = false })
 
-    -- tags
-    vim.keymap.set("n", "<leader>nta", notes.list_all_tags, { desc = "List all tags", remap = false })
-    vim.keymap.set("n", "<leader>ntf",
-      function()
-        local tag = vim.fn.expand("<cword>")
-        notes.view_files_with_tag(tag)
-      end,
-      { desc = "Show files with tag under cursor", remap = false }
-    )
+    -- graph navigation
+    keymap.set("n", "<leader>nt", function() graph.browse_tags() end, { desc = "Browse tags", remap = false })
+    keymap.set("n", "<leader>np", function() graph.browse_people() end, { desc = "Browse people", remap = false })
+    keymap.set("n", "<leader>nb", function() graph.show_backlinks() end, { desc = "Show backlinks", remap = false })
+    keymap.set("n", "<leader>nr", function() graph.show_related() end, { desc = "Show related notes", remap = false })
+    keymap.set("n", "<leader>nc", function() graph.get_commands().show_context() end, { desc = "Show note context", remap = false })
+
+    -- graph admin
+    keymap.set("n", "<leader>nmi", function() graph.reindex() end, { desc = "Reindex graph", remap = false })
+    keymap.set("n", "<leader>nms", function() vim.cmd("MarkdownNotesGraphStatus") end, { desc = "Graph status", remap = false })
   end
 }
