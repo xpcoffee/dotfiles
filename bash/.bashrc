@@ -120,6 +120,12 @@ then
     alias cd=z
 fi
 
+# ----------------
+# Code organization
+# ----------------
+export PERSONAL_CODE_PATH="$HOME/code/personal"
+export WORK_CODE_PATH="$HOME/code/work"
+
 
 # ----------------
 # Go
@@ -229,10 +235,9 @@ if [ -f "/snap/k9s/current/bin/k9s" ] ; then
 fi
 
 # ----------------
-# agent-browser
+# notes
 # ----------------
-AGENT_BROWSER_EXECUTABLE_PATH=/mnt/c/Users/emerick/AppData/Local/Temp/admin-chrome-profile/
-AGENT_BROWSER_STREAM_PORT=9223
+export NOTES_ROOT="$PERSONAL_CODE_PATH/notes/"
 
 # ----------------
 # Work
