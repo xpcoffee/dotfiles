@@ -14,10 +14,6 @@
     fsmonitor  = false
 	sshCommand = /mnt/c/Windows/System32/OpenSSH/ssh.exe
 
-[user]
-  name = "Emerick Bosch"
-  email = "xpc.dev@gmail.com"
-
 [remote "origin"]
 	tagOpt = --no-tags
 
