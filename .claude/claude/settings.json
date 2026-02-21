@@ -1,0 +1,57 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "allow": [
+      "mcp__ado__*",
+      "mcp__grafana__*",
+      "mcp__github__*",
+      "mcp__dev-services__*",
+      "mcp__nvim-markdown-notes-memgraph__*",
+      "mcp__playwright__*",
+      "WebFetch",
+      "WebSearch",
+      "Bash(QUERY=* az monitor log-analytics query *)",
+      "Edit(//home/emerick/code/work/)",
+      "Edit(//home/emerick/code/personal/)",
+      "Read(//home/emerick/code/work/)",
+      "Read(//home/emerick/code/personal/)",
+      "Bash(python3 -m http.server:*)",
+      "Bash(jq *)",
+      "Bash(cat *)",
+      "Bash(ls*)",
+      "Bash(ps *)",
+      "Bash(dotnet *)",
+      "Bash(git *)",
+      "Bash(git commit *)",
+      "Bash(uv *)",
+      "Bash(awk *)",
+      "Bash(find *)",
+      "Bash(echo *)",
+      "Bash(grep *)",
+      "Bash(tee *)",
+      "Bash(test *)",
+      "Bash(make *)",
+      "Bash(sleep *)",
+      "Bash(xargs *)",
+      "Bash(tail *)",
+      "Bash(pandoc *)",
+      "Bash(docker compose *)",
+      "Bash(docker build *)",
+      "Bash(docker exec *)",
+      "Bash(docker rm *)",
+      "Bash(gh *)",
+      "Bash(gh api *)",
+      "Bash(gh * --jq *)"
+    ],
+    "deny": ["Read(./secrets/**)"]
+  },
+  "model": "opus",
+  "enabledPlugins": {
+    "nvim-markdown-notes-memgraph@xpcoffee-plugins": true
+  },
+  "spinnerTipsEnabled": false,
+  "effortLevel": "medium"
+}
