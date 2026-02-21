@@ -12,6 +12,11 @@
     editor = /home/emerick/bin/nvim.appimage
 	excludesFile = ~/.gitignore
     fsmonitor  = false
+	sshCommand = /mnt/c/Windows/System32/OpenSSH/ssh.exe
+
+[user]
+  name = "Emerick Bosch"
+  email = "xpc.dev@gmail.com"
 
 [remote "origin"]
 	tagOpt = --no-tags
@@ -44,3 +49,9 @@
 	defaultBranch = main
 [pull]
 	rebase = true
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
