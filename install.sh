@@ -57,6 +57,18 @@ for config in ${CONFIG_DIRECTORY_CONFIG[*]}; do
     stow --adopt --target="${HOME_CONFIG_DIR}" "${config}"
 done
 
+#######################
+#   $HOME/$config/    #
+#######################
+
+OWN_CONFIG_DIRECTORY_CONFIG=(".claude")
+
+for config in ${OWN_CONFIG_DIRECTORY_CONFIG[*]}; do
+    OWN_CONFIG_DIR="${HOME}/${config}"
+    mkdir -p "${OWN_CONFIG_DIR}"
+    stow --adopt --target="${OWN_CONFIG_DIR}" "${config}"
+done
+
 echo "Dotfiles installed."
 echo "Differences:"
 git status -s
