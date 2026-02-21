@@ -1,0 +1,81 @@
+{
+  "servers": {
+    "ado": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@azure-devops/mcp", "${input:ado_org}"]
+    },
+    "grafana": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-e",
+        "GRAFANA_URL=${input:grafana_url}",
+        "-e",
+        "GRAFANA_SERVICE_ACCOUNT_TOKEN=${input:grafana_token}",
+        "grafana/mcp-grafana",
+        "-t",
+        "stdio"
+      ]
+    },
+    "github": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github_pat}"
+      }
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y", "@playwright/mcp@latest",
+        "--caps=vision",
+        "--cdp-endpoint", "http://localhost:9222"
+      ]
+    },
+    "nvim-markdown-notes-memgraph": {
+      "type": "stdio",
+      "command": "nvim-markdown-notes-memgraph",
+      "args": ["serve"],
+      "env": {
+        "MEMGRAPH_HOST": "localhost",
+        "MEMGRAPH_PORT": "7687",
+        "NOTES_ROOT": "${input:notes_root}"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "id": "ado_org",
+      "type": "promptString",
+      "description": "Azure DevOps organization name (e.g. 'contoso')"
+    },
+    {
+      "id": "github_pat",
+      "type": "promptString",
+      "description": "GitHub personal access token",
+      "password": true
+    },
+    {
+      "id": "grafana_url",
+      "type": "promptString",
+      "description": "Grafana URL"
+    },
+    {
+      "id": "grafana_token",
+      "type": "promptString",
+      "description": "Grafana Service Account Token",
+      "password": true
+    },
+    {
+      "id": "notes_root",
+      "type": "promptString",
+      "description": "Root directory for markdown notes"
+    }
+  ]
+}
