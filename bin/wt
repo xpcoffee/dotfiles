@@ -11,49 +11,68 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Find the main repo and work directory
-# Sets: WORK_DIR, MAIN_REPO, REPO_NAME, WORKTREES_DIR
+# Find the repo context using the consolidated directory layout.
+#
+# Layout:
+#   repo/                    ← container (REPO_DIR)
+#     main/ (or master/)     ← main branch checkout (MAIN_REPO)
+#     emerick/               ← user worktrees (WORKTREES_DIR)
+#       feature/             ← individual worktree
+#
+# Sets: REPO_DIR, MAIN_REPO, REPO_NAME, WORKTREES_DIR, DEFAULT_BRANCH
 find_repo_context() {
-    local current_dir="$PWD"
+    local git_root git_dir
 
-    # First, check if we're in a git worktree or repo
-    local git_root
     if git_root=$(git rev-parse --show-toplevel 2>/dev/null); then
-        local git_dir
         git_dir=$(git rev-parse --git-dir 2>/dev/null)
 
-        # Check if this is a worktree (git-dir contains "worktrees")
         if [[ "$git_dir" == *"/worktrees/"* ]]; then
-            # We're in a worktree - extract main repo path from git-dir
-            # git-dir looks like: /path/to/MainRepo/.git/worktrees/branch-name
+            # In a worktree — git-dir: /path/to/repo/main/.git/worktrees/name
             MAIN_REPO="${git_dir%%/.git/worktrees/*}"
-            REPO_NAME=$(basename "$MAIN_REPO")
-            WORK_DIR=$(dirname "$MAIN_REPO")
-            WORKTREES_DIR="$WORK_DIR/${REPO_NAME}-worktrees/$USER_PREFIX"
-            return 0
         else
-            # We're in the main repo
+            # In a regular git checkout
             MAIN_REPO="$git_root"
-            REPO_NAME=$(basename "$MAIN_REPO")
-            WORK_DIR=$(dirname "$MAIN_REPO")
-            WORKTREES_DIR="$WORK_DIR/${REPO_NAME}-worktrees/$USER_PREFIX"
-            return 0
         fi
+
+        local main_basename
+        main_basename=$(basename "$MAIN_REPO")
+
+        if [[ "$main_basename" == "main" || "$main_basename" == "master" ]]; then
+            DEFAULT_BRANCH="$main_basename"
+            REPO_DIR=$(dirname "$MAIN_REPO")
+        else
+            # Fallback: we're in a git repo but the basename isn't main/master.
+            # This might be the old layout or an unrelated repo.
+            # Try treating it as a standalone repo (old-style detection).
+            REPO_DIR=$(dirname "$MAIN_REPO")
+            DEFAULT_BRANCH="main"
+        fi
+
+        REPO_NAME=$(basename "$REPO_DIR")
+        WORKTREES_DIR="$REPO_DIR/$USER_PREFIX"
+        return 0
     fi
 
-    # Not in a git repo - check if we're in a *-worktrees directory
-    if [[ "$current_dir" == *"-worktrees"* ]]; then
-        # Extract the base: /path/to/Repo-worktrees/... -> /path/to/Repo-worktrees
-        local worktrees_base="${current_dir%%-worktrees*}-worktrees"
-        REPO_NAME=$(basename "${worktrees_base%-worktrees}")
-        WORK_DIR=$(dirname "$worktrees_base")
-        MAIN_REPO="$WORK_DIR/$REPO_NAME"
-        WORKTREES_DIR="$worktrees_base/$USER_PREFIX"
-
-        if [[ -d "$MAIN_REPO/.git" ]]; then
+    # Not in a git dir — check if cwd (or a parent) is a container with main/ or master/
+    local dir="$PWD"
+    while [[ "$dir" != "/" ]]; do
+        if [[ -d "$dir/main/.git" ]]; then
+            REPO_DIR="$dir"
+            DEFAULT_BRANCH="main"
+            MAIN_REPO="$dir/main"
+            REPO_NAME=$(basename "$REPO_DIR")
+            WORKTREES_DIR="$REPO_DIR/$USER_PREFIX"
+            return 0
+        elif [[ -d "$dir/master/.git" ]]; then
+            REPO_DIR="$dir"
+            DEFAULT_BRANCH="master"
+            MAIN_REPO="$dir/master"
+            REPO_NAME=$(basename "$REPO_DIR")
+            WORKTREES_DIR="$REPO_DIR/$USER_PREFIX"
             return 0
         fi
-    fi
+        dir=$(dirname "$dir")
+    done
 
     return 1
 }
@@ -91,6 +110,7 @@ select_worktree() {
 
 usage() {
     echo -e "${BLUE}Usage:${NC}"
+    echo "  wt clone <url>            Clone a repo into the wt layout"
     echo "  wt add <branch-name>      Create worktree for $USER_PREFIX/<branch-name>"
     echo "  wt rm [branch-name]       Remove worktree (fzf select if no name given)"
     echo "  wt list                   List all worktrees"
@@ -98,14 +118,55 @@ usage() {
     echo "  wt t                      Open worktrees in tmux (fzf multi-select)"
     echo ""
     echo -e "${BLUE}Examples:${NC}"
-    echo "  wt add my-feature         # Creates $USER_PREFIX/my-feature worktree and cds into it"
+    echo "  wt clone git@github.com:org/repo.git"
+    echo "  wt add my-feature         # Creates $USER_PREFIX/my-feature worktree"
     echo "  wt rm                     # Interactive selection with fzf"
-    echo "  wt cd                     # Interactive selection with fzf, cds into worktree"
+    echo "  wt cd                     # Interactive selection with fzf"
     echo "  wt t                      # Select worktrees, open each as a tmux window"
     echo ""
     echo -e "${BLUE}Structure:${NC}"
-    echo "  Main repo:   <work-dir>/<RepoName>/"
-    echo "  Worktrees:   <work-dir>/<RepoName>-worktrees/$USER_PREFIX/<branch-name>/"
+    echo "  Container:   <parent>/<repo>/"
+    echo "  Main repo:   <parent>/<repo>/main/ (or master/)"
+    echo "  Worktrees:   <parent>/<repo>/$USER_PREFIX/<branch-name>/"
+}
+
+cmd_clone() {
+    local url="$1"
+
+    if [[ -z "$url" ]]; then
+        echo -e "${RED}Error: Repository URL required${NC}"
+        echo "Usage: wt clone <url>"
+        exit 1
+    fi
+
+    # Extract repo name from URL (strip trailing .git and path)
+    local repo_name
+    repo_name=$(basename "$url" .git)
+
+    if [[ -d "$repo_name" ]]; then
+        echo -e "${RED}Error: Directory '$repo_name' already exists${NC}"
+        exit 1
+    fi
+
+    # Create container directory
+    mkdir -p "$repo_name"
+
+    # Clone into a temporary name, then rename to match the default branch
+    echo -e "${BLUE}Cloning $url...${NC}" >&2
+    git clone "$url" "$repo_name/main" >&2
+
+    # Detect the default branch
+    local default_branch
+    default_branch=$(git -C "$repo_name/main" branch --show-current)
+
+    if [[ "$default_branch" == "master" ]]; then
+        mv "$repo_name/main" "$repo_name/master"
+        echo -e "${GREEN}✓ Cloned into $repo_name/master/${NC}" >&2
+        echo "$PWD/$repo_name/master"
+    else
+        echo -e "${GREEN}✓ Cloned into $repo_name/main/${NC}" >&2
+        echo "$PWD/$repo_name/main"
+    fi
 }
 
 cmd_add() {
@@ -140,11 +201,13 @@ cmd_add() {
     echo -e "${BLUE}Fetching latest from origin...${NC}" >&2
     git -C "$MAIN_REPO" fetch origin >&2
 
-    # Determine the default branch (master or main)
-    local default_branch="master"
-    if git -C "$MAIN_REPO" show-ref --verify --quiet "refs/remotes/origin/main" 2>/dev/null; then
-        if ! git -C "$MAIN_REPO" show-ref --verify --quiet "refs/remotes/origin/master" 2>/dev/null; then
-            default_branch="main"
+    # Use DEFAULT_BRANCH from find_repo_context, fall back to detection from remote
+    local default_branch="${DEFAULT_BRANCH:-master}"
+    if [[ -z "$DEFAULT_BRANCH" ]]; then
+        if git -C "$MAIN_REPO" show-ref --verify --quiet "refs/remotes/origin/main" 2>/dev/null; then
+            if ! git -C "$MAIN_REPO" show-ref --verify --quiet "refs/remotes/origin/master" 2>/dev/null; then
+                default_branch="main"
+            fi
         fi
     fi
 
@@ -341,6 +404,9 @@ cmd_tmux() {
 
 # Main
 case "${1:-}" in
+    clone)
+        cmd_clone "$2"
+        ;;
     add)
         cmd_add "$2"
         ;;
