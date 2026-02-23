@@ -92,14 +92,16 @@ select_worktree() {
 usage() {
     echo -e "${BLUE}Usage:${NC}"
     echo "  wt add <branch-name>      Create worktree for $USER_PREFIX/<branch-name>"
-    echo "  wt remove [branch-name]   Remove worktree (fzf select if no name given)"
+    echo "  wt rm [branch-name]       Remove worktree (fzf select if no name given)"
     echo "  wt list                   List all worktrees"
     echo "  wt cd [branch-name]       Print path to worktree (fzf select if no name)"
+    echo "  wt t                      Open worktrees in tmux (fzf multi-select)"
     echo ""
     echo -e "${BLUE}Examples:${NC}"
     echo "  wt add my-feature         # Creates $USER_PREFIX/my-feature worktree and cds into it"
-    echo "  wt remove                 # Interactive selection with fzf"
+    echo "  wt rm                     # Interactive selection with fzf"
     echo "  wt cd                     # Interactive selection with fzf, cds into worktree"
+    echo "  wt t                      # Select worktrees, open each as a tmux window"
     echo ""
     echo -e "${BLUE}Structure:${NC}"
     echo "  Main repo:   <work-dir>/<RepoName>/"
@@ -263,12 +265,86 @@ cmd_cd() {
     echo "$worktree_path"
 }
 
+cmd_tmux() {
+    if ! find_repo_context; then
+        echo -e "${RED}Error: Could not find git repository context${NC}"
+        exit 1
+    fi
+
+    if ! command -v fzf &>/dev/null; then
+        echo -e "${RED}Error: fzf is required for interactive selection${NC}"
+        exit 1
+    fi
+
+    local session_name="$REPO_NAME"
+
+    # Get all worktree paths from git
+    local worktrees
+    worktrees=$(git -C "$MAIN_REPO" worktree list | awk '{print $1}')
+
+    if [[ -z "$worktrees" ]]; then
+        echo -e "${YELLOW}No worktrees found${NC}"
+        exit 1
+    fi
+
+    # Get window name: branch name for main/master, otherwise directory name
+    get_window_name() {
+        local wt_path="$1"
+        local branch
+        branch=$(git -C "$wt_path" rev-parse --abbrev-ref HEAD 2>/dev/null)
+        if [[ "$branch" == "main" || "$branch" == "master" ]]; then
+            echo "$branch"
+        else
+            basename "$wt_path"
+        fi
+    }
+
+    # Build fzf selection list: "name\tpath"
+    local selection
+    selection=$(while IFS= read -r wt_path; do
+        [[ -z "$wt_path" ]] && continue
+        printf "%s\t%s\n" "$(get_window_name "$wt_path")" "$wt_path"
+    done <<< "$worktrees" | fzf --multi --prompt="Select worktrees> " --header="TAB to select, ENTER to confirm")
+
+    if [[ -z "$selection" ]]; then
+        echo "No worktrees selected"
+        exit 0
+    fi
+
+    if tmux has-session -t "$session_name" 2>/dev/null; then
+        echo -e "${RED}Session '$session_name' already exists${NC}"
+        exit 1
+    fi
+
+    # Create session with placeholder window
+    tmux new-session -d -s "$session_name"
+
+    # Create a window for each selected worktree
+    while IFS=$'\t' read -r wt_name wt_path; do
+        [[ -z "$wt_path" ]] && continue
+        tmux new-window -t "$session_name" -n "$wt_name" -c "$wt_path"
+    done <<< "$selection"
+
+    # Kill the placeholder and select first worktree window
+    tmux kill-window -t "$session_name:0"
+    tmux select-window -t "$session_name:1"
+
+    # Attach or switch
+    if [[ -z "$TMUX" ]]; then
+        tmux attach-session -t "$session_name"
+    else
+        tmux switch-client -t "$session_name"
+    fi
+
+    echo -e "${GREEN}Created tmux session '$session_name'${NC}"
+}
+
 # Main
 case "${1:-}" in
     add)
         cmd_add "$2"
         ;;
-    remove|rm)
+    rm)
         cmd_remove "$2"
         ;;
     list|ls)
@@ -276,6 +352,9 @@ case "${1:-}" in
         ;;
     cd)
         cmd_cd "$2"
+        ;;
+    t|tmux)
+        cmd_tmux
         ;;
     -h|--help|help|"")
         usage
