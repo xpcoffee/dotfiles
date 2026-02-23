@@ -12,7 +12,7 @@ return {
         ["@markup.tag"] = { link = "Number" },
       },
       memgraph = {
-        enabled = true,
+        enabled = vim.env.NOTES_ROOT ~= nil and vim.fn.getcwd():find(vim.env.NOTES_ROOT, 1, true) ~= nil,
       },
     })
 
