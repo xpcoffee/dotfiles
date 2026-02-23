@@ -33,9 +33,11 @@
       "type": "stdio",
       "command": "npx",
       "args": [
-        "-y", "@playwright/mcp@latest",
+        "-y",
+        "@playwright/mcp@latest",
         "--caps=vision",
-        "--cdp-endpoint", "http://localhost:9222"
+        "--cdp-endpoint",
+        "http://localhost:9222"
       ]
     },
     "nvim-markdown-notes-memgraph": {

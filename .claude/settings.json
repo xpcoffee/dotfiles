@@ -46,7 +46,9 @@
       "Bash(gh api *)",
       "Bash(gh * --jq *)"
     ],
-    "deny": ["Read(./secrets/**)"]
+    "deny": [
+      "Read(./secrets/**)"
+    ]
   },
   "model": "opus",
   "enabledPlugins": {
