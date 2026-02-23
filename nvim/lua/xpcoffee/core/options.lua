@@ -29,24 +29,40 @@ local function is_whitespace_only(lines)
 end
 
 if vim.fn.system("uname -r"):lower():find("microsoft") then
-  local paste_cmd = 'powershell.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))'
   vim.g.clipboard = {
     name = "WslClipboard",
     copy = {
       ["+"] = function(lines, _)
         if is_whitespace_only(lines) then return end
-        vim.fn.system("clip.exe", lines)
+        vim.fn.system("xclip -selection clipboard", lines)
       end,
       ["*"] = function(lines, _)
         if is_whitespace_only(lines) then return end
-        vim.fn.system("clip.exe", lines)
+        vim.fn.system("xclip -selection clipboard", lines)
       end,
     },
     paste = {
-      ["+"] = function() return vim.fn.systemlist(paste_cmd) end,
-      ["*"] = function() return vim.fn.systemlist(paste_cmd) end,
+      ["+"] = function()
+        local content = vim.fn.system("xclip -selection clipboard -o")
+        local lines = vim.split(content, "\n", { plain = true })
+        -- If content ends with a newline, it was a linewise yank
+        if content:sub(-1) == "\n" then
+          table.remove(lines) -- remove trailing empty element
+          return { lines, "V" }
+        end
+        return { lines, "v" }
+      end,
+      ["*"] = function()
+        local content = vim.fn.system("xclip -selection clipboard -o")
+        local lines = vim.split(content, "\n", { plain = true })
+        if content:sub(-1) == "\n" then
+          table.remove(lines)
+          return { lines, "V" }
+        end
+        return { lines, "v" }
+      end,
     },
-    cache_enabled = 0,
+    cache_enabled = 1,
   }
 end
 opt.clipboard:append("unnamedplus") -- system clipboard as default register
