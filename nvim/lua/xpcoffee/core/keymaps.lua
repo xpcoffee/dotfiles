@@ -23,7 +23,7 @@ keymap.set("n", "/", ":set hlsearch<CR>/")
 keymap.set("n", "?", ":set hlsearch<CR>/")
 
 -- copy file path
-keymap.set("n", "<leader>cp", function() vim.fn.setreg("+", vim.fn.expand("%:p")) end, { desc = "Copy absolute file path" })
+keymap.set("n", "<leader><leader>p", function() vim.fn.setreg("+", vim.fn.expand("%:p")) end, { desc = "Copy absolute file path" })
 
 -- messages
 keymap.set("n", "<leader>ll", ":messages<CR>", { desc = "messages" })
