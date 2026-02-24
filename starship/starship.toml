@@ -20,3 +20,6 @@ format = '[$time]($style) '
 [terraform]
 disabled = true
 
+[dotnet]
+disabled = true
+
