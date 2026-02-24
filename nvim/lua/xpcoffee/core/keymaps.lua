@@ -23,7 +23,7 @@ keymap.set("n", "/", ":set hlsearch<CR>/")
 keymap.set("n", "?", ":set hlsearch<CR>/")
 
 -- copy file path
-keymap.set("n", "<leader><leader>p", function() vim.fn.setreg("+", vim.fn.expand("%:p")) end, { desc = "Copy absolute file path" })
+keymap.set("n", "<leader>yp", function() vim.fn.setreg("+", vim.fn.expand("%:p")) end, { desc = "Copy absolute file path" })
 
 -- messages
 keymap.set("n", "<leader>ll", ":messages<CR>", { desc = "messages" })
@@ -55,13 +55,23 @@ end
 vim.cmd("command! RemoveQFItem lua Remove_qf_item()")
 vim.api.nvim_command("autocmd FileType qf nnoremap <buffer> dd :RemoveQFItem<cr>")
 
---- Currently doesn't get used - use this after which-key is imported
---- Sets up generic key groups that don't fit elsewhere
---- meant to be called using
-M = {}
-M.setup_key_groups = function(which_key)
-  which_key.add({ "<leader>l", group = "logs" })
-  which_key.add({ "<leader>b", group = "buffers" })
-end
+-- which-key group names
+-- deferred so which-key is loaded first
+vim.api.nvim_create_autocmd("User", {
+  pattern = "LazyLoad",
+  callback = function(event)
+    if event.data ~= "which-key.nvim" then return end
+    local wk = require("which-key")
+    wk.add({
+      { "<leader>b", group = "buffers", icon = "󰈔" },
+      { "<leader>c", group = "code", icon = "󰏗" },
+      { "<leader>l", group = "logs", icon = "󰐅" },
+      { "<leader>n", group = "notes", icon = "󰂽" },
+      { "<leader>y", group = "yank", icon = "󰆏" },
+      { "<leader><leader>", group = "core", icon = "󰛡" },
+    })
+  end,
+})
 
+M = {}
 return M
