@@ -1,0 +1,22 @@
+format = '$all$fill$time$line_break$character'
+
+[fill]
+symbol = ' '
+
+[azure]
+disabled = false
+format = 'on [$symbol($subscription)]($style) '
+symbol = '󰠅 '
+style = 'blue bold'
+
+[git_status]
+disabled = true
+
+[time]
+disabled = false
+time_format = '%F %T'
+format = '[$time]($style) '
+
+[terraform]
+disabled = true
+

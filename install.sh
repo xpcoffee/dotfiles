@@ -49,7 +49,7 @@ stow --adopt --target="${HOME}/bin" "bin"
 #   .config    #
 ################
 
-CONFIG_DIRECTORY_CONFIG=("fish" "nvim" "powerline-shell")
+CONFIG_DIRECTORY_CONFIG=("fish" "nvim" "starship")
 
 for config in ${CONFIG_DIRECTORY_CONFIG[*]}; do
     HOME_CONFIG_DIR="${HOME}/.config/${config}"

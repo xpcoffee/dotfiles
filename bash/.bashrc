@@ -105,14 +105,9 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Powerline shell
-function _update_ps1() {
-    PS1=$(powerline-shell $?)
-}
-
-if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
-    PROMPT_COMMAND="_update_ps1${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
-fi
+# Starship prompt
+export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
+eval "$(starship init bash)"
 
 eval "$(zoxide init bash)"
 
