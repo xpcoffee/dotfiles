@@ -21,7 +21,7 @@
       "Bash(python3 -m http.server:*)",
       "Bash(jq *)",
       "Bash(cat *)",
-      "Bash(ls*)",
+      "Bash(ls *)",
       "Bash(ps *)",
       "Bash(dotnet *)",
       "Bash(git *)",
@@ -46,9 +46,7 @@
       "Bash(gh api *)",
       "Bash(gh * --jq *)"
     ],
-    "deny": [
-      "Read(./secrets/**)"
-    ]
+    "deny": ["Read(./secrets/**)"]
   },
   "model": "opus",
   "enabledPlugins": {
