@@ -23,3 +23,11 @@ disabled = true
 [dotnet]
 disabled = true
 
+[python]
+disabled = true
+
+[nodejs]
+disabled = true
+
+[package]
+disabled = true
