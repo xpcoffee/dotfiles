@@ -111,7 +111,8 @@ select_worktree() {
 usage() {
     echo -e "${BLUE}Usage:${NC}"
     echo "  wt clone <url>            Clone a repo into the wt layout"
-    echo "  wt add <branch-name>      Create worktree for $USER_PREFIX/<branch-name>"
+    echo "  wt add [-t] <branch-name>  Create worktree for $USER_PREFIX/<branch-name>"
+    echo "                              -t: open in a new tmux window"
     echo "  wt rm [branch-name]       Remove worktree (fzf select if no name given)"
     echo "  wt list                   List all worktrees"
     echo "  wt cd [branch-name]       Print path to worktree (fzf select if no name)"
@@ -170,11 +171,17 @@ cmd_clone() {
 }
 
 cmd_add() {
+    local open_tmux=false
+    if [[ "$1" == "-t" ]]; then
+        open_tmux=true
+        shift
+    fi
+
     local branch_name="$1"
 
     if [[ -z "$branch_name" ]]; then
         echo -e "${RED}Error: Branch name required${NC}"
-        echo "Usage: wt add <branch-name>"
+        echo "Usage: wt add [-t] <branch-name>"
         exit 1
     fi
 
@@ -234,8 +241,13 @@ cmd_add() {
     echo -e "${GREEN}✓ Worktree created at:${NC} $worktree_path" >&2
     echo -e "${GREEN}✓ Branch:${NC} $full_branch" >&2
 
-    # Print path to stdout for shell function to cd into
-    echo "$worktree_path"
+    if $open_tmux; then
+        tmux new-window -n "$branch_name" -c "$worktree_path"
+        echo -e "${GREEN}✓ Opened tmux window '$branch_name'${NC}" >&2
+    else
+        # Print path to stdout for shell function to cd into
+        echo "$worktree_path"
+    fi
 }
 
 cmd_remove() {
@@ -312,20 +324,36 @@ cmd_cd() {
         exit 1
     fi
 
-    # If no branch name, use fzf to select
+    # If no branch name, use fzf to select (include main/master)
     if [[ -z "$branch_name" ]]; then
-        branch_name=$(select_worktree "Jump to worktree:") || exit 1
+        if ! command -v fzf &>/dev/null; then
+            echo -e "${RED}Error: fzf is required for interactive selection${NC}" >&2
+            echo "Install fzf or provide a branch name as argument" >&2
+            exit 1
+        fi
+
+        local names
+        names=$(
+            echo "$DEFAULT_BRANCH"
+            get_worktree_names
+        )
+
+        branch_name=$(echo "$names" | fzf --prompt="Jump to worktree: " --height=~50% --reverse) || exit 1
     fi
 
-    local worktree_path="$WORKTREES_DIR/$branch_name"
+    # Resolve main/master to MAIN_REPO, others to WORKTREES_DIR
+    if [[ "$branch_name" == "$DEFAULT_BRANCH" ]]; then
+        echo "$MAIN_REPO"
+    else
+        local worktree_path="$WORKTREES_DIR/$branch_name"
 
-    if [[ ! -d "$worktree_path" ]]; then
-        echo -e "${RED}Error: Worktree not found at:${NC} $worktree_path" >&2
-        exit 1
+        if [[ ! -d "$worktree_path" ]]; then
+            echo -e "${RED}Error: Worktree not found at:${NC} $worktree_path" >&2
+            exit 1
+        fi
+
+        echo "$worktree_path"
     fi
-
-    # Just print the path (for use with cd)
-    echo "$worktree_path"
 }
 
 cmd_tmux() {
@@ -408,7 +436,8 @@ case "${1:-}" in
         cmd_clone "$2"
         ;;
     add)
-        cmd_add "$2"
+        shift
+        cmd_add "$@"
         ;;
     rm)
         cmd_remove "$2"
