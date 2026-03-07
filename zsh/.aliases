@@ -8,8 +8,11 @@ function jq-repl {
 function wt() {
   case "$1" in
     add|cd)
-      local dir
-      dir=$(command wt "$@") && [[ -n "$dir" ]] && builtin cd "$dir"
+      local dir state_file
+      dir=$(command wt "$@") && [[ -n "$dir" ]] && {
+        state_file=$(command wt _state_file 2>/dev/null) && [[ -n "$state_file" ]] && printf '%s' "$PWD" > "$state_file"
+        builtin cd "$dir"
+      }
       ;;
     *)
       command wt "$@"
