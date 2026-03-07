@@ -48,10 +48,22 @@
     ],
     "deny": ["Read(./secrets/**)"]
   },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.command // \"\"' | if grep -qE 'git\\s+commit'; then if grep -qE 'git\\s+commit.*\\$\\('; then echo 'ERROR: Command substitution $() detected in git commit' >&2; echo 'Use: git commit -m \"message\" or git commit -F- <<EOF' >&2; exit 2; elif grep -qE 'git\\s+commit.*`'; then echo 'ERROR: Backtick substitution detected' >&2; exit 2; elif grep -qE 'git\\s+commit.*<<<'; then echo 'ERROR: Heredoc syntax detected' >&2; exit 2; fi; fi"
+          }
+        ]
+      }
+    ]
+  },
   "model": "opus",
   "enabledPlugins": {
     "nvim-markdown-notes-memgraph@xpcoffee-plugins": true
   },
-  "spinnerTipsEnabled": false,
-  "effortLevel": "medium"
+  "spinnerTipsEnabled": false
 }
