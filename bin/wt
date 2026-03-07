@@ -324,6 +324,26 @@ cmd_cd() {
         exit 1
     fi
 
+    local state_dir="/tmp/wt"
+    mkdir -p "$state_dir"
+    local state_file="$state_dir/$(basename "$REPO_DIR").wt_prev"
+
+    # Handle "wt cd -" to jump to previous worktree
+    if [[ "$branch_name" == "-" ]]; then
+        if [[ ! -f "$state_file" ]]; then
+            echo -e "${RED}Error: No previous worktree${NC}" >&2
+            exit 1
+        fi
+        local prev
+        prev=$(cat "$state_file")
+        if [[ ! -d "$prev" ]]; then
+            echo -e "${RED}Error: Previous worktree no longer exists:${NC} $prev" >&2
+            exit 1
+        fi
+        echo "$prev"
+        return
+    fi
+
     # If no branch name, use fzf to select (include main/master)
     if [[ -z "$branch_name" ]]; then
         if ! command -v fzf &>/dev/null; then
@@ -450,6 +470,14 @@ case "${1:-}" in
         ;;
     t|tmux)
         cmd_tmux
+        ;;
+    _state_file)
+        # Internal: print state file path for shell wrapper
+        if find_repo_context; then
+            local state_dir="/tmp/wt"
+            mkdir -p "$state_dir"
+            echo "$state_dir/$(basename "$REPO_DIR").wt_prev"
+        fi
         ;;
     -h|--help|help|"")
         usage
