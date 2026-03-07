@@ -57,7 +57,8 @@ return {
     -- keymaps
     require("which-key").add({ "<leader>f", group = "files" })
     vim.keymap.set('n', '<C-p>', builtins.find_files, { desc = 'Find file' })
-    vim.keymap.set({ 'n', 'v' }, '<C-f>', builtins.live_grep, { desc = 'Grep through files' })
+    vim.keymap.set('n', '<C-f>', builtins.live_grep, { desc = 'Grep through files' })
+    vim.keymap.set('v', '<C-f>', live_grep_selection, { desc = 'Grep current selection' })
     vim.keymap.set('n', '<leader><leader>u', builtins.lsp_references, { desc = 'Usages/references' })
     vim.keymap.set('n', '<leader><leader>f', builtins.lsp_document_symbols, { desc = 'File symbols' })
     vim.keymap.set('n', '<leader><leader>p', builtins.lsp_dynamic_workspace_symbols, { desc = 'Project symbols' })
