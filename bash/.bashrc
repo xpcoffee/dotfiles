@@ -237,7 +237,7 @@ fi
 # ----------------
 # notes
 # ----------------
-export NOTES_ROOT="$PERSONAL_CODE_PATH/notes/"
+export NOTES_ROOT="$PERSONAL_CODE_PATH/notes"
 
 # ----------------
 # Work
