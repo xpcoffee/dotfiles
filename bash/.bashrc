@@ -2,6 +2,13 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+# ----------------
+# 1Password (before interactive check so it works in non-interactive shells)
+# ----------------
+if [ -f "/mnt/c/Users/emeri/AppData/Local/Microsoft/WinGet/Links/op.exe" ]; then
+  alias op="/mnt/c/Users/emeri/AppData/Local/Microsoft/WinGet/Links/op.exe"
+fi
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
