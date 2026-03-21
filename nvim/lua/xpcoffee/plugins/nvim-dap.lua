@@ -10,22 +10,6 @@ return {
         require("which-key").add({ "<leader><leader>d", group = "debugger" })
       end
     },
-    {
-      "microsoft/vscode-js-debug",
-      -- see npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out
-      -- see https://www.youtube.com/watch?v=Ul_WPhS2bis
-      build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
-    },
-    {
-      "mxsdev/nvim-dap-vscode-js",
-      config = function()
-        require("dap-vscode-js").setup({
-          adapters = js_adapters, -- which adapters to register in nvim-dap
-          debugger_path = vim.fn.resolve(vim.fn.stdpath('data') .. '/lazy/vscode-js-debug')
-        })
-      end
-
-    },
     "rcarriga/nvim-dap-ui",
     {
       "theHamsta/nvim-dap-virtual-text",
