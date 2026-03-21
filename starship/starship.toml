@@ -29,5 +29,8 @@ disabled = true
 [nodejs]
 disabled = true
 
+[golang]
+disabled = true
+
 [package]
 disabled = true
