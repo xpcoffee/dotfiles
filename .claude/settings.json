@@ -3,6 +3,9 @@
     "commit": "",
     "pr": ""
   },
+  "env": {
+    "CLAUDE_ENV_FILE": "/home/rick/.claude_env"
+  },
   "permissions": {
     "allow": [
       "mcp__ado__*",
@@ -13,41 +16,39 @@
       "mcp__playwright__*",
       "WebFetch",
       "WebSearch",
-      "Bash(QUERY=* az monitor log-analytics query *)",
-      "Edit(//home/emerick/code/work/)",
-      "Edit(//home/emerick/code/personal/)",
-      "Read(//home/emerick/code/work/)",
-      "Read(//home/emerick/code/personal/)",
+      "Bash(az:*)",
+      "Edit(/home/emerick/code/work/**)",
+      "Edit(/home/emerick/code/personal/**)",
+      "Read(/home/emerick/code/work/**)",
+      "Read(/home/emerick/code/personal/**)",
       "Bash(python3 -m http.server:*)",
-      "Bash(jq *)",
-      "Bash(cat *)",
-      "Bash(ls *)",
-      "Bash(ps *)",
-      "Bash(dotnet *)",
-      "Bash(git *)",
-      "Bash(git commit *)",
-      "Bash(uv *)",
-      "Bash(awk *)",
-      "Bash(find *)",
-      "Bash(echo *)",
-      "Bash(grep *)",
-      "Bash(tee *)",
-      "Bash(test *)",
-      "Bash(make *)",
-      "Bash(sleep *)",
-      "Bash(xargs *)",
-      "Bash(tail *)",
-      "Bash(pandoc *)",
-      "Bash(docker compose *)",
-      "Bash(docker build *)",
-      "Bash(docker exec *)",
-      "Bash(docker rm *)",
-      "Bash(gh *)",
-      "Bash(gh api *)",
-      "Bash(gh * --jq *)"
+      "Bash(jq:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(ps:*)",
+      "Bash(dotnet:*)",
+      "Bash(git:*)",
+      "Bash(uv:*)",
+      "Bash(awk:*)",
+      "Bash(find:*)",
+      "Bash(echo:*)",
+      "Bash(grep:*)",
+      "Bash(tee:*)",
+      "Bash(test:*)",
+      "Bash(make:*)",
+      "Bash(sleep:*)",
+      "Bash(xargs:*)",
+      "Bash(tail:*)",
+      "Bash(pandoc:*)",
+      "Bash(docker:*)",
+      "Bash(gh:*)",
+      "Bash(go test:*)",
+      "Bash(gcloud:*)",
+      "Bash(npm:*)"
     ],
     "deny": ["Read(./secrets/**)"]
   },
+  "model": "haiku",
   "hooks": {
     "PreToolUse": [
       {
@@ -55,13 +56,16 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.command // \"\"' | if grep -qE 'git\\s+commit'; then if grep -qE 'git\\s+commit.*\\$\\('; then echo 'ERROR: Command substitution $() detected in git commit' >&2; echo 'Use: git commit -m \"message\" or git commit -F- <<EOF' >&2; exit 2; elif grep -qE 'git\\s+commit.*`'; then echo 'ERROR: Backtick substitution detected' >&2; exit 2; elif grep -qE 'git\\s+commit.*<<<'; then echo 'ERROR: Heredoc syntax detected' >&2; exit 2; fi; fi"
+            "command": "jq -r '.tool_input.command // \"\"' | { read -r cmd; if echo \"$cmd\" | grep -qE 'git\\s+commit'; then if echo \"$cmd\" | grep -qE '\\$\\('; then echo '{\"continue\":false,\"stopReason\":\"Command substitution $() not allowed in git commit\"}'; elif echo \"$cmd\" | grep -qE '`'; then echo '{\"continue\":false,\"stopReason\":\"Backtick substitution not allowed in git commit\"}'; elif echo \"$cmd\" | grep -qE '<<<'; then echo '{\"continue\":false,\"stopReason\":\"Heredoc syntax not allowed in git commit\"}'; else echo '{\"continue\":true}'; fi; else echo '{\"continue\":true}'; fi; }"
+          },
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.command // \"\"' | { read -r cmd; if echo \"$cmd\" | grep -qE 'cd\\s+.*&&\\s*git'; then echo '{\"continue\":false,\"stopReason\":\"Use git -C instead of cd && git (e.g., git -C /path/to/repo status)\"}'; else echo '{\"continue\":true}'; fi; }"
           }
         ]
       }
     ]
   },
-  "model": "opus",
   "enabledPlugins": {
     "nvim-markdown-notes-memgraph@xpcoffee-plugins": true
   },
