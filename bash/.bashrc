@@ -231,8 +231,19 @@ if command -v fzf &> /dev/null
 then
   # Set up fzf key bindings and fuzzy completion
   eval "$(fzf --bash)"
+else
+  [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 fi
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+
+# ----------------
+# Sesh
+# ----------------
+if command -v sesh &> /dev/null
+then
+  alias sesh-picker="sesh list | fzf"
+  alias sesh-jump='sesh connect $(sesh list | fzf)'
+fi
 
 # ----------------
 # K9s
