@@ -9,6 +9,26 @@ if [ -f "/mnt/c/Users/emeri/AppData/Local/Microsoft/WinGet/Links/op.exe" ]; then
   alias op="/mnt/c/Users/emeri/AppData/Local/Microsoft/WinGet/Links/op.exe"
 fi
 
+# ----------------
+# PATH (before interactive check so it works in non-interactive shells)
+# ----------------
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+fi
+if [ -d "/snap/bin" ] ; then
+    PATH="/snap/bin:$PATH"
+fi
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+if [ -d "/opt/go/bin" ] ; then
+    PATH="/opt/go/bin:$PATH"
+fi
+if [ -x "$(command -v go)" ]; then
+    PATH="$PATH:$(go env GOPATH)/bin"
+fi
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin/"
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -81,24 +101,7 @@ alias ssh-id-xpc='eval "$(ssh-agent)" && ssh-add ~/.ssh/xpc_id_ed25519'
 alias cat='batcat'
 alias rider='/opt/JetBrains\ Rider-2024.3.3/bin/rider'
 
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
-fi
-
-# set PATH /snap/bin
-if [ -d "/snap/bin" ] ; then
-    PATH="/snap/bin:$PATH"
-fi
-
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
-
-
 # binaries & env
-[ -f $HOME/.local/bin ] && export PATH=$PATH:$HOME/.local/bin
 [ -f $HOME/.local/bin/env ] && . "$HOME/.local/bin/env"
 
 # enable programmable completion features (you don't need to enable
@@ -132,17 +135,6 @@ export WORK_CODE_PATH="$HOME/code/work"
 
 
 # ----------------
-# Go
-# ----------------
-if [ -d "/opt/go/bin" ] ; then
-    PATH="/opt/go/bin:$PATH"
-fi
-
-if [ -x "$(command -v go)" ]; then
-    PATH="$PATH:$(go env GOPATH)/bin"
-fi
-
-# ----------------
 # Node & Javascript
 # ----------------
 export NVM_DIR="$HOME/.nvm"
@@ -165,7 +157,6 @@ fi
 # ----------------
 # Vim
 # ----------------
-export PATH="$PATH:/opt/nvim-linux-x86_64/bin/"
 function vim_with_dir() {
   if [ $# -eq 0 ]; then
      nvim -c "Oil"
@@ -235,6 +226,11 @@ else
   [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 fi
 
+
+# ----------------
+# Tmux
+# ----------------
+[ -f ~/.tmux/plugins/tmux-fzf/main.sh ] && alias tmux-fzf="~/.tmux/plugins/tmux-fzf/main.sh"
 
 # ----------------
 # Sesh
