@@ -24,6 +24,9 @@ fi
 if [ -d "/opt/go/bin" ] ; then
     PATH="/opt/go/bin:$PATH"
 fi
+if [ -d "/usr/local/go/bin" ] ; then
+    PATH="/usr/local/go/bin:$PATH"
+fi
 if [ -x "$(command -v go)" ]; then
     PATH="$PATH:$(go env GOPATH)/bin"
 fi
