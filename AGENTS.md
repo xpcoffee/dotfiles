@@ -92,3 +92,7 @@ After modifying nvim config:
 
 - The nvim config includes tmux-navigator integration
 - Tmux and nvim navigation keybindings should remain compatible
+
+### Temporary files
+
+Prefer using `mktemp` instead of manually creating files in `/tmp`
