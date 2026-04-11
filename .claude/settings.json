@@ -62,7 +62,7 @@
       "Read(./secrets/**)"
     ]
   },
-  "model": "opus[1m]",
+  "model": "haiku",
   "hooks": {
     "PreToolUse": [
       {
