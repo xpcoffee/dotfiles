@@ -2,6 +2,6 @@
 name = Emerick Bosch
 email = xpc.dev@gmail.com
 
-[core]
-sshCommand = /mnt/c/Windows/System32/OpenSSH/ssh.exe -o "IdentityFile=GitHubXpcoffee"
+[credential "https://github.com"]
+	username = xpcoffee
 
