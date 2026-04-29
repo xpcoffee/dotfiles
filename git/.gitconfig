@@ -46,8 +46,11 @@
 [pull]
 	rebase = true
 [credential "https://github.com"]
-	helper = 
-	helper = !/usr/bin/gh auth git-credential
+	helper =
+	helper = /home/emerick/code/personal/dotfiles/git/git-credential-gh-multi
 [credential "https://gist.github.com"]
-	helper = 
-	helper = !/usr/bin/gh auth git-credential
+	helper =
+	helper = /home/emerick/code/personal/dotfiles/git/git-credential-gh-multi
+[credential "https://dev.azure.com"]
+	helper =
+	helper = "!'/mnt/c/Program Files/Git/mingw64/bin/git-credential-manager.exe'"
