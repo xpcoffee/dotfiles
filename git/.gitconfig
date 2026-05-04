@@ -45,18 +45,13 @@
 	defaultBranch = main
 [pull]
 	rebase = true
-[credential "https://github.com"]
-	helper =
-	helper = /usr/local/bin/git-credential-manager
-[credential "https://gist.github.com"]
+[credential]
 	helper =
 	helper = /usr/local/bin/git-credential-manager
 [credential "https://dev.azure.com"]
 	azreposCredentialType = oauth
-	helper = /usr/local/bin/git-credential-manager
 	useHttpPath = true
 [credential "azrepos:org/redacted-org"]
 	azreposCredentialType = oauth
-	helper = /usr/local/bin/git-credential-manager
 	azureAuthority = https://login.microsoftonline.com/redacted-tenant-id
 	username = xpc.dev@gmail.com
