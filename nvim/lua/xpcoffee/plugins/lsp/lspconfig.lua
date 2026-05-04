@@ -19,7 +19,7 @@ return {
         "rust_analyzer",
         "tailwindcss",
         "ts_ls",
-        "csharp_ls"
+        "omnisharp"
       },
       handlers = {
         function(server_name)
