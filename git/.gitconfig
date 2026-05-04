@@ -47,10 +47,16 @@
 	rebase = true
 [credential "https://github.com"]
 	helper =
-	helper = /home/emerick/code/personal/dotfiles/git/git-credential-gh-multi
+	helper = /usr/local/bin/git-credential-manager
 [credential "https://gist.github.com"]
 	helper =
-	helper = /home/emerick/code/personal/dotfiles/git/git-credential-gh-multi
+	helper = /usr/local/bin/git-credential-manager
 [credential "https://dev.azure.com"]
-	helper =
-	helper = "!'/mnt/c/Program Files/Git/mingw64/bin/git-credential-manager.exe'"
+	azreposCredentialType = oauth
+	helper = /usr/local/bin/git-credential-manager
+	useHttpPath = true
+[credential "azrepos:org/redacted-org"]
+	azreposCredentialType = oauth
+	helper = /usr/local/bin/git-credential-manager
+	azureAuthority = https://login.microsoftonline.com/redacted-tenant-id
+	username = xpc.dev@gmail.com
