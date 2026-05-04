@@ -49,6 +49,10 @@
         "MEMGRAPH_PORT": "7687",
         "NOTES_ROOT": "${input:notes_root}"
       }
+    },
+    "teams": {
+      "type": "http",
+      "url": "https://agent365.svc.cloud.microsoft/agents/tenants/redacted-tenant-id/servers/mcp_TeamsServer"
     }
   },
   "inputs": [
