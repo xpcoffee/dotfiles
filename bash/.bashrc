@@ -10,6 +10,18 @@ if [ -f "/mnt/c/Users/emeri/AppData/Local/Microsoft/WinGet/Links/op.exe" ]; then
 fi
 
 # ----------------
+# Work (before interactive check so it works in non-interactive shells)
+# ----------------
+[ -f ~/.bashrc_work ] && source ~/.bashrc_work
+
+# ----------------
+# Node & NVM (before interactive check so it works in non-interactive shells)
+# ----------------
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# ----------------
 # PATH (before interactive check so it works in non-interactive shells)
 # ----------------
 if [ -d "$HOME/bin" ] ; then
@@ -138,13 +150,6 @@ export WORK_CODE_PATH="$HOME/code/work"
 
 
 # ----------------
-# Node & Javascript
-# ----------------
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# ----------------
 # C#
 # ----------------
 
@@ -257,7 +262,13 @@ fi
 export NOTES_ROOT="$PERSONAL_CODE_PATH/notes"
 
 # ----------------
-# Work
+# Work (work-functions sourced in interactive shells only)
 # ----------------
-[ -f ~/.bashrc_work ] && source ~/.bashrc_work
 [ -f ~/.config/bash/work-functions.sh ] && source ~/.config/bash/work-functions.sh
+
+# ----------------
+# WSL: open browser links in Windows default browser
+# ----------------
+if grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null && command -v wslview &>/dev/null; then
+  export BROWSER=wslview
+fi
