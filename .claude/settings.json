@@ -1,10 +1,10 @@
 {
+  "env": {
+    "CLAUDE_ENV_FILE": "/home/rick/.claude_env"
+  },
   "attribution": {
     "commit": "",
     "pr": ""
-  },
-  "env": {
-    "CLAUDE_ENV_FILE": "/home/rick/.claude_env"
   },
   "permissions": {
     "allow": [
@@ -17,11 +17,21 @@
       "WebFetch",
       "WebSearch",
       "Bash(az:*)",
+      "Edit(/tmp/**)",
+      "Write(/tmp/**)",
+      "Read(/tmp/**)",
+      "Read(~/.claude/skills/**)",
       "Edit(/home/emerick/code/work/**)",
-      "Edit(/home/emerick/code/personal/**)",
+      "Write(/home/emerick/code/work/**)",
       "Read(/home/emerick/code/work/**)",
+      "Edit(/home/emerick/code/personal/**)",
+      "Write(/home/emerick/code/personal/**)",
       "Read(/home/emerick/code/personal/**)",
       "Bash(python3 -m http.server:*)",
+      "Bash(npx eslint:*)",
+      "Bash(npx prettier:*)",
+      "Bash(npx oxfmt:*)",
+      "Bash(npx tsc:*)",
       "Bash(jq:*)",
       "Bash(cat:*)",
       "Bash(ls:*)",
@@ -44,11 +54,15 @@
       "Bash(gh:*)",
       "Bash(go test:*)",
       "Bash(gcloud:*)",
-      "Bash(npm:*)"
+      "Bash(npm:*)",
+      "Edit(\"/tmp/*\")",
+      "Read(\"/tmp/*\")"
     ],
-    "deny": ["Read(./secrets/**)"]
+    "deny": [
+      "Read(./secrets/**)"
+    ]
   },
-  "model": "haiku",
+  "model": "opus[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -56,18 +70,41 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.command // \"\"' | { read -r cmd; if echo \"$cmd\" | grep -qE 'git\\s+commit'; then if echo \"$cmd\" | grep -qE '\\$\\('; then echo '{\"continue\":false,\"stopReason\":\"Command substitution $() not allowed in git commit\"}'; elif echo \"$cmd\" | grep -qE '`'; then echo '{\"continue\":false,\"stopReason\":\"Backtick substitution not allowed in git commit\"}'; elif echo \"$cmd\" | grep -qE '<<<'; then echo '{\"continue\":false,\"stopReason\":\"Heredoc syntax not allowed in git commit\"}'; else echo '{\"continue\":true}'; fi; else echo '{\"continue\":true}'; fi; }"
+            "command": "jq -r '.tool_input.command // \"\"' | { read -r cmd; if echo \"$cmd\" | grep -qE 'git\\s+commit'; then if echo \"$cmd\" | grep -qE '\\$\\('; then echo 'BLOCKED: Command substitution $() not allowed in git commit. Use a heredoc with cat <<EOF instead.' >&2; exit 2; elif echo \"$cmd\" | grep -qE '`'; then echo 'BLOCKED: Backtick substitution not allowed in git commit. Use a heredoc with cat <<EOF instead.' >&2; exit 2; elif echo \"$cmd\" | grep -qE '<<<'; then echo 'BLOCKED: Heredoc syntax not allowed in git commit. Use a heredoc with cat <<EOF instead.' >&2; exit 2; fi; fi; }"
           },
           {
             "type": "command",
-            "command": "jq -r '.tool_input.command // \"\"' | { read -r cmd; if echo \"$cmd\" | grep -qE 'cd\\s+.*&&\\s*git'; then echo '{\"continue\":false,\"stopReason\":\"Use git -C instead of cd && git (e.g., git -C /path/to/repo status)\"}'; else echo '{\"continue\":true}'; fi; }"
+            "command": "jq -r '.tool_input.command // \"\"' | { read -r cmd; if echo \"$cmd\" | grep -qE 'cd\\s+.*&&\\s*git'; then echo 'BLOCKED: Use git -C instead of cd && git (e.g., git -C /path/to/repo status)' >&2; exit 2; fi; }"
           }
         ]
       }
     ]
   },
   "enabledPlugins": {
-    "nvim-markdown-notes-memgraph@xpcoffee-plugins": true
+    "nvim-markdown-notes-memgraph@xpcoffee-plugins": true,
+    "redacted-plugin@redacted-marketplace": true,
+    "oncall@redacted-marketplace": true
   },
-  "spinnerTipsEnabled": false
+  "extraKnownMarketplaces": {
+    "copilot-plugins": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/github/copilot-plugins.git"
+      }
+    }
+  },
+  "sandbox": {
+    "filesystem": {
+      "allowWrite": [
+        "/home/emerick/code/work/**",
+        "/home/emerick/code/personal/**"
+      ],
+      "allowRead": [
+        "/home/emerick/code/work/**",
+        "/home/emerick/code/personal/**"
+      ]
+    }
+  },
+  "spinnerTipsEnabled": false,
+  "skipDangerousModePermissionPrompt": true
 }
