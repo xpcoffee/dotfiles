@@ -60,7 +60,8 @@
     ],
     "deny": [
       "Read(./secrets/**)"
-    ]
+    ],
+    "defaultMode": "auto"
   },
   "model": "haiku",
   "hooks": {
@@ -85,26 +86,14 @@
     "redacted-plugin@redacted-marketplace": true,
     "oncall@redacted-marketplace": true
   },
+  "spinnerTipsEnabled": false,
+  "skipAutoPermissionPrompt": true,
   "extraKnownMarketplaces": {
-    "copilot-plugins": {
+    "xpcoffee-notes": {
       "source": {
-        "source": "git",
-        "url": "https://github.com/github/copilot-plugins.git"
+        "source": "directory",
+        "path": "/home/rick/code/personal/notes"
       }
     }
-  },
-  "sandbox": {
-    "filesystem": {
-      "allowWrite": [
-        "/home/emerick/code/work/**",
-        "/home/emerick/code/personal/**"
-      ],
-      "allowRead": [
-        "/home/emerick/code/work/**",
-        "/home/emerick/code/personal/**"
-      ]
-    }
-  },
-  "spinnerTipsEnabled": false,
-  "skipDangerousModePermissionPrompt": true
+  }
 }
