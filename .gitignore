@@ -7,3 +7,7 @@ fish/functions/
 fish/fish_plugins
 fish/completions/
 settings.local.json
+
+# Work / employer-specific material (Neko). These dotfiles are public — anything
+# tagged work-* stays local and must never be committed.
+work-*
