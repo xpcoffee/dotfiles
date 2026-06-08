@@ -84,7 +84,9 @@
   "enabledPlugins": {
     "nvim-markdown-notes-memgraph@xpcoffee-plugins": true,
     "redacted-plugin@redacted-marketplace": true,
-    "oncall@redacted-marketplace": true
+    "oncall@redacted-marketplace": true,
+    "software-design@redacted-marketplace": true,
+    "writing-style@redacted-marketplace": true
   },
   "spinnerTipsEnabled": false,
   "skipAutoPermissionPrompt": true,
@@ -95,5 +97,20 @@
         "path": "/home/rick/code/personal/notes"
       }
     }
-  }
+  },
+  "sandbox": {
+    "filesystem": {
+      "allowWrite": [
+        "/home/emerick/code/work/**",
+        "/home/emerick/code/personal/**"
+      ],
+      "allowRead": [
+        "/home/emerick/code/work/**",
+        "/home/emerick/code/personal/**"
+      ]
+    }
+  },
+  "spinnerTipsEnabled": false,
+  "skipDangerousModePermissionPrompt": true,
+  "skipAutoPermissionPrompt": true
 }
