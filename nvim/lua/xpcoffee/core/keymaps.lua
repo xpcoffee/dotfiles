@@ -67,6 +67,7 @@ vim.api.nvim_create_autocmd("User", {
       { "<leader>c", group = "code", icon = "󰏗" },
       { "<leader>l", group = "logs", icon = "󰐅" },
       { "<leader>n", group = "notes", icon = "󰂽" },
+      { "<leader>w", group = "workitems", icon = "󰳫" },
       { "<leader>y", group = "yank", icon = "󰆏" },
       { "<leader><leader>", group = "core", icon = "󰛡" },
     })
