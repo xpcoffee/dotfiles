@@ -81,11 +81,7 @@
     ]
   },
   "enabledPlugins": {
-    "nvim-markdown-notes-memgraph@xpcoffee-plugins": true,
-    "redacted-plugin@redacted-marketplace": true,
-    "oncall@redacted-marketplace": true,
-    "software-design@redacted-marketplace": true,
-    "writing-style@redacted-marketplace": true
+    "nvim-markdown-notes-memgraph@xpcoffee-plugins": true
   },
   "extraKnownMarketplaces": {
     "xpcoffee-notes": {

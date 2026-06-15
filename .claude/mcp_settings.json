@@ -52,7 +52,7 @@
     },
     "teams": {
       "type": "http",
-      "url": "https://agent365.svc.cloud.microsoft/agents/tenants/redacted-tenant-id/servers/mcp_TeamsServer"
+      "url": "https://agent365.svc.cloud.microsoft/agents/tenants/${input:teams_tenant_id}/servers/mcp_TeamsServer"
     }
   },
   "inputs": [
@@ -82,6 +82,11 @@
       "id": "notes_root",
       "type": "promptString",
       "description": "Root directory for markdown notes"
+    },
+    {
+      "id": "teams_tenant_id",
+      "type": "promptString",
+      "description": "Entra tenant ID for the Teams MCP server"
     }
   ]
 }

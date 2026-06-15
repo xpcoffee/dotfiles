@@ -50,10 +50,6 @@
 	cacheOptions = --timeout 86400
 	helper =
 	helper = /usr/local/bin/git-credential-manager
-[credential "https://dev.azure.com"]
-	azreposCredentialType = oauth
-	useHttpPath = true
-[credential "azrepos:org/redacted-org"]
-	azreposCredentialType = oauth
-	azureAuthority = https://login.microsoftonline.com/redacted-tenant-id
-	username = xpc.dev@gmail.com
+
+# Work ADO credentials (org, tenant, email) live in ~/.gitconfig-work,
+# included for repos under ~/code/work/ via the includeIf at the top.
