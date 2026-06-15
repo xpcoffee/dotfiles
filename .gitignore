@@ -11,3 +11,8 @@ settings.local.json
 # Work / employer-specific material (Neko). These dotfiles are public — anything
 # tagged work-* stays local and must never be committed.
 work-*
+
+# Work tooling kept local. The performance-feedback skill is general and committed;
+# its Neko/personal specifics live in references/work-config.md, caught by work-*.
+# aiq wraps prod App Insights queries.
+bin/aiq

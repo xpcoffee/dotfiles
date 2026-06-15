@@ -17,6 +17,7 @@
       "WebFetch",
       "WebSearch",
       "Bash(az:*)",
+      "Bash(aiq:*)",
       "Edit(/tmp/**)",
       "Write(/tmp/**)",
       "Read(/tmp/**)",
@@ -58,12 +59,10 @@
       "Edit(\"/tmp/*\")",
       "Read(\"/tmp/*\")"
     ],
-    "deny": [
-      "Read(./secrets/**)"
-    ],
+    "deny": ["Read(./secrets/**)"],
     "defaultMode": "auto"
   },
-  "model": "haiku",
+  "model": "opus[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -88,8 +87,6 @@
     "software-design@redacted-marketplace": true,
     "writing-style@redacted-marketplace": true
   },
-  "spinnerTipsEnabled": false,
-  "skipAutoPermissionPrompt": true,
   "extraKnownMarketplaces": {
     "xpcoffee-notes": {
       "source": {
