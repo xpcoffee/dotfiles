@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+#
+# Generate ~/.claude/settings.json by merging the committed public base
+# (.claude/settings.json) with the gitignored private overlay
+# (.claude/work-settings.json). See .claude/README.md.
+#
+# ~/.claude/settings.json is the only file Claude reads at user (global) scope.
+# This repo is public, so work-plugin enablement lives in the overlay and is
+# merged into a real (non-symlinked) live file here, never committed.
+#
+# Re-run after editing either source. install.sh runs it after stow.
+
+set -euo pipefail
+
+src="$(realpath "${BASH_SOURCE[0]}")"
+repo="$(cd "$(dirname "$src")/.." && pwd)"
+base="$repo/.claude/settings.json"
+overlay="$repo/.claude/work-settings.json"
+out="$HOME/.claude/settings.json"
+
+mkdir -p "$HOME/.claude"
+tmp="$(mktemp "$HOME/.claude/.settings.json.XXXXXX")"
+trap 'rm -f "$tmp"' EXIT
+
+if [[ -f "$overlay" ]]; then
+  # Deep-merge: base values, then overlay wins on conflicts (e.g. enabledPlugins union).
+  jq -s '.[0] * .[1]' "$base" "$overlay" > "$tmp"
+else
+  cp "$base" "$tmp"
+fi
+
+# mv replaces a stow symlink with a real file, so a later stow --adopt cannot
+# pull the merged (private) result back into the public repo.
+mv "$tmp" "$out"
+trap - EXIT
+echo "Built $out from base$([[ -f "$overlay" ]] && echo ' + work overlay' || echo ' only')."

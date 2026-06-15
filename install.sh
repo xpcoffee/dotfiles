@@ -66,8 +66,13 @@ OWN_CONFIG_DIRECTORY_CONFIG=(".claude")
 for config in ${OWN_CONFIG_DIRECTORY_CONFIG[*]}; do
     OWN_CONFIG_DIR="${HOME}/${config}"
     mkdir -p "${OWN_CONFIG_DIR}"
-    stow --adopt --target="${OWN_CONFIG_DIR}" "${config}"
+    # settings.json is generated (public base + private overlay), not symlinked;
+    # ignore it and its overlay so stow never links or adopts them. See .claude/README.md.
+    stow --adopt --target="${OWN_CONFIG_DIR}" --ignore='^settings\.json$' --ignore='^work-settings\.json$' "${config}"
 done
+
+# Merge .claude/settings.json + .claude/work-settings.json into ~/.claude/settings.json.
+bash bin/claude-build-settings
 
 echo "Dotfiles installed."
 echo "Differences:"
