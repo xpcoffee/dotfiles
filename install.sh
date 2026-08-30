@@ -74,6 +74,13 @@ done
 # Merge .claude/settings.json + .claude/work-settings.json into ~/.claude/settings.json.
 bash bin/claude-build-settings
 
+########################
+#   This repo's hooks  #
+########################
+
+# pre-commit blocks work material from reaching this public repo. See .githooks/.
+git -C "$(dirname "${BASH_SOURCE[0]}")" config core.hooksPath .githooks
+
 echo "Dotfiles installed."
 echo "Differences:"
 git status -s

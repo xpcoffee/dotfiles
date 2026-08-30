@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+# Block staged changes that leak work / employer material into this public repo.
+#
+# Patterns live in .githooks/work-patterns (one extended-regex per line, blank
+# lines and # comments skipped). That file matches the work-* gitignore rule, so
+# the patterns themselves stay local while this hook is committed.
+
+set -uo pipefail
+
+patterns_file="$(git rev-parse --show-toplevel)/.githooks/work-patterns"
+
+if [[ ! -f "${patterns_file}" ]]; then
+    echo "pre-commit: no ${patterns_file}; skipping work-material check." >&2
+    exit 0
+fi
+
+# Added lines only, so pre-existing text in a touched file doesn't block a commit.
+added="$(git diff --cached --unified=0 --diff-filter=ACMR | grep -E '^\+' | grep -vE '^\+\+\+')"
+staged_names="$(git diff --cached --name-only --diff-filter=ACMR)"
+haystack="${added}"$'\n'"${staged_names}"
+
+hits=""
+while IFS= read -r pattern; do
+    [[ -z "${pattern}" || "${pattern}" == \#* ]] && continue
+    match="$(echo "${haystack}" | grep -inE "${pattern}" | head -5)"
+    if [[ -n "${match}" ]]; then
+        hits+="  pattern: ${pattern}"$'\n'
+        hits+="$(echo "${match}" | sed 's/^/    /')"$'\n'
+    fi
+done < "${patterns_file}"
+
+if [[ -n "${hits}" ]]; then
+    cat >&2 <<MSG
+COMMIT BLOCKED: staged changes look like work material, and this repo is public.
+
+${hits}
+Move it to the private overlay instead:
+  git config      -> ~/.gitconfig-work
+  claude settings -> .claude/work-settings.json, then claude-build-settings
+  anything else   -> a work-* path (gitignored)
+
+To commit anyway: git commit --no-verify
+MSG
+    exit 1
+fi

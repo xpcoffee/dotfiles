@@ -14,6 +14,19 @@ This repo maintains a collection of configuration files that I use, as well as u
 - `tmux/` - Tmux configuration (.tmux.conf)
 - `zsh/` - Zsh shell configuration (.zshrc, .aliases, .profile)
 - `install.sh` - Installation script using GNU stow
+- `.githooks/` - Repo-local git hooks; `pre-commit` keeps work config out of this public repo (see [.githooks/README.md](.githooks/README.md))
+
+## Public repo, private overlays
+
+This repo is public, so employer-specific config never lives in it. Each area has a private counterpart that stays on the machine:
+
+| Public, committed | Private, local only |
+|-------------------|---------------------|
+| `git/.gitconfig` | `~/.gitconfig-work`, pulled in by an `includeIf gitdir:~/code/work/` |
+| `.claude/settings.json` | `.claude/work-settings.json`, merged by `bin/claude-build-settings` (see [.claude/README.md](.claude/README.md)) |
+| anything else | any `work-*` path, which `.gitignore` excludes |
+
+The `pre-commit` hook fails the commit if work material is staged anyway.
 
 ## Pre-requisies
 
