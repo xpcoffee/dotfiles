@@ -51,9 +51,7 @@
       "Bash(gh:*)",
       "Bash(go test:*)",
       "Bash(gcloud:*)",
-      "Bash(npm:*)",
-      "Edit(\"/tmp/*\")",
-      "Read(\"/tmp/*\")"
+      "Bash(npm:*)"
     ],
     "deny": [
       "Read(./secrets/**)"
