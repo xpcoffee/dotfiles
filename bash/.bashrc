@@ -41,6 +41,9 @@ fi
 if [ -d "/opt/go/bin" ] ; then
     PATH="/opt/go/bin:$PATH"
 fi
+if [ -d "/opt/zig" ] ; then
+    PATH="/opt/zig:$PATH"
+fi
 if [ -d "/usr/local/go/bin" ] ; then
     PATH="/usr/local/go/bin:$PATH"
 fi
@@ -277,3 +280,23 @@ export NOTES_ROOT="$PERSONAL_CODE_PATH/notes"
 if grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null && command -v wslview &>/dev/null; then
   export BROWSER=wslview
 fi
+
+# ----------------
+# GNOME keyring + D-Bus session (git credential store via GCM secretservice)
+# Start a D-Bus session bus once (persisted in ~/.config/dbus-session.env) and
+# launch gnome-keyring-daemon under it so GCM can store credentials persistently.
+# ----------------
+if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
+  _dbus_env="$HOME/.config/dbus-session.env"
+  [ -f "$_dbus_env" ] && . "$_dbus_env"
+  if ! dbus-send --session --dest=org.freedesktop.DBus --type=method_call \
+      /org/freedesktop/DBus org.freedesktop.DBus.Ping &>/dev/null 2>&1; then
+    eval "$(dbus-launch --sh-syntax)"
+    printf 'export DBUS_SESSION_BUS_ADDRESS="%s"\nexport DBUS_SESSION_BUS_PID=%s\n' \
+      "$DBUS_SESSION_BUS_ADDRESS" "$DBUS_SESSION_BUS_PID" > "$_dbus_env"
+    gnome-keyring-daemon --start --components=secrets &>/dev/null
+  fi
+  unset _dbus_env
+fi
+[ -S "/mnt/wslg/runtime-dir/keyring/control" ] && \
+  export GNOME_KEYRING_CONTROL="/mnt/wslg/runtime-dir/keyring"
