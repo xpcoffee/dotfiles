@@ -46,8 +46,7 @@
 [pull]
 	rebase = true
 [credential]
-	credentialStore = cache
-	cacheOptions = --timeout 86400
+	credentialstore = secretservice
 	helper =
 	helper = /usr/local/bin/git-credential-manager
 
