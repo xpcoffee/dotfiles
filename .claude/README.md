@@ -52,9 +52,42 @@ This repo is public, so anything committed here is readable by anyone. Two writi
 
 Plugin marketplaces are registered in `~/.claude.json` (private, not in this repo) via:
 
-    claude plugin marketplace add <owner/repo>     # or a local directory path
+    claude plugin marketplace add <owner/repo>
 
 Enablement is what this setup keeps private, via `work-settings.json`. Registration is already private in `~/.claude.json`.
+
+Point `marketplace add` at a git clone and you get a GitHub marketplace: Claude Code
+reads the directory's git remote, registers that remote as the source, and clones the
+default branch. Plugins that live only on a local branch stay out of the catalogue,
+and `plugin install` reports them as not found in the marketplace.
+
+Removing a marketplace leaves its clone behind under
+`~/.claude/plugins/marketplaces/<name>`. A stale clone there serves the same
+marketplace name and hides the registration you meant to replace, so delete the
+directory alongside `claude plugin marketplace remove <name>`.
+
+## Plugins you edit locally
+
+Symlink the plugin directory into `~/.claude/skills/`, one symlink per plugin:
+
+    ln -sfn <repo>/plugins/<plugin> ~/.claude/skills/<plugin>
+
+Any directory there holding a `.claude-plugin/plugin.json` loads as
+`<plugin>@skills-dir`. Confirm with `claude plugin list`, which groups them under
+"Skills-directory plugins". Claude Code reads the working tree directly, so an edit
+takes effect on the next session, and the plugin needs no marketplace, no version
+bump and no `enabledPlugins` entry. Keep the symlink targets out of this repo: they
+name work paths.
+
+Install the same plugin from a marketplace as well and both copies load, at whatever
+version each holds. That is how a published `writing-style` 1.3.0 ended up shadowing
+1.5.0 in the working tree.
+
+Claude Code refuses every plugin in a marketplace that reaches its sources through a
+symlink. It resolves each `source` path and rejects any path that leaves the
+marketplace directory: `Plugin source path refused: ./plugins/<name> does not stay
+inside its marketplace directory`. The refusal is written only to
+`~/.claude/debug/latest`, so the plugins go missing with no visible error.
 
 ## Enabling a plugin
 
