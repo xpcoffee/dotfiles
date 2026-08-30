@@ -50,5 +50,11 @@
 	helper =
 	helper = /usr/local/bin/git-credential-manager
 
-# Work ADO credentials (org, tenant, email) live in ~/.gitconfig-work,
-# included for repos under ~/code/work/ via the includeIf at the top.
+# Work credentials (ADO org, tenant, email, per-host usernames) live in
+# ~/.gitconfig-work, included for repos under ~/code/work/ via the includeIf at
+# the top. useHttpPath has to be set here rather than in that file: it is what
+# makes a path-scoped key such as credential.https://github.com/<org>.username
+# match a URL at all. The personal GitHub username comes from
+# ~/.gitconfig-personal, so it is not repeated here.
+[credential "https://github.com"]
+	useHttpPath = true
