@@ -33,7 +33,8 @@ fi
 #     $HOME     #
 #################
 
-HOME_DIRECTORY_CONFIG=("tmux" "zsh" "git" "bash")
+# claude-md is a separate package from .claude/ because ~/CLAUDE.md targets $HOME, not $HOME/.claude.
+HOME_DIRECTORY_CONFIG=("tmux" "zsh" "git" "bash" "claude-md")
 
 for config in ${HOME_DIRECTORY_CONFIG[*]}; do
     stow --adopt --target="${HOME}" "${config}"
