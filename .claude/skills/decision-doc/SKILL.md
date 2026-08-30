@@ -45,7 +45,7 @@ Illustrate the decision with diagrams. Same rules as the [pr-description](../pr-
 
 ## Placement
 
-Keep to a few paragraphs under the three headings, plus diagrams. Put it where the repo keeps decisions, dated and slugged. In APIBackend: `docs/architecture/<area>/decisions/<YYYY-MM-DD>-<slug>.md`. Link it from the architecture doc it affects and from the PR description (the pr-description approach section points at it).
+Keep to a few paragraphs under the three headings, plus diagrams. Put it where the repo keeps decisions, dated and slugged, commonly `docs/architecture/<area>/decisions/<YYYY-MM-DD>-<slug>.md`. Check the repo's existing convention before adding a location. Link it from the architecture doc it affects and from the PR description (the pr-description approach section points at it).
 
 ## Reviewing or refactoring an existing decision doc
 

@@ -31,6 +31,7 @@
 - **Manual:** <!-- environment + what you checked -->
 - **Risks:** <!-- any unmitigated gap, stated plainly -->
 
-<!-- Deep explanation lives in a committed doc; link it here:
-Architecture: docs/architecture/...
-Decision: docs/superpowers/specs/... -->
+<!-- Deep explanation lives in a committed doc; link it here, using this repo's
+own docs layout:
+Architecture: <path to the component's architecture doc>
+Decision: <path to the decision doc> -->
