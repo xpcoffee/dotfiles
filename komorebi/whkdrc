@@ -1,0 +1,99 @@
+.shell powershell
+
+# ============================================================
+# Reload / diagnostics
+# ============================================================
+win + ctrl + r          : komorebic reload-configuration
+win + shift + r         : komorebic retile
+win + i                 : komorebic toggle-shortcuts
+
+# ============================================================
+# Focus a tile (vim-style AND arrows both work)
+#
+# CAVEAT on "win + l": Win+L is Windows' lock-workstation
+# shortcut, and unlike Win+1..9/Tab/etc it is NOT a normal
+# shell hotkey -- it's special-cased closer to the OS level, and
+# low-level keyboard hooks (what whkd uses) don't reliably win
+# against it. In practice this binding may just lock your
+# screen instead of focusing right. Treat "win + right" (below)
+# as the authoritative "focus right" binding, and try "win + l"
+# for vim muscle memory -- if it locks your screen instead, drop
+# that one line rather than fighting it. See the proposal doc.
+# ============================================================
+win + h                 : komorebic focus left
+win + j                 : komorebic focus down
+win + k                 : komorebic focus up
+win + l                 : komorebic focus right
+win + left              : komorebic focus left
+win + down              : komorebic focus down
+win + up                : komorebic focus up
+win + right             : komorebic focus right
+
+# Quick toggle to the PREVIOUSLY FOCUSED tile in this workspace
+# (e.g. bounce between a terminal and a browser). Key is the
+# backtick/grave key, just left of "1" on a US layout.
+win + oem_3             : komorebic cycle-focus previous
+
+# ============================================================
+# Move a tile
+# ============================================================
+win + shift + h         : komorebic move left
+win + shift + j         : komorebic move down
+win + shift + k         : komorebic move up
+win + shift + l         : komorebic move right
+win + shift + left      : komorebic move left
+win + shift + down      : komorebic move down
+win + shift + up        : komorebic move up
+win + shift + right     : komorebic move right
+
+# ============================================================
+# Workspaces (Win+1..9 to jump, Win+Shift+1..9 to send a
+# window there -- this intentionally replaces Windows' native
+# Win+1..9 taskbar-launch shortcut; see the proposal doc)
+# ============================================================
+win + 1                 : komorebic focus-workspace 0
+win + 2                 : komorebic focus-workspace 1
+win + 3                 : komorebic focus-workspace 2
+win + 4                 : komorebic focus-workspace 3
+win + 5                 : komorebic focus-workspace 4
+win + 6                 : komorebic focus-workspace 5
+win + 7                 : komorebic focus-workspace 6
+win + 8                 : komorebic focus-workspace 7
+win + 9                 : komorebic focus-workspace 8
+
+win + shift + 1         : komorebic move-to-workspace 0
+win + shift + 2         : komorebic move-to-workspace 1
+win + shift + 3         : komorebic move-to-workspace 2
+win + shift + 4         : komorebic move-to-workspace 3
+win + shift + 5         : komorebic move-to-workspace 4
+win + shift + 6         : komorebic move-to-workspace 5
+win + shift + 7         : komorebic move-to-workspace 6
+win + shift + 8         : komorebic move-to-workspace 7
+win + shift + 9         : komorebic move-to-workspace 8
+
+# Cycle to next/previous workspace, and jump back to whichever
+# workspace you were on before the current one (mirrors omarchy's
+# Super+Tab / Super+Shift+Tab / Super+Ctrl+Tab exactly)
+win + tab                : komorebic cycle-workspace next
+win + shift + tab        : komorebic cycle-workspace previous
+win + ctrl + tab         : komorebic focus-last-workspace
+
+# ============================================================
+# Window state
+# ============================================================
+win + f                  : komorebic toggle-monocle
+win + t                  : komorebic toggle-float
+win + q                  : komorebic close
+win + m                  : komorebic minimize
+
+# ============================================================
+# Layout
+# ============================================================
+win + x                  : komorebic flip-layout horizontal
+win + y                  : komorebic flip-layout vertical
+
+# ============================================================
+# Gaming escape hatch: fully pause komorebi's tiling/hotkeys
+# before launching a game that misbehaves, press again to resume
+# ============================================================
+win + p                  : komorebic toggle-pause
