@@ -1,0 +1,48 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/master/schema.json",
+
+  "app_specific_configuration_path": "$Env:USERPROFILE/applications.json",
+  "window_hiding_behaviour": "Cloak",
+  "cross_monitor_move_behaviour": "Insert",
+  "default_workspace_padding": 10,
+  "default_container_padding": 10,
+  "border": true,
+  "border_width": 4,
+  "border_offset": -1,
+  "mouse_follows_focus": false,
+
+  "theme": {
+    "palette": "Base16",
+    "name": "Ashes",
+    "unfocused_border": "Base03",
+    "bar_accent": "Base0D"
+  },
+
+  "monitors": [
+    {
+      "workspaces": [
+        { "name": "1", "layout": "BSP" },
+        { "name": "2", "layout": "BSP" },
+        { "name": "3", "layout": "BSP" },
+        { "name": "4", "layout": "BSP" },
+        { "name": "5", "layout": "BSP" },
+        { "name": "6", "layout": "BSP" },
+        { "name": "7", "layout": "BSP" },
+        { "name": "8", "layout": "BSP" },
+        { "name": "9", "layout": "BSP" }
+      ]
+    }
+  ],
+
+  "ignore_rules": [
+    { "kind": "Exe", "id": "PowerToys.exe", "matching_strategy": "Contains" },
+    { "kind": "Exe", "id": "TextInputHost.exe", "matching_strategy": "Equals" }
+  ],
+
+  "float_rules": [
+    { "kind": "Exe", "id": "Steam.exe", "matching_strategy": "Equals" },
+    { "kind": "Exe", "id": "EpicGamesLauncher.exe", "matching_strategy": "Equals" },
+    { "kind": "Exe", "id": "GalaxyClient.exe", "matching_strategy": "Equals" },
+    { "kind": "Exe", "id": "Battle.net.exe", "matching_strategy": "Equals" }
+  ]
+}
