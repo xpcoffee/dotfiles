@@ -13,6 +13,8 @@ This repo maintains a collection of configuration files that I use, as well as u
   - `lua/xpcoffee/plugins/lsp/` - LSP-specific configurations
 - `tmux/` - Tmux configuration (.tmux.conf)
 - `zsh/` - Zsh shell configuration (.zshrc, .aliases, .profile)
+- `komorebi/` - Windows tiling window manager (komorebi + whkd); see [komorebi/README.md](komorebi/README.md). Not stowed — has its own `install.ps1`.
+- `hypr/` - Hyprland keybinding reference for omarchy, kept in sync with `komorebi/`'s hotkeys. Not stowed; folded into omarchy's own config by hand.
 - `install.sh` - Installation script using GNU stow
 - `.githooks/` - Repo-local git hooks; `pre-commit` keeps work config out of this public repo (see [.githooks/README.md](.githooks/README.md))
 
