@@ -1,6 +1,10 @@
 .DS_Store
 .vim/autoload/
 .vim/plugged/
+
+# Downloaded by `komorebic fetch-app-specific-configuration` into
+# KOMOREBI_CONFIG_HOME (= komorebi/). Generated, not hand-maintained.
+komorebi/applications.json
 fish/conf.d/
 fish/fish_variables
 fish/functions/
