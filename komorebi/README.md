@@ -119,6 +119,21 @@ physical key on the omarchy side).
   if you switch away from its workspace and back
   ([LGUG2Z/komorebi#1191](https://github.com/LGUG2Z/komorebi/issues/1191)).
   Staying on a game's workspace while playing avoids it.
+- Some windows don't get tiled automatically. Three different causes, worth
+  telling apart before reaching for config:
+  - **Elevated apps (Task Manager)** can't be managed by an unelevated komorebi
+    at all — Windows blocks cross-integrity-level window manipulation. Nothing
+    to fix short of running komorebi elevated.
+  - **Steam chat and popups** are ignored on purpose by the community
+    `applications.json`, which ignores every `steamwebhelper.exe` window whose
+    title isn't exactly `Steam`. Override with a `manage_rules` entry if you
+    want them tiled, at the cost of Steam's transient popups tiling too.
+  - **Everything else** goes in `manage_rules` (see `claude.exe`). To find the
+    right identifier, focus the window and run `komorebic manage` — if it snaps
+    into place, `komorebic visible-windows` will show you its exact `exe`,
+    `class` and `title`. Note `komorebic manage` only lasts for that window's
+    lifetime, and `manage_rules` are applied on window events rather than
+    retroactively, so test by reopening the app.
 - `cycle-focus previous` (the previous-tile toggle) cycles by internal order,
   not strictly "most recently focused" — a clean toggle with exactly two
   tiles in a workspace, but may need `focus-last-workspace` instead with
