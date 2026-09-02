@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/master/schema.json",
 
-  "app_specific_configuration_path": "$Env:USERPROFILE/applications.json",
+  "app_specific_configuration_path": "$Env:KOMOREBI_CONFIG_HOME/applications.json",
   "window_hiding_behaviour": "Cloak",
   "cross_monitor_move_behaviour": "Insert",
   "default_workspace_padding": 10,
@@ -36,10 +36,7 @@
 
   "ignore_rules": [
     { "kind": "Exe", "id": "PowerToys.exe", "matching_strategy": "Contains" },
-    { "kind": "Exe", "id": "TextInputHost.exe", "matching_strategy": "Equals" }
-  ],
-
-  "float_rules": [
+    { "kind": "Exe", "id": "TextInputHost.exe", "matching_strategy": "Equals" },
     { "kind": "Exe", "id": "Steam.exe", "matching_strategy": "Equals" },
     { "kind": "Exe", "id": "EpicGamesLauncher.exe", "matching_strategy": "Equals" },
     { "kind": "Exe", "id": "GalaxyClient.exe", "matching_strategy": "Equals" },
