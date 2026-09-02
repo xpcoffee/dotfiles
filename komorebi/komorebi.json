@@ -11,6 +11,13 @@
   "border_offset": -1,
   "mouse_follows_focus": false,
 
+  "animation": {
+    "enabled": true,
+    "style": "EaseOutCubic",
+    "duration": 200,
+    "fps": 60
+  },
+
   "theme": {
     "palette": "Base16",
     "name": "Ashes",
