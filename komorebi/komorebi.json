@@ -41,5 +41,9 @@
     { "kind": "Exe", "id": "EpicGamesLauncher.exe", "matching_strategy": "Equals" },
     { "kind": "Exe", "id": "GalaxyClient.exe", "matching_strategy": "Equals" },
     { "kind": "Exe", "id": "Battle.net.exe", "matching_strategy": "Equals" }
+  ],
+
+  "manage_rules": [
+    { "kind": "Exe", "id": "claude.exe", "matching_strategy": "Equals" }
   ]
 }
