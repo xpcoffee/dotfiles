@@ -1,10 +1,18 @@
 # komorebi + whkd (Windows tiling window manager)
 
 Windows-side half of a cross-OS tiling setup; the Linux half is omarchy's
-default Hyprland, configured to match via [`../hypr/tiling-consistency.conf`](../hypr/tiling-consistency.conf).
-Both sides use the same modifier key (the Windows/Super key) and the same
-layout for focus, move, workspaces, and the previous-tile toggle, so muscle
-memory carries over between machines.
+default Hyprland, see [`../hypr/tiling-consistency.conf`](../hypr/tiling-consistency.conf).
+
+**The two sides use different modifiers.** Linux uses Super; Windows uses Alt.
+Windows reserves a number of `Win+<key>` combos below the level whkd's keyboard
+hook can intercept — `Win+L` (lock workstation) is effectively uninterceptable,
+and `Win+H` (voice typing) wins over whkd in practice — so a Super-keyed setup
+here produces hotkeys that silently do the wrong thing. Alt is komorebi's own
+default modifier and has no such conflicts.
+
+The *layout* of the bindings is still the same on both sides (`hjkl` to focus,
+`+Shift` to move, numbers for workspaces), so only the modifier finger changes
+between machines.
 
 ## Setup
 
@@ -80,41 +88,48 @@ winget install --id Microsoft.PowerToys
 
 ## Keybindings
 
-Modifier is the Windows key, written `Win` below (that's also the literal
-keyword `whkdrc` uses — not `Super`, which is Hyprland's keyword for the same
-physical key on the omarchy side).
+Modifier is `Alt` (the literal keyword `whkdrc` uses is `alt`).
 
 | Action | Binding |
 |---|---|
-| Focus tile left/down/up/right | `Win+h/j/k/l` and `Win+arrows` |
-| Move tile left/down/up/right | `Win+Shift+h/j/k/l` and arrows |
-| Toggle to previously focused tile (e.g. terminal ↔ browser) | `` Win+` `` |
-| Jump to workspace 1-9 | `Win+1..9` |
-| Send tile to workspace 1-9 | `Win+Shift+1..9` |
-| Next / previous workspace | `Win+Tab` / `Win+Shift+Tab` |
-| Jump to former (last-focused) workspace | `Win+Ctrl+Tab` |
-| Toggle fullscreen/monocle | `Win+F` |
-| Toggle floating | `Win+T` |
-| Close window | `Win+Q` |
-| Pause tiling (gaming escape hatch) | `Win+P` |
-| Reload configuration | `Win+Ctrl+R` |
+| Focus tile left/down/up/right | `Alt+h/j/k/l` |
+| Move tile left/down/up/right | `Alt+Shift+h/j/k/l` |
+| Grow tile on an edge | `Alt+Ctrl+h/j/k/l` |
+| Shrink tile on an edge | `Alt+Ctrl+Shift+h/j/k/l` |
+| Toggle to previously focused tile (e.g. terminal ↔ browser) | `` Alt+` `` |
+| Promote tile to the main pane | `Alt+Shift+P` |
+| Jump to workspace 1-9 | `Alt+1..9` |
+| Send tile to workspace 1-9 | `Alt+Shift+1..9` |
+| Previous / next workspace | `Alt+[` / `Alt+]` |
+| Jump to former (last-focused) workspace | ``Alt+Shift+` `` |
+| Toggle fullscreen/monocle | `Alt+F` |
+| Toggle floating | `Alt+T` |
+| Minimize | `Alt+M` |
+| Close window | `Alt+Q` |
+| Flip layout horizontally / vertically | `Alt+X` / `Alt+Y` |
+| Retile | `Alt+Shift+R` |
+| Reload configuration | `Alt+Ctrl+R` |
+| On-screen shortcut overlay | `Alt+I` |
+| Pause tiling (gaming escape hatch) | `Alt+P` |
+
+`Alt+I` brings up komorebi's own overlay, so this table isn't something you need
+to keep open.
 
 ### Known caveats
 
-- **`Win+L`** is Windows' lock-workstation shortcut and, unlike the other
-  `Win+` combos above, isn't a normal shell hotkey — low-level keyboard hooks
-  (what whkd uses) don't reliably win against it. It's bound here to "focus
-  right" for hjkl-completeness, but `Win+Right` is the reliable version of
-  that action; if `Win+L` locks your screen instead, just delete that one
-  line from `whkdrc`.
-- This scheme intentionally overrides several native Windows shortcuts:
-  `Win+1..9` (taskbar launch), `Win+Tab` (Task View), `Win+H` (voice typing),
-  `Win+K` (cast/Connect), `Win+T` (cycle taskbar), `Win+X` (power-user
-  quick-link menu), and `Win+P` (project/display mode for external
-  monitors). Standard tradeoff for a tiling-WM workflow, but `Win+X` and
-  `Win+P` specifically are common enough to be worth knowing about — move
-  the binding off that key in `whkdrc` if you'd rather keep the native
-  behavior.
+- **Don't move this back to the Win key.** `Win+L` (lock) and `Win+H` (voice
+  typing) are handled below the level whkd's keyboard hook can intercept, so
+  they can't be rebound — they just silently do the Windows thing instead of
+  the komorebi thing. That's why the modifier is Alt.
+- **`Alt+Tab` and `Alt+F4` are deliberately left alone** so Windows' window
+  switcher and close shortcut keep working. Workspace cycling uses `Alt+[` /
+  `Alt+]` instead of `Alt+Tab` for this reason.
+- **No arrow-key duplicates for focus/move.** `Alt+Left`/`Alt+Right` are
+  Back/Forward in browsers and File Explorer, and binding them here would
+  swallow those everywhere. `hjkl` only.
+- Alt is a menu-mnemonic key in Windows apps, so bindings like `Alt+F` shadow
+  the File menu in apps that have one. Menus are still reachable by mouse, or
+  by tapping and releasing Alt.
 - komorebi has a known issue where a window in native fullscreen can minimize
   if you switch away from its workspace and back
   ([LGUG2Z/komorebi#1191](https://github.com/LGUG2Z/komorebi/issues/1191)).
