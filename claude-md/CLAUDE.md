@@ -28,32 +28,30 @@ Furthermore you MUST ALWAYS communicate with the context of the thread, and the 
 
 ## Writing style
 
-At the start of every session, load the registered writing-style skill (whichever writing-style skill is registered) and apply its rules to all text you produce, including replies in this terminal. Do not wait for it to be invoked. These rules apply to everything you write by default: conversational replies, documents, code comments, commit and PR text, and review comments. The skill is the full reference (examples, tone, self-check); the hard rules below mirror it so they bind even before it loads. Keep the two in sync. Conversational replies follow the same rules but stay person to person, not stiff.
+**Trial running from 2026-08-31.** The 19 rules that used to sit here have moved into the `writing-style:output-brief` skill, which plans the reader's information problem before drafting instead of checking sentences after. The trial is testing whether that plan beats the rule file. The design is in my notes repo at `2026-08-31-making-agents-write-good-prose.md`; the `writing-style` plugin README covers how to run it, how to read the trial log, and how to revert.
 
-1. No filler ("it's worth noting", "this enables", "this allows for", "in order to", "as part of").
-2. No weasel words ("significant", "substantial", "comprehensive", "robust", "seamless", "streamlined", "leverage", "utilise"). Name the specific thing.
-3. One adjective per noun, maximum.
-4. No throat-clearing; the first sentence of a paragraph carries information.
-5. No summaries of what you just said.
-6. Numbers over adjectives; if you lack the number, say so.
-7. Active voice.
-8. No AI tells ("This approach...", "This solution...", "By doing X, we can Y").
-9. No em dashes (—); use commas, colons, full stops, or en dashes (–).
-10. State things positively; avoid the "X, not Y" contrast as a habit.
-11. No metaphors ("ratchet", "backstop", "lands in", "surface" as a verb, "reflects" a state, "wins"/"loser" for a lock/mutex, "burn" for spend, "fan out"); write the literal mechanism.
-12. Simplest correct word ("use" over "utilise", "then" over "subsequently").
-13. Cut empty adjectives ("underlying", "actual", "key", "core").
-14. Don't stack three pieces of jargon into one compound noun.
-15. Every claim validated, or qualified, or dropped.
-16. State context up front or link to it; spell out short forms; invent no abbreviations.
-17. Write complete sentences; name the subject and keep the linking words. Don't push decompression onto the reader with telegraphic fragments ("Started as benchmark-only. Now implements the narrative spec.").
-18. Introduce before you refer: a bare "the X" assumes the reader already knows which X. Name or gloss X on first mention, then use "the".
-19. Headings and lead-ins carry a subject and a complete thought: no bare "it"/"this" in a title, and a verb takes an object. "How it resolves" → "How the reconciler recovers stalled jobs".
+Before drafting any prose a person will read, run the `writing-style:output-brief` skill. That covers conversational replies in this terminal as well as documents, code comments, commit and pull-request text, work-item comments, and review comments. Do not load the `writing-style:writing-style` skill or `~/.claude/writing/ai-isms.md` alongside it: running both is the collision the trial removes.
 
-- check prose against `~/.claude/writing/ai-isms.md` before presenting it. That file holds the isms caught in my own drafts, kept separate from the hard rules above because it changes often. Capture a new one with `/ism`, curate with `/ism-review`.
-- use the writing-style skill whenever creating a document that is meant to be read by more than one person (design docs, meeting notes, interview feedback, etc)
-- run the writing-style skill over any natural-language text produced or changed during code work before presenting, committing, or pushing it: PR titles and descriptions, commit messages, code comments, doc and markdown changes, and work-item/PR review comments. Apply it only to the text this change introduces or edits, not to surrounding pre-existing prose.
-- use the pr-description skill whenever creating or updating a pull request description. It sets the structure (why, approach with diagrams, what changed with diagrams, how we're confident) and pushes deep explanation into a committed architecture or decision doc.
+Five principles, which the skill expands with examples:
+
+1. Write for the reader, not the context window.
+2. Explain important relationships; do not compress causality into a compound noun.
+3. Introduce before you refer.
+4. Match emphasis to importance.
+5. Stop when the reader has what they need. The target is minimum work for the reader, not minimum tokens.
+
+Six constraints that need no judgement, so they stay here as a floor:
+
+- No em dashes (—); use commas, colons, full stops, or en dashes (–).
+- Spell out short forms on first use; invent no abbreviations.
+- Give the number, or say you lack it. Never substitute an adjective for a measurement.
+- Active voice, with the actor named.
+- Every claim validated, or qualified, or dropped.
+- Name no person in a code comment; refer to the artefact or the team.
+
+- when a draft misses the reader, capture it with the `writing-style:prose-miss` skill. It writes a new exemplar rather than a new rule, which is the mechanism under test. `/ism` still records isms to `~/.claude/writing/ai-isms.md`, but that file is out of the drafting path for the trial and feeds the review at the end.
+- use the pr-description skill whenever creating or updating a pull request description. It sets the structure (why, approach with diagrams, what changed with diagrams, how we're confident) and pushes deep explanation into a committed architecture or decision doc. Run `writing-style:output-brief` over the prose it produces.
+- for a document going to more than one reader, dispatch the `document-communication-reviewer` agent over the draft. It asks whether the document works, which is a different question from whether its sentences do, so it does not collide with `writing-style:output-brief`.
 
 ## Code style
 
