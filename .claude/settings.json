@@ -53,9 +53,6 @@
       "Bash(gcloud:*)",
       "Bash(npm:*)"
     ],
-    "deny": [
-      "Read(./secrets/**)"
-    ],
     "defaultMode": "auto"
   },
   "model": "opus[1m]",
