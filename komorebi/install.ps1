@@ -113,7 +113,7 @@ if (-not (Get-Command komorebic -ErrorAction SilentlyContinue)) {
 # --- 4. Point komorebi and whkd at the dotfiles config -------------------
 # This is what makes the repo the single source of truth: every komorebic subcommand
 # resolves komorebi.json/whkdrc from here, so `komorebic check`, `start`, and
-# `reload-configuration` (Win+Ctrl+R) all agree without passing --config around.
+# `reload-configuration` (Alt+Ctrl+R) all agree without passing --config around.
 Write-Step "Setting KOMOREBI_CONFIG_HOME and WHKD_CONFIG_HOME -> $KomorebiDir"
 foreach ($var in @("KOMOREBI_CONFIG_HOME", "WHKD_CONFIG_HOME")) {
     [Environment]::SetEnvironmentVariable($var, $KomorebiDir, "User")
@@ -149,5 +149,5 @@ komorebic enable-autostart --whkd
 
 Write-Host ""
 Write-Host "Done. komorebi + whkd are running and registered to start at login." -ForegroundColor Green
-Write-Host "Config lives in the dotfiles repo: 'git pull' in $DotfilesPath, then Win+Ctrl+R (or 'komorebic reload-configuration'), picks up changes." -ForegroundColor Green
+Write-Host "Config lives in the dotfiles repo: 'git pull' in $DotfilesPath, then Alt+Ctrl+R (or 'komorebic reload-configuration'), picks up changes." -ForegroundColor Green
 Write-Host "Stop it cleanly with 'komorebic stop --whkd'." -ForegroundColor Green

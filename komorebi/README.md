@@ -32,7 +32,7 @@ with one deviation: config is read from this repo rather than `$Env:USERPROFILE`
 That's done the supported way — by pointing the two `CONFIG_HOME` variables here
 — so every `komorebic` subcommand resolves the same files and no symlinking is
 needed. Updating any machine after an edit here is `git pull` followed by
-`Win+Ctrl+R` (or `komorebic reload-configuration`).
+`Alt+Ctrl+R` (or `komorebic reload-configuration`).
 
 Useful commands:
 
