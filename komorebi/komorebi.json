@@ -28,10 +28,40 @@
   "monitors": [
     {
       "workspaces": [
-        { "name": "1", "layout": "BSP" },
-        { "name": "2", "layout": "BSP" },
-        { "name": "3", "layout": "BSP" },
-        { "name": "4", "layout": "BSP" },
+        {
+          "name": "1",
+          "layout": "BSP",
+          "workspace_rules": [
+            { "kind": "Exe", "id": "WhatsApp.Root.exe", "matching_strategy": "Equals" },
+            { "kind": "Exe", "id": "ms-teams.exe", "matching_strategy": "Equals" },
+            { "kind": "Exe", "id": "Discord.exe", "matching_strategy": "Equals" },
+            { "kind": "Exe", "id": "slack.exe", "matching_strategy": "Equals" }
+          ]
+        },
+        {
+          "name": "2",
+          "layout": "BSP",
+          "workspace_rules": [
+            { "kind": "Exe", "id": "msedge.exe", "matching_strategy": "Equals" }
+          ]
+        },
+        {
+          "name": "3",
+          "layout": "BSP",
+          "workspace_rules": [
+            { "kind": "Exe", "id": "WindowsTerminal.exe", "matching_strategy": "Equals" },
+            { "kind": "Exe", "id": "Code.exe", "matching_strategy": "Equals" }
+          ]
+        },
+        {
+          "name": "4",
+          "layout": "BSP",
+          "workspace_rules": [
+            { "kind": "Exe", "id": "Spotify.exe", "matching_strategy": "Equals" },
+            { "kind": "Exe", "id": "steam.exe", "matching_strategy": "Equals" },
+            { "kind": "Exe", "id": "steamwebhelper.exe", "matching_strategy": "Equals" }
+          ]
+        },
         { "name": "5", "layout": "BSP" },
         { "name": "6", "layout": "BSP" },
         { "name": "7", "layout": "BSP" },
