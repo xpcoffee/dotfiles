@@ -1,5 +1,17 @@
 .shell powershell
 
+# Gaming escape hatch. Toggles EVERY hotkey below off and on again,
+# so a game receives Alt+<key> itself instead of whkd swallowing it.
+# This is the binding to press before and after playing.
+#
+# It has to be whkd's own `.pause`, not `komorebic toggle-pause`:
+# pausing komorebi only stops it tiling, whkd still intercepts the
+# keystroke and the game never sees it.
+#
+# Ctrl+Alt is used rather than plain Alt so this stays reachable
+# while a game is holding Alt combos.
+.pause ctrl + alt + p
+
 # ============================================================
 # Modifier: ALT
 #
@@ -113,7 +125,9 @@ alt + x                  : komorebic flip-layout horizontal
 alt + y                  : komorebic flip-layout vertical
 
 # ============================================================
-# Gaming escape hatch: fully pause komorebi's tiling/hotkeys
-# before launching a game that misbehaves, press again to resume
+# Pause komorebi's tiling, so it stops managing/resizing windows.
+# Useful for a game that misbehaves when tiled, but note this does
+# NOT free up the keyboard -- whkd still intercepts every binding
+# above. Use `.pause` (Ctrl+Alt+P, top of this file) for that.
 # ============================================================
 alt + p                  : komorebic toggle-pause
