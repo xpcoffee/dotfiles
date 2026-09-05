@@ -17,7 +17,7 @@
   4. Points komorebi and whkd at <dotfiles>/komorebi via the two CONFIG_HOME env vars.
   5. Fetches komorebi's community-maintained per-app tiling tweaks.
   6. Validates the configuration with `komorebic check` before starting anything.
-  7. Starts komorebi + whkd + the status bar.
+  7. Starts komorebi + whkd.
   8. Registers autostart at login.
 
 .PARAMETER DotfilesPath
@@ -113,7 +113,7 @@ if (-not (Get-Command komorebic -ErrorAction SilentlyContinue)) {
 # --- 4. Point komorebi and whkd at the dotfiles config -------------------
 # This is what makes the repo the single source of truth: every komorebic subcommand
 # resolves komorebi.json/whkdrc from here, so `komorebic check`, `start`, and
-# `reload-configuration` (Win+Ctrl+R) all agree without passing --config around.
+# `reload-configuration` (Alt+Ctrl+R) all agree without passing --config around.
 Write-Step "Setting KOMOREBI_CONFIG_HOME and WHKD_CONFIG_HOME -> $KomorebiDir"
 foreach ($var in @("KOMOREBI_CONFIG_HOME", "WHKD_CONFIG_HOME")) {
     [Environment]::SetEnvironmentVariable($var, $KomorebiDir, "User")
@@ -140,14 +140,14 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 # --- 7. Start now ----------------------------------------------------------
-Write-Step "Starting komorebi + whkd + bar"
-komorebic start --whkd --bar
+Write-Step "Starting komorebi + whkd"
+komorebic start --whkd
 
 # --- 8. Autostart on login --------------------------------------------------
 Write-Step "Registering autostart at login"
-komorebic enable-autostart --whkd --bar
+komorebic enable-autostart --whkd
 
 Write-Host ""
 Write-Host "Done. komorebi + whkd are running and registered to start at login." -ForegroundColor Green
-Write-Host "Config lives in the dotfiles repo: 'git pull' in $DotfilesPath, then Win+Ctrl+R (or 'komorebic reload-configuration'), picks up changes." -ForegroundColor Green
-Write-Host "Stop it cleanly with 'komorebic stop --whkd --bar'." -ForegroundColor Green
+Write-Host "Config lives in the dotfiles repo: 'git pull' in $DotfilesPath, then Alt+Ctrl+R (or 'komorebic reload-configuration'), picks up changes." -ForegroundColor Green
+Write-Host "Stop it cleanly with 'komorebic stop --whkd'." -ForegroundColor Green
