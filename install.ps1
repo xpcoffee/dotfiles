@@ -129,14 +129,4 @@ Write-Host "build  $out ($($applied -join ' + '))"
 # pre-commit blocks work material from reaching this public repo. See .githooks/.
 git -C $repo config core.hooksPath .githooks
 
-####################
-#   Dependencies   #
-####################
-
-# The PreToolUse hooks in settings.json pipe through jq. Without it every Bash
-# call reports a failing hook.
-if (-not (Get-Command jq -ErrorAction SilentlyContinue)) {
-    Write-Warning 'jq is not on PATH; the PreToolUse hooks will fail on every Bash call. Install it with: winget install jqlang.jq'
-}
-
 Write-Host 'Claude Code dotfiles installed.'

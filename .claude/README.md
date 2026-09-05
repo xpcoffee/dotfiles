@@ -121,8 +121,3 @@ Two deliberate differences from the Linux install:
   base and in `work-settings.json`. A `null` there deletes the key, which is how
   `extraKnownMarketplaces` and `enabledPlugins` are dropped: both name Linux
   paths and a marketplace that is not registered on Windows.
-
-The `PreToolUse` hooks pipe through `jq`, which Windows has no reason to have.
-Without it every `Bash` call reports a failing hook:
-
-    winget install jqlang.jq

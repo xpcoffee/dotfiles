@@ -56,23 +56,6 @@
     "defaultMode": "auto"
   },
   "model": "opus[1m]",
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "jq -r '.tool_input.command // \"\"' | { read -r cmd; if echo \"$cmd\" | grep -qE 'git\\s+commit'; then if echo \"$cmd\" | grep -qE '\\$\\('; then echo 'BLOCKED: Command substitution $() not allowed in git commit. Use a heredoc with cat <<EOF instead.' >&2; exit 2; elif echo \"$cmd\" | grep -qE '`'; then echo 'BLOCKED: Backtick substitution not allowed in git commit. Use a heredoc with cat <<EOF instead.' >&2; exit 2; elif echo \"$cmd\" | grep -qE '<<<'; then echo 'BLOCKED: Heredoc syntax not allowed in git commit. Use a heredoc with cat <<EOF instead.' >&2; exit 2; fi; fi; }"
-          },
-          {
-            "type": "command",
-            "command": "jq -r '.tool_input.command // \"\"' | { read -r cmd; if echo \"$cmd\" | grep -qE 'cd\\s+.*&&\\s*git'; then echo 'BLOCKED: Use git -C instead of cd && git (e.g., git -C /path/to/repo status)' >&2; exit 2; fi; }"
-          }
-        ]
-      }
-    ]
-  },
   "enabledPlugins": {
     "nvim-markdown-notes-memgraph@xpcoffee-plugins": true
   },
