@@ -95,3 +95,29 @@ inside its marketplace directory`. The refusal is written only to
 - **Public / personal plugin** → add to `settings.json` `enabledPlugins` (it's committed).
 
 Avoid `claude plugin enable <plugin> --scope user`: it writes the live `~/.claude/settings.json` directly. That no longer leaks (the live file isn't this repo), but the next rebuild overwrites it, so the change is lost unless it's also in `settings.json` or `work-settings.json`. Edit the source and rebuild instead.
+
+## Windows
+
+`install.sh` needs stow and a POSIX `$HOME`, so it cannot install this on Windows.
+The Windows desktop app and CLI read `%USERPROFILE%\.claude`, which WSL's
+`~/.claude` never touches — a WSL install leaves the Windows side with no config
+at all. `install.ps1` covers the Claude Code packages there:
+
+    pwsh -File install.ps1
+
+It creates native symlinks for `commands/`, `skills/`, `agents/`, `writing/` and
+`mcp_settings.json`, and generates `~/.claude/settings.json` the way
+`bin/claude-build-settings` does. Developer Mode is enough to create the links;
+no elevation is needed. Anything already at a link path that is not a symlink is
+moved to `.bak` rather than replaced.
+
+Two deliberate differences from the Linux install:
+
+- `CLAUDE.md` is linked to `~/.claude/CLAUDE.md`, not `~/CLAUDE.md`. The Linux
+  setup relies on the walk up from a cwd under `$HOME`; the user-scope path
+  applies to repos on other drives too.
+- A third overlay, `windows-settings.json` (public, committed — it holds no work
+  material), is merged last so its path fixes win over the Linux paths in the
+  base and in `work-settings.json`. A `null` there deletes the key, which is how
+  `extraKnownMarketplaces` and `enabledPlugins` are dropped: both name Linux
+  paths and a marketplace that is not registered on Windows.
