@@ -1,0 +1,24 @@
+{
+  "env": {
+    "CLAUDE_ENV_FILE": "{{HOME}}/.claude_env"
+  },
+  "permissions": {
+    "allow": [
+      "Read({{HOME}}/.claude/skills/**)",
+      "Edit({{HOME}}/Documents/Code/**)",
+      "Read({{HOME}}/Documents/Code/**)"
+    ]
+  },
+  "sandbox": {
+    "filesystem": {
+      "allowWrite": [
+        "{{HOME}}/Documents/Code/**"
+      ],
+      "allowRead": [
+        "{{HOME}}/Documents/Code/**"
+      ]
+    }
+  },
+  "extraKnownMarketplaces": null,
+  "enabledPlugins": null
+}
