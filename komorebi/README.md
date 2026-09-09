@@ -121,6 +121,11 @@ scratch space.
 | 3 | Coding / technical | Windows Terminal, VS Code |
 | 4 | Recreational | Spotify, Steam |
 
+The same four themes exist on the Linux side, in
+[`../hypr/tiling-consistency.conf`](../hypr/tiling-consistency.conf). The apps
+differ per operating system, the numbers do not, so "comms is on 1" holds on
+either machine. Change a theme here and change it there too.
+
 These are `workspace_rules` (permanent), not `initial_workspace_rules`: a
 matching window is sent to its workspace every time, so moving one elsewhere
 won't stick. Swap the key to `initial_workspace_rules` for the softer version
