@@ -35,7 +35,9 @@
             { "kind": "Exe", "id": "WhatsApp.Root.exe", "matching_strategy": "Equals" },
             { "kind": "Exe", "id": "ms-teams.exe", "matching_strategy": "Equals" },
             { "kind": "Exe", "id": "Discord.exe", "matching_strategy": "Equals" },
-            { "kind": "Exe", "id": "slack.exe", "matching_strategy": "Equals" }
+            { "kind": "Exe", "id": "slack.exe", "matching_strategy": "Equals" },
+            { "kind": "Exe", "id": "OUTLOOK.EXE", "matching_strategy": "Equals" },
+            { "kind": "Exe", "id": "olk.exe", "matching_strategy": "Equals" }
           ]
         },
         {
@@ -50,7 +52,9 @@
           "layout": "BSP",
           "workspace_rules": [
             { "kind": "Exe", "id": "WindowsTerminal.exe", "matching_strategy": "Equals" },
-            { "kind": "Exe", "id": "Code.exe", "matching_strategy": "Equals" }
+            { "kind": "Exe", "id": "Code.exe", "matching_strategy": "Equals" },
+            { "kind": "Exe", "id": "claude.exe", "matching_strategy": "Equals" },
+            { "kind": "Exe", "id": "Docker Desktop.exe", "matching_strategy": "Equals" }
           ]
         },
         {

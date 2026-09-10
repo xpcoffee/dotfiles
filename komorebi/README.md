@@ -116,9 +116,9 @@ scratch space.
 
 | Workspace | Purpose | Auto-routed apps |
 |---|---|---|
-| 1 | Comms | WhatsApp, Teams, Discord, Slack |
+| 1 | Comms | WhatsApp, Teams, Discord, Slack, Outlook |
 | 2 | Reading & research | Edge |
-| 3 | Coding / technical | Windows Terminal, VS Code |
+| 3 | Coding / technical | Windows Terminal, VS Code, Claude, Docker Desktop |
 | 4 | Recreational | Spotify, Steam |
 
 The same four themes exist on the Linux side, in
@@ -136,6 +136,10 @@ window and run `komorebic visible-windows` — it prints the `exe`, `class` and
 `title` komorebi sees. A few are not what you'd guess: WhatsApp is
 `WhatsApp.Root.exe`, new Teams is `ms-teams.exe`, and Steam's actual window
 belongs to `steamwebhelper.exe` rather than `steam.exe` (both are listed).
+Outlook ships as two separate programs and which one opens depends on the
+"new Outlook" toggle, so both `OUTLOOK.EXE` (classic) and `olk.exe` (new) are
+listed. Docker Desktop's executable name contains a space, which is fine in a
+JSON string but easy to mistype.
 
 ## Gaming
 
