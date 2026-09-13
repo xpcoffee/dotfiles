@@ -167,6 +167,32 @@ this is per binding, not per app — covering a game properly means repeating th
 block for every hotkey it might use, which is why `.pause` is the default
 answer here and this is reserved for a game worth the effort.
 
+## Gaming
+
+Games often bind `Alt+<key>` themselves, and whkd's keyboard hook wins by
+default, so the game never sees the keystroke.
+
+**`Ctrl+Alt+P` toggles every hotkey off and on.** Press it before playing and
+again afterwards. That's whkd's own `.pause` directive, and it's the thing to
+reach for — `Alt+P` (`komorebic toggle-pause`) only stops komorebi *tiling*
+windows; whkd carries on intercepting the keyboard regardless.
+
+If you'd rather it be automatic for one specific game, whkd can decide per
+focused application, which needs no mode to remember:
+
+```
+alt + h [
+    Default       : komorebic focus left
+    Cyberpunk2077 : Ignore
+]
+```
+
+`Default` applies everywhere else and `Ignore` passes the key through to that
+process (named as `Get-Process` shows it, with no `.exe`). The catch is that
+this is per binding, not per app — covering a game properly means repeating the
+block for every hotkey it might use, which is why `.pause` is the default
+answer here and this is reserved for a game worth the effort.
+
 ## Keybindings
 
 Modifier is `Alt` (the literal keyword `whkdrc` uses is `alt`).
