@@ -28,11 +28,13 @@ return {
           '--column',
           '--smart-case',
           '--hidden',
+          '--glob=!.git/',
         }
       },
       pickers = {
         find_files = {
-          hidden = true
+          hidden = true,
+          file_ignore_patterns = { "^%.git/" },
         }
       }
     })
