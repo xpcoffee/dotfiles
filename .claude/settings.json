@@ -51,7 +51,8 @@
       "Bash(gh:*)",
       "Bash(go test:*)",
       "Bash(gcloud:*)",
-      "Bash(npm:*)"
+      "Bash(npm:*)",
+      "DesignSync"
     ],
     "defaultMode": "auto"
   },
