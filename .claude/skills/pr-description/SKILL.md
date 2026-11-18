@@ -27,7 +27,11 @@ The strategy in a few sentences, plus a diagram (see "Choosing diagrams"). The r
 
 ### 3. What changed
 
-The concrete delta, plus a diagram. What is new, what moved, what was deleted. Bullet the components or files that carry the change. This is what the reviewer maps onto the diff. Keep each bullet to one line.
+The salient points a reviewer needs before opening the diff, plus a diagram. Write three to five bullets, most important first. Each bullet states a behaviour the system now has, or a decision the reviewer has to agree with, and what it replaced when the difference is the point. The reviewer judges each bullet, then opens the diff to check the code against it.
+
+Open each bullet with the behaviour, not a path. Name a file only when the reviewer must look at that file specifically, such as a migration or a contract other teams consume. The diff already lists the files, so a file-by-file inventory adds nothing to it. When a change is spread across many files for one reason, it is one bullet.
+
+Draw the diagram of the change as before and after when the difference is the point: a picture of the new flow alone asks the reader to imagine the old one.
 
 ### 4. How have we built confidence
 
@@ -39,6 +43,23 @@ Why this is safe to merge. Cover what applies:
 - Manual verification, with the environment and what you checked.
 
 If a risk is unmitigated, say so here. A reviewer trusts an honest gap more than a silent one.
+
+#### Behaviours as Gherkin scenarios
+
+When the change adds or alters behaviour, which includes every bug fix, state the behaviours the tests pin as Gherkin scenarios (Given, When, Then) in a fenced ` ```gherkin ` block, and name the test that pins each one. A reviewer can then check each claimed behaviour without reading test code, and spot a missing case by its absence. Skip the block for a purely mechanical change, such as a rename or a config bump, and say so in one line.
+
+- For a bug fix, the first scenario reproduces the reported failure in the terms of the report: the input or user action that triggered it, and the correct outcome. Say whether its test failed before the fix; a test that never failed has not proven the fix.
+- Write each scenario in domain and user terms, not method names. "When the user changes the filter before the first page loads" says more than "When LoadPage is called twice".
+- One behaviour per scenario, three to five lines each, and at most five scenarios. Further cases belong in the test file, not the description.
+- Follow each scenario with the test that pins it, for example `SearchResultsTests.FilterChange_DuringFirstLoad_DoesNotRestartQuery`. A scenario with no test is a gap: list it under Risks.
+
+```gherkin
+Scenario: A filter change while the first page loads does not restart the query
+  Given the search results list has more than 20 rows
+  When the user changes the filter to one with no matching rows before the first page appears
+  Then the list shows no rows
+  And the page stops reading from the database
+```
 
 ## Choosing diagrams
 
@@ -82,7 +103,9 @@ The doc holds the depth: the decision and its reasoning, the schema, the sequenc
 3. Does the approach section and the changed section each carry a diagram (or one line saying why not)?
 4. Is each diagram type the right one for what that section changed?
 5. Are diagram nodes named after real code, scoped to what changed?
+   Does each "What changed" bullet open with a behaviour or a decision, with at most five bullets and no file inventory?
 6. Does "how have we built confidence" name tests, observability, and rollout, and call out any unmitigated risk?
+   For a change in behaviour, are the pinned behaviours stated as Gherkin scenarios, each naming its test, with a bug fix's first scenario reproducing the reported failure?
 7. Have you run the writing-style hard rules over the finished draft, sentences and diagram labels both?
 
 Fix every failure before showing the draft. The template in `templates/pr-body.template.md` is the shape to fill.

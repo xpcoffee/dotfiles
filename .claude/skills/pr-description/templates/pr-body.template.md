@@ -15,17 +15,30 @@
 
 # What changed
 
-<!-- The concrete delta as one-line bullets: new, moved, deleted. -->
+<!-- 3-5 salient points, most important first: each a behaviour the system now has or a decision
+the reviewer must agree with, and what it replaced. Open with the behaviour, not a file path. -->
 
 - 
 
 ```mermaid
-%% Diagram of the delta. Same or different type from above. Scope to what changed.
+%% Diagram of the change: before and after when the difference is the point. Scope to what changed.
 ```
 
 # How have we built confidence
 
-- **Tests:** <!-- what behaviour they pin -->
+- **Tests:** <!-- what behaviour they pin; the scenarios below are the detail -->
+
+```gherkin
+# One scenario per pinned behaviour, at most five. For a bug fix the first one reproduces the
+# reported failure. Name the pinning test under each, and say if it failed before the fix.
+# Omit this block for a purely mechanical change and say why in one line.
+Scenario: <behaviour in domain terms>
+  Given <starting state>
+  When <user action or event>
+  Then <observable outcome>
+```
+Pinned by: `<TestClass.TestName>`
+
 - **Observability:** <!-- metrics and their logs -->
 - **Rollout:** <!-- feature flag / phased deploy / migration order -->
 - **Manual:** <!-- environment + what you checked -->
