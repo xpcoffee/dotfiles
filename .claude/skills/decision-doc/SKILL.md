@@ -41,7 +41,7 @@ This is the shape of a tenet for a single change. See the [tenets](../tenets/SKI
 
 ## No tracking
 
-A decision doc records decisions and the reasons for them. It holds no list of what later stories must do, no to-dos and no open items: the work items track those, and a copy in the repo goes stale the day one of them changes. A decision can still say what would reopen it ("revisit if site ids change type"), because that belongs to the decision. The same goes for code comments.
+A decision doc records decisions and the reasons for them. It holds no list of what later stories must do, no to-dos and no open items: the work items track those, and a copy in the repo goes stale the day one of them changes. It also names no other implementation tasks: no work item ids, story names or "a later story adds this". Say what the code does and why, in terms of the system. A decision can still say what would reopen it ("revisit if site ids change type"), because that belongs to the decision. The same goes for code comments.
 
 ## Diagrams
 
