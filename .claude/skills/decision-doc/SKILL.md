@@ -39,6 +39,10 @@ The tension case matters most and is the easiest to write badly. State three thi
 
 This is the shape of a tenet for a single change. See the [tenets](../tenets/SKILL.md) skill: a decision doc records the resolution for one change, a tenet generalises it across many.
 
+## No tracking
+
+A decision doc records decisions and the reasons for them. It holds no list of what later stories must do, no to-dos and no open items: the work items track those, and a copy in the repo goes stale the day one of them changes. A decision can still say what would reopen it ("revisit if site ids change type"), because that belongs to the decision. The same goes for code comments.
+
 ## Diagrams
 
 Illustrate the decision with diagrams. Same rules as the [pr-description](../pr-description/SKILL.md) skill, "Choosing diagrams": class, component, or deployment when the decision is about interfaces or where logic lives; sequence or flow when it is about a workflow or behaviour; both when both. Use Mermaid, name nodes after real code, and `<br/>` for line breaks.

@@ -13,7 +13,7 @@ Read this file completely before drafting. Run the [writing-style](../writing-st
 
 Put the reasoning a reviewer needs to approve the change in the description. Put everything a future maintainer needs in a committed doc. If you are explaining a tradeoff, a data model, an algorithm, or a migration in more than a short paragraph, stop: that belongs in a doc (see "When to write a doc"). Link it from the description and keep the description short.
 
-The description answers four questions, in this order. Nothing else: no file inventory, no list of what each file changed, no conditions for later stories (those live in the decision doc or on the work items), and no boilerplate a repo template adds for reviewers, such as a review-label legend. Keep a template section only when a repo check reads it, such as a persona line or a checklist.
+The description answers four questions, in this order. Nothing else: no file inventory, no list of what each file changed, no conditions for later stories (the work items track those), and no boilerplate a repo template adds for reviewers, such as a review-label legend. Keep a template section only when a repo check reads it, such as a persona line or a checklist.
 
 ## The four questions
 
@@ -75,7 +75,7 @@ The salient risks of this change, one short bullet each, most serious first. Alw
 - **Rolling back:** whether the previous version still reads everything this version may have written, and what breaks if not.
 - Any other unmitigated risk or known gap, stated plainly, with what decides or closes it. A reviewer trusts an honest gap more than a silent one.
 
-Leave out risks that belong to later stories; those live in the decision doc or on their work items.
+Leave out risks that belong to later stories; their work items track them.
 
 ## Choosing diagrams
 
