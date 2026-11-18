@@ -4,6 +4,15 @@
 
 <!-- The problem or goal in 2-3 sentences. The trigger: bug, member impact, missing capability. No solution yet. -->
 
+## Intent
+
+<!-- Only when the work item has Intent and "Metric: done when" blocks. Quote the Intent, then every
+Metric bullet in the ticket's order: ticked with evidence, or unticked with the reason or departure. -->
+
+> <Intent>
+
+- [ ] <Metric bullet>. <evidence, or why not met>
+
 # Approach
 
 <!-- The strategy in a few sentences. One line for any tradeoff, with a link to the decision doc. -->

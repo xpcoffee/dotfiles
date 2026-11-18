@@ -13,13 +13,32 @@ Read this file completely before drafting. Run the [writing-style](../writing-st
 
 Put the reasoning a reviewer needs to approve the change in the description. Put everything a future maintainer needs in a committed doc. If you are explaining a tradeoff, a data model, an algorithm, or a migration in more than a short paragraph, stop: that belongs in a doc (see "When to write a doc"). Link it from the description and keep the description short.
 
-The description answers four questions, in this order. Nothing else.
+The description answers four questions, in this order. Nothing else, apart from the Intent checklist under Why when the work item has one.
 
 ## The four questions
 
 ### 1. Why is the change needed
 
 The problem or goal, in two or three sentences. Link the work item (`Resolves AB#<id>`). State the trigger: the bug, the member impact, the missing capability. No solution yet.
+
+#### Intent and Metric, when the work item has them
+
+When the work item carries an Intent and a "Metric: done when" list (the story format the plan docs use), add an `## Intent` subsection under Why. Quote the Intent in one or two sentences, then copy every Metric bullet as a checklist item, in the ticket's order and wording, so the reviewer judges the PR against what the story promised rather than against what the PR chose to claim.
+
+- Tick a bullet only when the PR meets it, and follow it with the evidence: the test that pins it, a link, or the command and its result.
+- Leave a bullet unticked when the PR does not meet it, and say in a few words why and what closes it, for example a separate PR that must merge first.
+- When the PR departs from a bullet on purpose (a reviewer decision, a design change), leave it unticked, state the departure, and link where it was agreed.
+- Name the Optimizer preferences only when the PR went against one, with the reason.
+
+```markdown
+## Intent
+
+> Add the item classes, data access and serialization for the three order items.
+
+- [x] A serialization round-trip test per type. Pinned by `OrderItemSerializationTests`.
+- [ ] The container exists on dev. Needs infra#123 merged and released.
+- [ ] `OutboxStatus` has exactly Pending and Done. Departure: finished entries are soft deleted, so `Done` was dropped (review on this PR).
+```
 
 ### 2. What is the general approach
 
@@ -98,7 +117,7 @@ The doc holds the depth: the decision and its reasoning, the schema, the sequenc
 
 ## Self-check before presenting
 
-1. Does the description answer all four questions, in order, and nothing else?
+1. Does the description answer all four questions, in order, and nothing else? If the work item has an Intent and a Metric, does Why carry the checklist with every Metric bullet, each ticked with evidence or unticked with the reason?
 2. Is every block of reasoning longer than a short paragraph moved to a linked doc?
 3. Does the approach section and the changed section each carry a diagram (or one line saying why not)?
 4. Is each diagram type the right one for what that section changed?
