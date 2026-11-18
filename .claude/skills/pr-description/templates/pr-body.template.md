@@ -1,3 +1,5 @@
+Tracking: [<plan doc title>](<plan doc link>) <!-- only when the work comes from a plan doc -->
+
 # Why
 
 > Resolves AB#<id>
@@ -6,54 +8,43 @@
 
 ## Intent
 
-<!-- Only when the work item has Intent and "Metric: done when" blocks. Quote the Intent, then every
-Metric bullet in the ticket's order: ticked with evidence, or unticked with the reason or departure. -->
+<!-- Only when the work item has Intent and "Metric: done when" blocks. Quote the Intent in one sentence, then
+every Metric bullet in the ticket's order, one line each: ticked with evidence, or unticked with what closes it. -->
 
 > <Intent>
 
-- [ ] <Metric bullet>. <evidence, or why not met>
+- [ ] <Metric in a few words>: <test class, link, or command and result>
+
+Departures, agreed on [AB#<id>](<link>):
+- <departure in one line>
 
 # Approach
 
-<!-- The strategy in a few sentences. One line for any tradeoff, with a link to the decision doc. -->
+<!-- The strategy in a few sentences, and the decisions the reviewer must agree with, one line each.
+One line for any tradeoff, with a link to the decision doc. -->
 
 ```mermaid
 %% class/component/deployment if this changes interfaces or where logic runs;
 %% sequence/flow if it changes a workflow or behaviour. Name nodes after real code.
 ```
 
-# What changed
-
-<!-- 3-5 salient points, most important first: each a behaviour the system now has or a decision
-the reviewer must agree with, and what it replaced. Open with the behaviour, not a file path. -->
-
-- 
-
-```mermaid
-%% Diagram of the change: before and after when the difference is the point. Scope to what changed.
-```
-
 # How have we built confidence
 
-- **Tests:** <!-- what behaviour they pin; the scenarios below are the detail -->
-
 ```gherkin
-# One scenario per pinned behaviour, at most five. For a bug fix the first one reproduces the
-# reported failure. Name the pinning test under each, and say if it failed before the fix.
-# Omit this block for a purely mechanical change and say why in one line.
+# Every scenario the plan promised, one behaviour each. For a bug fix the first one reproduces the
+# reported failure and says whether its test failed before the fix. Omit the block for a purely
+# mechanical change and say why in one line.
 Scenario: <behaviour in domain terms>
   Given <starting state>
   When <user action or event>
   Then <observable outcome>
+  # <TestClass.TestName>
 ```
-Pinned by: `<TestClass.TestName>`
 
-- **Observability:** <!-- metrics and their logs -->
-- **Rollout:** <!-- feature flag / phased deploy / migration order -->
-- **Manual:** <!-- environment + what you checked -->
-- **Risks:** <!-- any unmitigated gap, stated plainly -->
+# Risks
 
-<!-- Deep explanation lives in a committed doc; link it here, using this repo's
-own docs layout:
-Architecture: <path to the component's architecture doc>
-Decision: <path to the decision doc> -->
+- **Deploying:** <!-- what changes in production on deploy; deploy order -->
+- **Rolling back:** <!-- does the previous version read everything this one may write -->
+- <!-- any other unmitigated risk, and what decides or closes it -->
+
+<!-- Deep explanation lives in a committed doc; link it from Approach, using this repo's own docs layout. -->

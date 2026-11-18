@@ -5,7 +5,7 @@ description: Use when writing or revising a pull request description, on GitHub 
 
 # PR descriptions
 
-A PR description is a high-level summary. A reviewer reads it in under a minute and knows why the change exists, how it works, and why to trust it. Depth lives in the repo, in a committed doc the description links to, so it survives after the PR is merged and the description is forgotten.
+A PR description is a high-level summary. A reviewer reads it in under a minute and knows why the change exists, how it works, why to trust it, and what could go wrong. Depth lives in the repo, in a committed doc the description links to, so it survives after the PR is merged and the description is forgotten.
 
 Read this file completely before drafting. Run the [writing-style](../writing-style/SKILL.md) hard rules over the drafted description before presenting, committing, or pushing it. This is a pass over the text you wrote, every sentence and every diagram label, done after the draft exists. Diagram labels are prose: "lands", "surface", and glued jargon fail there too.
 
@@ -13,82 +13,79 @@ Read this file completely before drafting. Run the [writing-style](../writing-st
 
 Put the reasoning a reviewer needs to approve the change in the description. Put everything a future maintainer needs in a committed doc. If you are explaining a tradeoff, a data model, an algorithm, or a migration in more than a short paragraph, stop: that belongs in a doc (see "When to write a doc"). Link it from the description and keep the description short.
 
-The description answers four questions, in this order. Nothing else, apart from the Intent checklist under Why when the work item has one.
+The description answers four questions, in this order. Nothing else: no file inventory, no list of what each file changed, no conditions for later stories (those live in the decision doc or on the work items), and no boilerplate a repo template adds for reviewers, such as a review-label legend. Keep a template section only when a repo check reads it, such as a persona line or a checklist.
 
 ## The four questions
 
 ### 1. Why is the change needed
 
+When the work comes from a plan doc (the tracking artifact that breaks a milestone into stories, such as a release breakdown), put a link to it on the first line of the description, above Why, for example `Tracking: [Release breakdown](<plan doc link>)`. A reviewer then sees where the story sits in the plan before reading anything else.
+
 The problem or goal, in two or three sentences. Link the work item (`Resolves AB#<id>`). State the trigger: the bug, the member impact, the missing capability. No solution yet.
 
 #### Intent and Metric, when the work item has them
 
-When the work item carries an Intent and a "Metric: done when" list (the story format the plan docs use), add an `## Intent` subsection under Why. Quote the Intent in one or two sentences, then copy every Metric bullet as a checklist item, in the ticket's order and wording, so the reviewer judges the PR against what the story promised rather than against what the PR chose to claim.
+When the work item carries an Intent and a "Metric: done when" list (the story format the plan docs use), add an `## Intent` subsection under Why. Quote the Intent in one sentence, then give every Metric bullet as a checklist item, in the ticket's order, so the reviewer judges the PR against what the story promised rather than against what the PR chose to claim.
 
-- Tick a bullet only when the PR meets it, and follow it with the evidence: the test that pins it, a link, or the command and its result.
-- Leave a bullet unticked when the PR does not meet it, and say in a few words why and what closes it, for example a separate PR that must merge first.
-- When the PR departs from a bullet on purpose (a reviewer decision, a design change), leave it unticked, state the departure, and link where it was agreed.
-- Name the Optimizer preferences only when the PR went against one, with the reason.
+Keep each bullet to one line: the Metric in a few words, then its evidence.
+
+- Tick a bullet only when the PR meets it, and name the evidence: the test class that pins it, a link, or a command and its result.
+- Leave a bullet unticked when the PR does not meet it, with what closes it, for example a separate PR that must merge first.
+- List departures after the checklist, one short bullet each, with a link to where they were agreed. A departure is a Metric the PR met differently on purpose, or an Optimizer preference the PR went against.
 
 ```markdown
 ## Intent
 
 > Add the item classes, data access and serialization for the three order items.
 
-- [x] A serialization round-trip test per type. Pinned by `OrderItemSerializationTests`.
-- [ ] The container exists on dev. Needs infra#123 merged and released.
-- [ ] `OutboxStatus` has exactly Pending and Done. Departure: finished entries are soft deleted, so `Done` was dropped (review on this PR).
+- [x] Round-trip per type: `OrderItemSerializationTests`.
+- [ ] Container exists on dev: needs infra#123 merged and released.
+
+Departures, agreed on [AB#12345](link):
+- `OutboxStatus` has no `Done`: finished entries are soft deleted.
 ```
 
 ### 2. What is the general approach
 
-The strategy in a few sentences, plus a diagram (see "Choosing diagrams"). The reviewer should grasp the shape of the solution before reading any prose about the parts. If the approach has a tradeoff worth recording, state the pick in one line and link the decision doc for the reasoning.
+The strategy in a few sentences, plus a diagram (see "Choosing diagrams"). This section also carries the decisions a reviewer has to agree with, one line each; there is no separate "what changed" section, because the diff already lists the files. The reviewer should grasp the shape of the solution before reading any prose about the parts. If the approach has a tradeoff worth recording, state the pick in one line and link the decision doc for the reasoning.
 
-### 3. What changed
+### 3. How have we built confidence
 
-The salient points a reviewer needs before opening the diff, plus a diagram. Write three to five bullets, most important first. Each bullet states a behaviour the system now has, or a decision the reviewer has to agree with, and what it replaced when the difference is the point. The reviewer judges each bullet, then opens the diff to check the code against it.
+Only the behaviours the tests pin, as Gherkin scenarios (Given, When, Then) in one fenced ` ```gherkin ` block, each followed by the test that pins it. No test-run counts, no list of tools that passed, no observability or rollout prose: a reviewer checks each claimed behaviour without reading test code, and spots a missing case by its absence. For a purely mechanical change, such as a rename or a config bump, write one line saying so instead of the block.
 
-Open each bullet with the behaviour, not a path. Name a file only when the reviewer must look at that file specifically, such as a migration or a contract other teams consume. The diff already lists the files, so a file-by-file inventory adds nothing to it. When a change is spread across many files for one reason, it is one bullet.
-
-Draw the diagram of the change as before and after when the difference is the point: a picture of the new flow alone asks the reader to imagine the old one.
-
-### 4. How have we built confidence
-
-Why this is safe to merge. Cover what applies:
-
-- Tests added or changed, and what behaviour they pin.
-- Observability: metrics and their logs, so the change is visible in production.
-- Rollout control: feature flag, phased deploy, migration order.
-- Manual verification, with the environment and what you checked.
-
-If a risk is unmitigated, say so here. A reviewer trusts an honest gap more than a silent one.
-
-#### Behaviours as Gherkin scenarios
-
-When the change adds or alters behaviour, which includes every bug fix, state the behaviours the tests pin as Gherkin scenarios (Given, When, Then) in a fenced ` ```gherkin ` block, and name the test that pins each one. A reviewer can then check each claimed behaviour without reading test code, and spot a missing case by its absence. Skip the block for a purely mechanical change, such as a rename or a config bump, and say so in one line.
-
-- For a bug fix, the first scenario reproduces the reported failure in the terms of the report: the input or user action that triggered it, and the correct outcome. Say whether its test failed before the fix; a test that never failed has not proven the fix.
+- Keep every scenario the plan promised, one behaviour per scenario. Do not cap the number; cases the plan did not promise belong in the test file.
+- For a bug fix, the first scenario reproduces the reported failure in the terms of the report, and says whether its test failed before the fix.
 - Write each scenario in domain and user terms, not method names. "When the user changes the filter before the first page loads" says more than "When LoadPage is called twice".
-- One behaviour per scenario, three to five lines each, and at most five scenarios. Further cases belong in the test file, not the description.
-- Follow each scenario with the test that pins it, for example `SearchResultsTests.FilterChange_DuringFirstLoad_DoesNotRestartQuery`. A scenario with no test is a gap: list it under Risks.
+- A scenario can be one line when its title says it all; add Given, When, Then lines only where they add a fact.
+- Follow each scenario with the test that pins it as a comment line, for example `# SearchResultsTests.FilterChange_DuringFirstLoad_DoesNotRestartQuery`. A scenario with no test is a gap: list it under Risks.
 
 ```gherkin
 Scenario: A filter change while the first page loads does not restart the query
   Given the search results list has more than 20 rows
   When the user changes the filter to one with no matching rows before the first page appears
   Then the list shows no rows
-  And the page stops reading from the database
+  # SearchResultsTests.FilterChange_DuringFirstLoad_DoesNotRestartQuery
 ```
+
+### 4. What are the risks
+
+The salient risks of this change, one short bullet each, most serious first. Always cover:
+
+- **Deploying:** what changes in production the moment this deploys: new writers or readers, extra queries, migrations, flags, and the order other components must deploy in.
+- **Rolling back:** whether the previous version still reads everything this version may have written, and what breaks if not.
+- Any other unmitigated risk or known gap, stated plainly, with what decides or closes it. A reviewer trusts an honest gap more than a silent one.
+
+Leave out risks that belong to later stories; those live in the decision doc or on their work items.
 
 ## Choosing diagrams
 
-Pick the diagram type from what the change touches. Both the approach section and the changed section get a diagram; they can be the same type or different.
+Pick the diagram type from what the change touches. The approach section gets a diagram.
 
 - **Interfaces, and where logic lives or runs** → class, component, or deployment diagram. Use when the change moves responsibility between classes or services, adds or reshapes an interface, or changes which process or host runs a piece of logic.
 - **A workflow or a behaviour** → sequence or flow diagram. Use when the change alters the order of calls, a state machine, a decision path, or what happens across a request.
 - **Both** → include more than one diagram. A change that adds a service (where) and reroutes a call sequence through it (behaviour) needs one of each.
 
-Keep each diagram to the nodes that changed plus their immediate neighbours. A diagram that redraws the whole system hides the change. If a section's change is purely mechanical (a rename, a config bump) and a diagram would add nothing, write one line saying why there is no diagram instead of forcing one.
+Keep each diagram to the nodes that changed plus their immediate neighbours. A diagram that redraws the whole system hides the change. If the change is purely mechanical (a rename, a config bump) and a diagram would add nothing, write one line saying why there is no diagram instead of forcing one.
 
 ### Diagram mechanics
 
@@ -117,14 +114,12 @@ The doc holds the depth: the decision and its reasoning, the schema, the sequenc
 
 ## Self-check before presenting
 
-1. Does the description answer all four questions, in order, and nothing else? If the work item has an Intent and a Metric, does Why carry the checklist with every Metric bullet, each ticked with evidence or unticked with the reason?
-2. Is every block of reasoning longer than a short paragraph moved to a linked doc?
-3. Does the approach section and the changed section each carry a diagram (or one line saying why not)?
-4. Is each diagram type the right one for what that section changed?
-5. Are diagram nodes named after real code, scoped to what changed?
-   Does each "What changed" bullet open with a behaviour or a decision, with at most five bullets and no file inventory?
-6. Does "how have we built confidence" name tests, observability, and rollout, and call out any unmitigated risk?
-   For a change in behaviour, are the pinned behaviours stated as Gherkin scenarios, each naming its test, with a bug fix's first scenario reproducing the reported failure?
+1. Does the description answer the four questions (why, approach, confidence, risks), in order, and nothing else? No "what changed" section, no conditions for later stories, no template boilerplate that no check reads.
+2. If the work item has an Intent and a Metric, does Why carry the checklist with every Metric bullet, one line each, ticked with evidence or unticked with what closes it, and the departures listed with links?
+3. Is every block of reasoning longer than a short paragraph moved to a linked doc?
+4. Does the approach section carry a diagram of the right type, with nodes named after real code and scoped to what changed (or one line saying why not)?
+5. Is "how have we built confidence" only the Gherkin block, with every promised scenario and the test that pins each?
+6. Do the risks cover deploying and rolling back, plus any unmitigated gap?
 7. Have you run the writing-style hard rules over the finished draft, sentences and diagram labels both?
 
 Fix every failure before showing the draft. The template in `templates/pr-body.template.md` is the shape to fill.
