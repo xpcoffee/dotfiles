@@ -20,3 +20,6 @@ work-*
 # its Neko/personal specifics live in references/work-config.md, caught by work-*.
 # aiq wraps prod App Insights queries.
 bin/aiq
+
+# Machine-local settings that must not be published (work organisation, areas).
+nvim/lua/xpcoffee/local/
