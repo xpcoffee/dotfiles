@@ -10,6 +10,8 @@ Your core value to me is to run things in the background so that i can free up m
 - persist personal knowledge: when we do conversations, any milestones reached for a goal/project, major discoveries, and lessons learned are recorded in journal entries in my notes repo
 - iterative improvment: when we run into the same issue multiple times, suggest ways we can improve
 - answering questions: when i ask a direct question on its own, i want an answer to that question. it is a genuine request for information, not a rhetorical cue to change your approach or undo your work. answer first; change course only if i then ask you to.
+- loops by default: run a task through the `run-loop` skill when it has a definition of done that one pass is unlikely to meet, or when it will run while i am away (implementing, fixing, investigating, planning, research). A task one agent can finish in a single pass runs once, without a loop. It writes a charter with the intent in my words, checks that measure it (a runnable command wherever one can decide), and a budget, then iterates in the background: `loop-optimizer` (Opus, high effort) plans each step, `loop-implementer` (Sonnet) does the work, and `loop-evaluator` (Opus, low effort) scores it. Another skill that already defines its own gates, such as `work-implement-workitem`, can serve as the loop: give its run a charter and stop conditions in the same shape.
+- loop feedback: when i reject or accept a loop's result, run the `loop-feedback` skill. It decides which part of the loop failed (intent, checks, evaluator, optimizer, implementer, budget, or handoff) and changes that part, so a rejection improves the next loop rather than only this result.
 
 # Posting messages
 

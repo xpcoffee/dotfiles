@@ -1,0 +1,113 @@
+<title>__TITLE__</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; the three review questions (intent, how it was met, risk) open the page, the work follows. */
+:root {
+  --bg: #f6f7f9; --surface: #ffffff; --fg: #1c2330; --muted: #5b6577; --line: #dde1e8; --accent: #2f5d8a;
+  --ok: #2e7d4f; --ok-bg: #e5f3ea; --warn: #9a6400; --warn-bg: #fbf0dc; --bad: #b3362d; --bad-bg: #f9e3e1;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12161d; --surface: #1a2029; --fg: #e4e8ee; --muted: #9aa4b4; --line: #2c3440; --accent: #8db8e3;
+  --ok: #7fcf9c; --ok-bg: #1b3326; --warn: #e8b65c; --warn-bg: #3a2e16; --bad: #f08a80; --bad-bg: #3d1f1c; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #12161d; --surface: #1a2029; --fg: #e4e8ee; --muted: #9aa4b4; --line: #2c3440; --accent: #8db8e3;
+  --ok: #7fcf9c; --ok-bg: #1b3326; --warn: #e8b65c; --warn-bg: #3a2e16; --bad: #f08a80; --bad-bg: #3d1f1c; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font: 15px/1.6 var(--font-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 64px; }
+main { max-width: 760px; margin: 0 auto; display: grid; gap: 28px; }
+h1, h2 { text-wrap: balance; line-height: 1.25; margin: 0; }
+h1 { font-size: 1.6rem; font-weight: 600; }
+h2 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+section { display: grid; gap: 12px; min-width: 0; }
+p { margin: 0; }
+.meta { color: var(--muted); font-size: 0.9rem; display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { font: 500 0.8rem var(--font-mono); padding: 3px 10px; border-radius: 999px; border: 1px solid currentColor; }
+.ok { color: var(--ok); background: var(--ok-bg); } .warn { color: var(--warn); background: var(--warn-bg); } .bad { color: var(--bad); background: var(--bad-bg); }
+.intent { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px 18px; font-size: 1.05rem; }
+.quote { color: var(--muted); font-style: italic; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: 0; }
+th { font-weight: 600; color: var(--muted); font-size: 0.8rem; }
+code, .mono { font-family: var(--font-mono); font-size: 0.85em; }
+ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.decisions { border-left: 3px solid var(--warn); padding-left: 14px; }
+.result { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 18px 20px; min-width: 0; overflow-wrap: anywhere; }
+.result pre { overflow-x: auto; } .result table { font-size: 0.85rem; }
+a { color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+
+<main id="app"></main>
+
+<script type="application/json" id="packet">__PACKET__</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script>
+const p = JSON.parse(document.getElementById('packet').textContent);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const list = xs => xs && xs.length ? `<ul>${xs.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : '<p class="quote">None.</p>';
+const outcomeClass = { met: 'ok', partly: 'warn', 'not-met': 'bad' }[p.outcome] || 'warn';
+const riskClass = { low: 'ok', medium: 'warn', high: 'bad' }[p.risk?.level] || 'warn';
+const checks = p.checks || [];
+const verdictOf = c => c.verdict || (c.pass === true ? 'pass' : c.pass === false ? 'fail' : 'unknown');
+const passed = checks.filter(c => verdictOf(c) === 'pass').length;
+
+document.getElementById('app').innerHTML = `
+  <header style="display:grid;gap:10px">
+    <h1>${esc(p.title)}</h1>
+    <div class="pills">
+      <span class="pill ${outcomeClass}">intent ${esc(p.outcome)}</span>
+      <span class="pill ${riskClass}">risk ${esc(p.risk?.level)}</span>
+      <span class="pill ${passed === checks.length ? 'ok' : 'warn'}">${passed}/${checks.length} checks</span>
+    </div>
+    <div class="meta"><span>${esc(p.task_type)}</span><span>${esc(p.iterations)} iteration(s)</span><span>stopped: ${esc(p.stop_reason)}</span><span>${esc(p.date)}</span></div>
+  </header>
+
+  <section><h2>Intent</h2>
+    <div class="intent">${esc(p.intent)}</div>
+    ${p.requested ? `<p class="quote">Requested: “${esc(p.requested)}”</p>` : ''}
+  </section>
+
+  ${p.decisions && p.decisions.length ? `<section><h2>Decisions for you</h2><div class="decisions">${list(p.decisions)}</div></section>` : ''}
+
+  <section><h2>How the result meets the intent</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Part of the intent</th><th>How it is met</th><th>Checks</th></tr></thead>
+      <tbody>${(p.how_met || []).map(r => `<tr><td>${esc(r.need)}</td><td>${esc(r.how)}</td><td class="mono">${esc((r.checks || []).join(', '))}</td></tr>`).join('')}</tbody>
+    </table></div>
+    ${p.not_met && p.not_met.length ? `<p><strong>Not met:</strong></p>${list(p.not_met)}` : ''}
+  </section>
+
+  <section><h2>Risk</h2>
+    <p>${esc(p.risk?.summary)}</p>
+    ${p.risk?.items?.length ? `<div class="table-wrap"><table>
+      <thead><tr><th>What could go wrong</th><th>Impact</th><th>Likelihood</th><th>How to reverse</th></tr></thead>
+      <tbody>${p.risk.items.map(r => `<tr><td>${esc(r.risk)}</td><td>${esc(r.impact)}</td><td>${esc(r.likelihood)}</td><td>${esc(r.reversal)}</td></tr>`).join('')}</tbody>
+    </table></div>` : ''}
+    <p><strong>Not verified by the loop:</strong></p>${list(p.unverified)}
+    <p><strong>Assumptions:</strong></p>${list(p.assumptions)}
+  </section>
+
+  <section><h2>Evidence per check (from the evaluator)</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Check</th><th>Result</th><th>Evidence</th></tr></thead>
+      <tbody>${checks.map(c => `<tr><td class="mono">${esc(c.id)}</td><td><span class="pill ${{ pass: 'ok', fail: 'bad', unknown: 'warn' }[verdictOf(c)]}">${verdictOf(c)}</span></td><td>${esc(c.evidence)}</td></tr>`).join('')}</tbody>
+    </table></div>
+  </section>
+
+  <section><h2>The result</h2>
+    ${p.result_url ? `<p><a href="${esc(p.result_url)}">${esc(p.result_url)}</a></p>` : ''}
+    ${p.result_markdown ? `<div class="result" id="result"></div>` : ''}
+  </section>`;
+
+if (p.result_markdown) {
+  const el = document.getElementById('result');
+  el.innerHTML = window.marked ? marked.parse(p.result_markdown) : `<pre>${esc(p.result_markdown)}</pre>`;
+}
+</script>

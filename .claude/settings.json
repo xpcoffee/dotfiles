@@ -81,5 +81,18 @@
   },
   "spinnerTipsEnabled": false,
   "skipDangerousModePermissionPrompt": true,
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read|Grep|Glob|Bash|Write|Edit|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/skills/run-loop/scripts/loop-guard.sh"
+          }
+        ]
+      }
+    ]
+  }
 }
