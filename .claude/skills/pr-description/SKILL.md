@@ -35,17 +35,17 @@ Then one sentence of prose that tells the reader what each bullet carries, for e
 
 Where the intent and its bullets come from:
 
-- **The work item has an Intent and a "Metric: done when" list** (the story format the plan docs use): state its Intent, and cover every Metric bullet, in the ticket's order.
+- **The work item has an Intent and a "Metric: done when" list** (the story format the plan docs use): state its Intent, and cover every Metric bullet this PR's code delivers, in the ticket's order. A bullet met outside the PR, such as a config value, an operations step or another team's work, stays on the work item.
 - **The work item has no Intent, or there is no work item:** gauge the intent the way the [intent-review](../intent-review/SKILL.md) skill's first phase does. Use the user's own words when they stated what the change is for; otherwise draft it from the work item, the commit messages and the conversation, and confirm it with the user in one question before publishing. Then write one bullet per behaviour the intent promises.
 
 Write each bullet as `<behaviour>, so <why it matters for the intent>. Validated via <unit tests | component tests | e2e tests | manual testing on the PR deployment>.`
 
 - The "so" clause is the point of the bullet: it tells the reviewer why this behaviour serves the intent. A bullet with no "so" clause is a feature list.
 - Name the kind of validation that was actually done, not the test names. Test names belong in the code.
-- No checkboxes. A behaviour the PR does not meet yet says so in the bullet, with what closes it, for example "Not met yet: needs infra#123 merged". It also appears under Risks.
+- No checkboxes. A behaviour this PR is meant to deliver but does not meet yet says so in the bullet, with what closes it, for example "Not met yet: needs infra#123 merged". It also appears under Risks.
 - When the bullets serve different parts of the intent, group them under short bold headings that name the part, for example **Stopping a second run** and **Keeping the guard safe and visible**. Never refer to bullets by position ("the first four", "the last three").
 
-After the bullets, add `## Decisions made during implementation`: one short bullet per choice the reviewer has to agree with that the work item did not settle, such as a Metric met differently on purpose, an option declined, or a default picked. Give the reason in the same line, and link where it was agreed when someone agreed it.
+After the bullets, add `## Key decisions` when the change made a decision a reviewer or a later reader needs that the intent does not already state: an authorization model, an interface shape others build on, an option declined that someone will ask about. One bullet each, with the reason in the same line and a link where it was agreed. Leave out choices that the Intent or Risks sections already cover, and implementation detail (a naming rule, a default, a test rewrite). When a loop built the change, those smaller choices stay on its open-questions page; link that page in one line after the bullets. Skip the section when no decision qualifies.
 
 ```markdown
 # Intent
@@ -63,7 +63,7 @@ Each bullet below describes something the change does, explains why it serves th
 
 - A message with no run number still runs, so jobs in flight during the deploy aren't lost. Validated via unit tests.
 
-## Decisions made during implementation
+## Key decisions
 
 - The job queue keeps duplicate detection off: turning it on replaces the queue, so the handler drops repeats instead.
 ```
@@ -132,7 +132,7 @@ The doc holds the depth: the decision and its reasoning, the schema, the sequenc
 ## Self-check before presenting
 
 1. Does the description have the five sections (why, intent, approach, risks, confidence), in order, and nothing else? No "what changed" section, no conditions for later stories, no template boilerplate that no check reads.
-2. Does Intent come straight after Why, with the intent as plain text, one prose sentence on what the bullets carry, and bullets in the form "<behaviour>, so <why>. Validated via <kind>.", grouped under headings when they serve different parts of the intent, with no checkboxes and no test names? Does every Metric bullet appear when the work item has them, and does "Decisions made during implementation" follow?
+2. Does Intent come straight after Why, with the intent as plain text, one prose sentence on what the bullets carry, and bullets in the form "<behaviour>, so <why>. Validated via <kind>.", grouped under headings when they serve different parts of the intent, with no checkboxes and no test names? Does every Metric bullet this PR's code delivers appear, and none that is met outside the PR, and does "Key decisions" follow, holding only decisions the intent does not state, with implementation detail left to the code or the loop's open-questions page?
 3. Is every block of reasoning longer than a short paragraph moved to a linked doc, and is every bullet one short, high-level line?
 4. Does the approach section carry a diagram of the right type, with nodes named after real code and scoped to what changed (or one line saying why not)?
 5. Do the risks come before confidence, and cover deploying and rolling back, plus any unmitigated gap?

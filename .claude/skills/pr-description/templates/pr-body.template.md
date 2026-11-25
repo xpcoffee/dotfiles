@@ -23,9 +23,11 @@ Each bullet below describes something the change does, explains why it serves th
 
 - <behaviour>, so <why>. Not met yet: <what closes it>.
 
-## Decisions made during implementation
+## Key decisions
 
-- <choice the work item did not settle, and why, in one line; link where it was agreed>
+- <decision a reviewer or later reader needs that the intent does not state, and why, in one line; link where it was agreed>
+
+<!-- Omit when no decision qualifies. For a loop-built change, link its open-questions page for the smaller choices. -->
 
 # Approach
 
